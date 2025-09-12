@@ -1,0 +1,172 @@
+.review-dispute-page{
+    margin: 0 0 100px 0;
+    padding: 0;
+    width: 100%;
+}
+.h2{
+  margin: 0 0 0 250px;
+  font-size: 35px;
+}
+
+.review-summary-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  width: 1000px;
+  height: 110px;
+  margin: 20px auto;
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+.dispute-left h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.dispute-left .meta {
+  margin-top: 4px;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.dispute-left .meta span {
+  color: #111827;
+  font-weight: 500;
+}
+
+.dispute-right {
+  display: flex;
+  gap: 10px;
+}
+
+.status-tag {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+/* Status styles */
+.status-tag.closed {
+  background: #f3f4f6;
+  color: #111827;
+  border: 1px solid #d1d5db;
+}
+
+.status-tag.accepted {
+  background: #d1fae5;
+  color: #047857;
+  border: 1px solid #a7f3d0;
+}
+
+
+/*      2nd card    */
+
+.update-status-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px 24px;
+  width: 1000px;
+  height: 200px;
+  margin: 20px auto;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+.update-status-card h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 20px;
+}
+
+.form-row {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.form-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 6px;
+  color: #111827;
+}
+
+.required {
+  color: red;
+  margin-left: 2px;
+}
+
+.form-select {
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: border-color 0.2s ease;
+  outline: none;
+}
+
+.form-select:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px rgba(37,99,235,0.2);
+}
+
+/*    buttons    */
+
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+/* Common button styles */
+/* .btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+} */
+
+/* Cancel button */
+.cancel-btn {
+  border: 1px solid #2563eb;
+  color: #2563eb;
+  background: white;
+}
+
+.cancel-btn:hover {
+  background: #eff6ff;
+}
+
+/* Update button */
+.update-btn {
+  border: none;
+  background: #16a34a;
+  color: white;
+  width: 200px;
+}
+
+.update-btn:hover {
+  background: #15803d;
+}

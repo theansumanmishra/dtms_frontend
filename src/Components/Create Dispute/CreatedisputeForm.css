@@ -1,0 +1,237 @@
+.raise-dispute-page {
+  width: 100vw;
+  padding: 5px 50px 40px;
+  background: linear-gradient(135deg, #dbeafe 0%, #ffffff 50%, #d1fae5 100%);
+  box-sizing: border-box;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+  margin: 0;
+}
+
+.raise-form {
+  margin-top: 0; /* remove default top margin from form */
+  padding-top: 0; /* remove any padding if present */
+}
+
+.raise-dispute-header {
+  text-align: left;
+  margin: 25px 0 0 250px;
+  padding: 0;
+}
+
+.raise-dispute-header h2 {
+  font-size: 2rem;
+  font-weight: bold;
+  margin: 0;
+  padding: 0 0 5px 0;
+}
+
+.raise-dispute-header p {
+  font-size: 1rem;
+  color: #6b7280;
+  margin: 0px;
+  padding: 0 0 10px 0;
+}
+
+.dispute-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.New-dispute {
+  background: white;
+  padding: 20px 30px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  width: 100%;
+}
+
+.New-dispute h2 {
+  margin-bottom: 15px;
+}
+
+.input-block {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.input-block label {
+  font-weight: 500;
+  flex: 0 0 100px;
+  font-size: larger;
+}
+
+.input-block input {
+  flex: 1;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #d1d5db; /* Tailwind gray-300 */
+  height: 50px;
+}
+
+.New-dispute button {
+  display: flex;
+  align-items: center;
+  background-color: #2563eb; /* Tailwind blue-600 */
+  color: white;
+  border: none;
+  padding: 10px 0 10px 38px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin: 20px 0 0 300px;
+  width: 150px;
+  height: 50px;
+}
+
+.New-dispute button:hover {
+  background-color: #1d4ed8;
+}
+
+/* ...........Client Details.............. */
+
+.client-details {
+  margin-bottom: 100px;
+}
+.header-h1 {
+  font-size: 40px;
+  font-weight: 600;
+  /* text-align: center; */
+  margin: 10px 0 0 300px;
+}
+.header-h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 10px 0 0 300px;
+  color: grey;
+  /* text-align: center; */
+}
+.client-details-card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 10px 24px;
+  margin: 30px auto 0 auto; /* centers horizontally */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.06);
+  display: block; /* ensures block-level for margin auto */
+}
+
+.client-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.client-header h2 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: #64748b;
+  margin-top: 4px;
+}
+
+.client-icon {
+  font-size: 36px;
+  color: #2563eb;
+  background: #eff6ff;
+  border-radius: 50%;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.client-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 45px 40px;
+  margin-bottom: 20px;
+}
+
+.client-item .label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: #475569;
+  margin-bottom: 2px;
+}
+
+.client-item .value {
+  font-size: 15px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+/*   Linked debitcards   */
+
+.debit-card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 28px 24px;
+  width: 700px;
+  /* height: 300px; */
+  margin: 20px auto;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.06);
+}
+
+.debit-icon {
+  font-size: 28px;
+  color: #059669;
+  background: #d1fae5;
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 16px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.debit-card h2 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 8px;
+}
+
+.debit-card p {
+  font-size: 14px;
+  color: #64748b;
+  margin-bottom: 20px;
+}
+
+.btn-danger {
+  background: #dc2626;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 10px 22px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+  height: 50px;
+  width: 250px;
+}
+
+.btn-danger:hover {
+  background: #b91c1c;
+}
+
+/*   buttons   */
+
+.action-btns {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin: 30px 0;
+}

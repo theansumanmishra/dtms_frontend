@@ -1,0 +1,309 @@
+.raise-dispute page{
+  height: 100vh;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.raise-dispute-form{
+ display: flex;
+  gap: 30px;
+  width: 97%;
+  margin: 0 20px 20px 20px;
+  height: 500px;
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px 30px 20px 30px;
+  /* border: 2px solid #1d4ed8; */
+}
+
+body {
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: #f9fafc;
+  margin: 0;
+  padding: 0;
+  color: #333;
+  background: linear-gradient(135deg, #dbeafe 0%, #ffffff 50%, #d1fae5 100%);
+}
+
+.dispute-container {
+  width: 80%;
+  max-width: 900px;
+  margin: 50px auto;
+  background: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+h1 {
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #1c2d48;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: #7a869a;
+}
+
+hr {
+  border: none;
+  height: 1px;
+  background: #e5e7eb;
+  margin-bottom: 30px;
+}
+
+h2 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #1c2d48;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 6px;
+  color: #333;
+}
+
+.required {
+  color: red;
+  margin-left: 4px;
+}
+
+input[type="date"],
+select {
+  width: 100%;
+  padding: 12px;
+  font-size: 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+input[type="date"]:focus,
+select:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+}
+
+.btn-submit {
+  display: inline-block;
+  background: #2563eb;
+  color: #fff;
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 500;
+  height: 50px;
+  width: 150px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  justify-content: center;
+  margin-left: 290px;
+  width: 150px;
+}
+
+.btn-submit:hover {
+  background: #1d4ed8;
+}
+
+
+
+/*    Transactiondetail   */
+
+.transaction-container {
+  width: 80%;
+  max-width: 600px;
+  margin: 40px auto;
+  font-family: "Segoe UI", Arial, sans-serif;
+  color: #1c2d48;
+}
+
+h2 {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.transaction-deatail-card {
+  background: #fff5f5;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 20px;
+  width: 650px;
+}
+
+.transaction-header {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.merchant {
+  color: #d32f2f;
+  font-size: 16px;
+}
+
+.amount {
+  color: #d32f2f;
+  font-size: 18px;
+}
+
+.transaction-subtext {
+  font-size: 13px;
+  color: #555;
+  margin: 2px 0;
+}
+
+.transaction-info {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 25px;
+}
+
+.label {
+  display: block;
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 4px;
+}
+
+.value {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.dispute-card {
+  background: #f8fbff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dispute-content {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.icon-box {
+  background: #e0f2fe;
+  color: #2563eb;
+  border-radius: 50%;
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dispute-content h3 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.dispute-content p {
+  font-size: 12px;
+  color: #555;
+  margin: 4px 0 0;
+}
+
+.btn-dispute {
+  background: #e53935;
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.btn-dispute:hover {
+  background: #c62828;
+}
+
+
+.left-panel {
+  flex: 1.2;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  padding: 10px 10px;   /* slightly bigger */
+}
+
+/* Right side - transaction details */
+.right-panel {
+  flex: 1;
+  width: 800px;
+}
+
+@media (max-width: 900px) {
+  .dispute-page {
+    flex-direction: column;
+  }
+
+  .left-panel,
+  .right-panel {
+    width: 100%;
+  }
+}
+
+/*       buttons     */
+
+.bottom-actions {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.back-btn {
+  background: white;
+  color: #2563eb;
+  border: 1px solid #2563eb;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  width: 200px;
+  height: 40px;
+}
+
+.back-btn:hover {
+  background: #eff6ff;
+}
+
+.dashboard-btn {
+  background: #4b5563;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: background 0.2s ease;
+  width: 200px;
+  height: 40px;
+}
+
+.dashboard-btn:hover {
+  background: #374151;
+}
