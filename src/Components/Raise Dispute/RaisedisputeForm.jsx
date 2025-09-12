@@ -44,7 +44,7 @@ const RaisedisputeForm = ({ onCancelClick}) => {
     description: Yup.string().required("Dispute description is required"),
   });
 
-  // ✅ Initial values
+  // Initial values
   const initialValues = {
     date: "",
     source: "",
@@ -55,7 +55,7 @@ const RaisedisputeForm = ({ onCancelClick}) => {
   // Get today's date in YYYY-MM-DD format
   const today = new Date().toISOString().split("T")[0];
 
-  // ✅ Submit handler
+  // Submit handler
   const handleSubmit = async (values) => {
     console.log("Form Submitted:", values);
 

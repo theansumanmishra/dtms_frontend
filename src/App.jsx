@@ -20,7 +20,7 @@ import DisputeConfirmationPage from "./Pages/DisputeConfirmationPage";
 import ClientPage from "./Pages/Clients";
 import ClientShowPage from "./Pages/ShowClient";
 import TransactionList from "./Pages/Transaction";
-import { toast } from "react-toastify";
+// import { toast } from "react-toastify";
 
 // Set up Axios interceptor to include JWT token in headers
 axios.interceptors.request.use(function (config) {
@@ -30,26 +30,26 @@ axios.interceptors.request.use(function (config) {
 });
 
 // Add response interceptor
-axios.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (error.response) {
-      switch (error.response.status) {
-        case 401:
-          localStorage.removeItem('accessToken'); // Clear invalid token
-          window.location.href = "/login";
-          break;
-        case 500:
-        case 422:
-          toast.error("Something went wrong!");
-          break;
-        default:
-          return Promise.reject(error);
-      }
-    }
-    return Promise.reject(error);
-  }
-);
+// axios.interceptors.response.use(
+//   (response) => response,
+//   (error) => {
+//     if (error.response) {
+//       switch (error.response.status) {
+//         case 401:
+//           localStorage.removeItem('accessToken'); // Clear invalid token
+//           window.location.href = "/login";
+//           break;
+//         case 500:
+//         case 422:
+//           toast.error("Something went wrong!");
+//           break;
+//         default:
+//           return Promise.reject(error);
+//       }
+//     }
+//     return Promise.reject(error);
+//   }
+// );
 
 
 // Main App Component with Routing

@@ -6,6 +6,7 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { toast } from "react-toastify";
 
 const Disputeconfirmation = () => {
   const navigate = useNavigate();
@@ -48,6 +49,42 @@ const Disputeconfirmation = () => {
   if (loading) return <p>Loading...</p>;
   if (!dispute) return <p>Dispute not found</p>;
 
+  //Validation Schema using Yup
+  const validationSchema = Yup.object({
+    status: Yup.string().required("Status is required"),
+    subStatus: Yup.string().required("SubStatus is required"),
+  });
+
+  //Initial values
+  const initialValues = {
+    status: "",
+    subStatus: "",
+  };
+
+  // Submit handler
+  const handleSubmit = async (values) => {
+    console.log("Form Submitted:", values);
+
+    const payload = {
+      statusName: values.status,
+      subStatusName: values.subStatus,
+    };
+
+    try {
+      const response = await axios.put(
+        `http://localhost:8080/disputes/${disputeId}`,
+        payload
+      );
+      console.log("Payload Sent:", JSON.stringify(payload));
+      toast.success("Dispute reviewed successfully 👍");
+      setDispute(response.data);
+      // await fetchDisputeDetails();
+      setShowModal(false);
+    } catch (error) {
+      console.error("Error updating dispute:", error);
+    }
+  };
+
   return (
     <div className="success-container">
       {/* Success Icon */}
@@ -66,14 +103,16 @@ const Disputeconfirmation = () => {
       <div className="summary-card mt-4">
         <div className="d-flex justify-content-between">
           <h2>Dispute Summary</h2>
-          <Button
-            variant="outline-dark"
-            size="sm"
-            className="text-decoration-none"
-            onClick={() => setShowModal(true)}
-          >
-            Review Dispute
-          </Button>
+          {dispute.status.name !== "CLOSED" && (
+            <Button
+              variant="outline-dark"
+              size="sm"
+              className="text-decoration-none"
+              onClick={() => setShowModal(true)}
+            >
+              Review Dispute
+            </Button>
+          )}
         </div>
 
         <div className="summary-grid">
@@ -82,18 +121,14 @@ const Disputeconfirmation = () => {
             <span className="value link">DSP202500{dispute.id}</span>
           </div>
           <div>
-            <span className="label">Transaction Reference ID</span>
-            <span className="value link">
-              {dispute.savingsAccountTransaction.paymentRailInstanceId}
+            <span className="label">Dispute Raised Date</span>
+            <span className="value">
+              {dispute.createdDate.substring(0, 10)}
             </span>
           </div>
           <div>
-            <span className="label">Status</span>
-            <span className="badge">{dispute.status.name}</span>
-          </div>
-          <div>
-            <span className="label">Status</span>
-            <span className="badge">{dispute.status.name}</span>
+            <span className="label">Dispute Reason</span>
+            <span className="value">{dispute.reason}</span>
           </div>
           <div>
             <span className="label">Merchant Name</span>
@@ -102,31 +137,47 @@ const Disputeconfirmation = () => {
             </span>
           </div>
           <div>
-            <span className="label">Dispute Reason</span>
-            <span className="value">{dispute.reason}</span>
+            <span className="label">Payment Rail</span>
+            <span className="value link">
+              {dispute.savingsAccountTransaction.paymentRail}
+            </span>
           </div>
+          <div>
+            <span className="label">Transaction Reference ID</span>
+            <span className="value link">
+              {dispute.savingsAccountTransaction.paymentRailInstanceId}
+            </span>
+          </div>
+
           <div>
             <span className="label">Disputed Amount</span>
             <span className="value amount">
               ₹ {dispute.savingsAccountTransaction.amount}
             </span>
           </div>
-          <div>
-            <span className="label">Dispute Raised Date</span>
-            <span className="value">{dispute.createdDate}</span>
-          </div>
+
           <div>
             <span className="label">Transaction Date</span>
             <span className="value">
-              {dispute.savingsAccountTransaction.transactionDate}
+              {dispute.savingsAccountTransaction.transactionDate.substring(
+                0,
+                10
+              )}
             </span>
+          </div>
+          <div>
+            <span className="label">Status</span>
+            <span className="badge">{dispute.status.name}</span>
+          </div>
+          <div>
+            <span className="label">Sub Status</span>
+            <span className="badge">{dispute.subStatus.name}</span>
           </div>
         </div>
       </div>
 
       <div className="transaction-card">
-        <h2>Transaction Details</h2>
-
+        <h2>Transaction Details</h2> 
         <div className="transaction-grid">
           <div>
             <span className="label">Debit Card ID</span>
@@ -141,16 +192,11 @@ const Disputeconfirmation = () => {
             </span>
           </div>
           <div>
-            <span className="label">Transaction Type</span>
+            <span className="label">Transaction Mode</span>
             <span className="value">
-              {dispute.savingsAccountTransaction?.transactionType}
+              {dispute.savingsAccountTransaction?.transactionMode}
             </span>
           </div>
-        </div>
-
-        <div className="transaction-description">
-          <span className="label">Description</span>
-          <span className="value">{dispute.transaction?.description}</span>
         </div>
       </div>
 
@@ -180,7 +226,7 @@ const Disputeconfirmation = () => {
           <p>Need to report another transaction issue?</p>
           <button
             className="btn red"
-            onClick={() => navigate("/create-dispute")}
+            onClick={() => navigate("/clients")}
           >
             Create New Dispute
           </button>
@@ -205,49 +251,61 @@ const Disputeconfirmation = () => {
           <Modal.Title>Update Dispute Status</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <div>
-            <div className="">
-              {/* Status */}
-              <div className="form-group">
-                <label>
-                  Status <span className="required">*</span>
-                </label>
-                <select
-                  // value={status}
-                  // onChange={(e) => setStatus(e.target.value)}
-                  className="form-select"
-                >
-                  <option value="OPEN">INITIATED</option>
-                  <option value="IN_PROGRESS">IN PROGRESS</option>
-                  <option value="CLOSED">CLOSED</option>
-                </select>
-              </div>
+          <Formik
+            initialValues={initialValues}
+            validationSchema={validationSchema}
+            onSubmit={handleSubmit}
+          >
+            {() => (
+              <Form>
+                {/* Status */}
+                <div className="form-group">
+                  <label htmlFor="status">
+                    Dispute Status <span className="required">*</span>
+                  </label>
+                  <Field as="select" id="status" name="status">
+                    <option value="">Select a Dispute status...</option>
+                    <option value="INITIATED">INITIATED</option>
+                    <option value="IN-PROGRESS">IN-PROGRESS</option>
+                    <option value="CLOSED">CLOSED</option>
+                  </Field>
+                  <ErrorMessage
+                    name="status"
+                    component="div"
+                    className="text-danger"
+                  />
+                </div>
 
-              {/* Sub Status */}
-              <div className="form-group">
-                <label>
-                  Sub Status <span className="required">*</span>
-                </label>
-                <select
-                  // value={subStatus}
-                  // onChange={(e) => setSubStatus(e.target.value)}
-                  className="form-select">
-                  <option value="PENDING">ACCEPTED</option>
-                  <option value="ACCEPTED">PARTIALLY ACCEPTED</option>
-                  <option value="REJECTED">REJECTED</option>
-                </select>
-              </div>
-            </div>
-          </div>
+                {/* Sub Status */}
+                <div className="form-group">
+                  <label htmlFor="subStatus">
+                    Dispute Sub-Status <span className="required">*</span>
+                  </label>
+                  <Field as="select" id="subStatus" name="subStatus">
+                    <option value="">Select a Dispute sub-status...</option>
+                    <option value="ACCEPTED">ACCEPTED</option>
+                    {/* <option value="PARTIALLY ACCEPTED">PARTIALLY ACCEPTED</option> */}
+                    <option value="REJECTED">REJECTED</option>
+                  </Field>
+                  <ErrorMessage
+                    name="subStatus"
+                    component="div"
+                    className="text-danger"
+                  />
+                </div>
+                {/* BUTTONS */}
+                <div className="d-flex justify-content-between">
+                  <Button variant="secondary" onClick={handleClose}>
+                    Close
+                  </Button>
+                  <Button variant="dark" type="submit">
+                    Submit Review
+                  </Button>
+                </div>
+              </Form>
+            )}
+          </Formik>
         </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={handleClose}>
-            Save Changes
-          </Button>
-        </Modal.Footer>
       </Modal>
     </div>
   );
