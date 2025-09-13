@@ -63,13 +63,13 @@ const Clients = () => {
                 <FaSearch size={20} color="#2563eb" />
               </span>
               <div>
-                <h3>Search clients by Name or Account Number</h3>
+                <h3>Search clients by Name or Phone Number</h3>
                 <p>Find all clients</p>
               </div>
             </div>
 
             <div className="search-form">
-              <label htmlFor="searchQuery">Client Name / Account Number</label>
+              <label htmlFor="searchQuery">Client Name / Phone Number</label>
               <div className="search-box">
                 <input
                   type="text"
@@ -94,16 +94,17 @@ const Clients = () => {
             </div>
           </div>
           <div className="custom-table">
-            {/* ✅ Search Dispute Box */}
 
+            {/* Search Dispute Box */}
             <h2 className="heading">
               All Clients <br />
-              <span className="pr">Showing 1-5 of 5 clients</span>
+              <span className="pr">Showing all available clients</span>
             </h2>
             <table>
               <thead>
                 <tr>
                   <th>Sr. No.</th>
+                  <th>Client ID</th>
                   <th>Name</th>
                   <th>Email</th>
                   <th>Phone</th>
@@ -117,9 +118,10 @@ const Clients = () => {
                       onClick={() => handleRowClick(client.id)}
                     >
                       <td>{i + 1}</td>
+                      <td>CLI202500{client.id}</td>
                       <td className="DSP">{client.name}</td>
                       <td>{client.email}</td>
-                      <td>{client.phone}</td>
+                      <td>+91-{client.phone}</td>
                     </tr>
                   ))
                 ) : (

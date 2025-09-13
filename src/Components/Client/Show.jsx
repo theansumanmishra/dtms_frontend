@@ -129,7 +129,7 @@ const navigate = useNavigate();
                       <label>Phone</label>
                     </div>
                     <div className="col-md-6">
-                      <p>{client.phone}</p>
+                      <p>+91-{client.phone}</p>
                     </div>
                   </div>
                 </div>

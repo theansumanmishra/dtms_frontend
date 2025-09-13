@@ -73,7 +73,7 @@ const TransactiondetailForm = () => {
             <div className="detail-transaction-info">
               <div>
                 <p className="label">SAVINGS ACCOUNT NUMBER</p>
-                <p className="value">SAV202500{txnDetails.savingsAccount.accountNumber}</p>
+                <p className="value">{txnDetails.savingsAccount.accountNumber}</p>
               </div>
               <div>
                 <p className="label">DEBIT CARD NUMBER</p>
@@ -133,13 +133,15 @@ const TransactiondetailForm = () => {
                     <p className="txnlist-desc">{txn.description}</p>
                     <p className="txnlist-id">Transaction ID: TXN202500{txn.id}</p>
                   </div>
-
                   <div className="txnlist-right">
                     <p className="txnlist-amount">
                       ₹ {txn.amount.toLocaleString("en-IN")}
                     </p>
                     <p className="txnlist-date">
                       {txn.transactionDate.substring(0, 10)}
+                    </p>
+                    <p className="txnlist-date">
+                      {txnDetails.transactionMode}
                     </p>
                   </div>
                 </div>

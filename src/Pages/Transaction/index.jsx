@@ -4,7 +4,7 @@ import { useNavigate } from "react-router";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import Header from "../../Layouts/Header";
-import { Button, Row, Col } from "react-bootstrap";
+import { Button} from "react-bootstrap";
 
 const TransactionForm = () => {
   const { id } = useParams();
@@ -41,8 +41,8 @@ const TransactionForm = () => {
         <div className="transaction-page">Loading transaction details...</div>
       ) : (
         <div className="transaction-page">
-          <h2 className="top">Transaction History</h2>
-          <p className="top1">View recent transactions for Account</p>
+          <h1 className="top">Transaction History</h1>
+          <p className="top1">View recent transactions for Account {}</p>
           <div className="transactions-container">
             <h3 className="transactions-title">Recent Transactions</h3>
             <p className="transactions-subtitle">
@@ -55,8 +55,8 @@ const TransactionForm = () => {
                   <div key={txn.id} className="row border-top pt-3 mb-3">
                     <div className="col-10">
                       <div>
-                        <h4>{txn.merchantName}</h4>
-                        <p className="m-0">{txn.merchantCategory}</p>
+                        <h5 className="text-danger">{txn.merchantName}</h5>
+                        <p className="m-0 text-secondary">{txn.merchantCategory}</p>
                         <span className="transaction-id">
                           Transaction ID: TXN202500{txn.id}
                         </span>
@@ -66,7 +66,7 @@ const TransactionForm = () => {
                     <div className="col">
                       <p className="transaction-amount mb-1"></p>
                       <p className="d-inline-block mb-0 mr-2">
-                        ₹ {txn.amount.toLocaleString("en-IN")}.00
+                        ₹ {txn.amount.toLocaleString("en-IN")}
                       </p>
                       <p className="d-inline-block mx-1"></p>
                       <p
@@ -78,7 +78,7 @@ const TransactionForm = () => {
                       >
                         {txn.transactionType}
                       </p>
-                      <p class="transaction-date me-2">
+                      <p className="transaction-date me-2">
                         {txn.transactionDate.substring(0, 10)}
                       </p>
                       <Button variant="outline-dark"

@@ -92,7 +92,7 @@ const Disputeconfirmation = () => {
         <div>
           <div className="success-icon">✔</div>
           {/* Title + Subtitle */}
-          <h1>Dispute Successfully Submitted</h1>
+          <h1 className="dispute-h1">Dispute Successfully Submitted</h1>
           <p className="subtitle mb-0">
             Your dispute has been created and submitted for review
           </p>
@@ -180,6 +180,12 @@ const Disputeconfirmation = () => {
         <h2>Transaction Details</h2> 
         <div className="transaction-grid">
           <div>
+            <span className="label">Transaction ID</span>
+            <span className="value">
+              TXN202500{dispute.savingsAccountTransaction?.id}
+            </span>
+          </div>
+          <div>
             <span className="label">Debit Card ID</span>
             <span className="value">
               {dispute.savingsAccountTransaction?.debitCard.cardNo}
@@ -189,12 +195,6 @@ const Disputeconfirmation = () => {
             <span className="label">Account ID</span>
             <span className="value">
               {dispute.savingsAccountTransaction?.savingsAccount.accountNumber}
-            </span>
-          </div>
-          <div>
-            <span className="label">Transaction Mode</span>
-            <span className="value">
-              {dispute.savingsAccountTransaction?.transactionMode}
             </span>
           </div>
         </div>
@@ -293,6 +293,7 @@ const Disputeconfirmation = () => {
                     className="text-danger"
                   />
                 </div>
+
                 {/* BUTTONS */}
                 <div className="d-flex justify-content-between">
                   <Button variant="secondary" onClick={handleClose}>

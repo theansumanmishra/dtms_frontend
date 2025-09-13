@@ -6,17 +6,14 @@ import axios from "axios";
 const DashboardForm = () => {
   const navigate = useNavigate();
 
-  //States
   const [filteredData, setFilteredData] = useState([]);
-  // const [searched, setSearched] = useState(false);
 
   // Pagination states
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 5; //show 5 rows per page (change if needed)
 
-  //Fetch disputes from API
   useEffect(() => {
-    setCurrentPage(1); // reset to page 1 on data fetch
+    setCurrentPage(1);
     const fetchData = async () => {
       try {
         const res = await axios.get(`http://localhost:8080/disputes`);
@@ -41,12 +38,16 @@ const DashboardForm = () => {
 
   return (
     <div className="dashboard-page">
-      <h3 className="upper">Manage and track banking disputes efficiently</h3>
+      <h1 className="dashboard-h1">DASHBOARD</h1>
+      <h4 className="dashboard-h4 text-secondary">Manage and track banking disputes efficiently</h4>
 
       {/* Disputes Table */}
       <div className="table-wrapper">
         <div className="custom-table">
-          <h2 className="heading">All Previous Disputes</h2>
+          <h2 className="heading">
+           All Previous Dispute <br />
+            <span className="pr">Showing all previously raised disputes</span>
+          </h2>
 
           {/* Table Data */}
           <table>

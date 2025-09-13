@@ -1,13 +1,20 @@
 .dashboard-page {
-  display: flex;
   flex-direction: column;
-  justify-content: center; /* ✅ Center vertically if height given */
-  min-height: 100vh;     /* Full viewport height */
-  padding: 20px;
-  margin: 0 0 100px 0;
+  padding: 30px;
 }
 
-/* ✅ Create New Dispute Card */
+.dashboard-h1{
+  font-size: 30px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.dashboard-h4{
+  font-size: 20px;
+  font-weight: 400;
+  color: ;
+}
+
 .create-dispute-card {
   min-width: 900px;
   background: #d1fae5;

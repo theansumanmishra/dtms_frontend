@@ -118,6 +118,7 @@ const RaisedisputeForm = ({ onCancelClick}) => {
                     <option value="">Select a dispute source...</option>
                     <option value="Branch Visit">Branch Visit</option>
                     <option value="Email">Email</option>
+                    <option value="Website">Website</option>
                     <option value="Phone Call">Phone Call</option>
                   </Field>
                   <ErrorMessage
@@ -130,7 +131,7 @@ const RaisedisputeForm = ({ onCancelClick}) => {
                 {/* DISPUTE REASON */}
                 <div className="form-group">
                   <label htmlFor="reason">
-                    Dispute Reason <span className="required">*</span>
+                    Dispute reason <span className="required">*</span>
                   </label>
                   <Field as="select" id="reason" name="reason">
                     <option value="">Select a dispute reason...</option>
