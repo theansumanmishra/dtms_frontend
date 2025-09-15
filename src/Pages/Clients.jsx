@@ -1,5 +1,4 @@
-import React from "react";
-import Client from "../Components/Client";
+import Client from "../Components/Client/ClientListingPage";
 import Header from '../Layouts/Header';
 
 const ClientPage = () => {
