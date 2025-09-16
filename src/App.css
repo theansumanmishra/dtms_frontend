@@ -17,11 +17,12 @@ body {
 .custom-table tbody {
   background: white;
 }
+
 .custom-table {
   margin-top: 30px;
   width: 100%;
   overflow-x: hidden;
-  max-height: 380px;
+  max-height: 445px;
 }
 
 .custom-table table {
@@ -48,7 +49,7 @@ body {
 .table-wrapper {
   width: 100%;
   min-height: 600px;
-  overflow-y: auto;
+  overflow-y: hidden;
 }
 /* Base style for badges */
 .status-badge,

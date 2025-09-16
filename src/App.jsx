@@ -10,17 +10,13 @@ import LandingPage from "./Pages/Landing";
 import AboutPage from "./Pages/About";
 import LoginPage from "./Pages/Login";
 import DashboardPage from "./Pages/Dashboard";
-import ClientPage from "./Pages/Clients";
-import ClientShowPage from "./Pages/ClientShow";
-import TransactionList from "./Pages/TransactionListing";
-import TransactiondetailPage from "./Pages/TransactionDetails";
+import ClientPage from "./Pages/ClientsIndex";
+import ClientShowPage from "./Pages/ClientsShow";
+import TransactionList from "./Pages/TransactionIndex";
+import TransactiondetailPage from "./Pages/TransactionView";
 import RaisedisputePage from "./Pages/RaiseDispute";
 import DisputeConfirmationPage from "./Pages/DisputeConfirmation";
-// import DebitCardPage from "./Pages/DebitCardPage";
-// import TransactionPage from "./Pages/TransactionPage";
-// import ViewDisputePage from "./Pages/ViewDisputePage";
-// import CreateDisputePage from "./Pages/CreateDisputePage";
-// import ReviewdisputePage from "./Pages/ReviewdisputePage";
+import ViewDisputePage from "./Pages/DisputeDetails";
 
 // Set up Axios interceptor to include JWT token in headers
 axios.interceptors.request.use(function (config) {
@@ -55,7 +51,6 @@ axios.interceptors.response.use(
 );
 
 const App = () => {
-
   return (
     <>
       <BrowserRouter>
@@ -70,13 +65,7 @@ const App = () => {
           <Route path="/savingsaccounts/:savingsAccountId/transactions/:transactionId" element={<TransactiondetailPage />}/>
           <Route path="/savingsaccounts/:id/transactions/:transactionId/raise-dispute" element={<RaisedisputePage />} />
           <Route path="/disputes/:disputeId/confirmation" element={<DisputeConfirmationPage />}/>
-          <Route path="/disputes/:disputeId" element={<DisputeConfirmationPage />}/>
-          {/* <Route path="/disputes/:id" element={<ViewDisputePage />} /> */}
-          {/* <Route path="/review-dispute/:id" element={<ReviewdisputePage />} /> */}
-          {/* <Route path="/disputes/:id/review" element={<ReviewdisputePage />} /> */}
-          {/* <Route path="/create-dispute" element={<CreateDisputePage />} />
-          <Route path="/debitcard" element={<DebitCardPage />} />
-          <Route path="/transaction" element={<TransactionPage />} /> */}
+          <Route path="/disputes/:disputeId" element={<ViewDisputePage />}/>
         </Routes>
 
         <ToastContainer

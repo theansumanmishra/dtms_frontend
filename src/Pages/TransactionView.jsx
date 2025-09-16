@@ -1,5 +1,5 @@
 import Header from '../Layouts/Header';
-import TransactiondetailForm from '../Components/Transaction/TransactionDetailsPage';
+import TransactiondetailForm from '../Components/Transaction/view';
 
 const TransactiondetailPage = () => {
   return (

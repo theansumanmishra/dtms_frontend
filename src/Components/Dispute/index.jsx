@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import "./DashboardPage.css";
+import "./index.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 

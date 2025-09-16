@@ -1,4 +1,4 @@
-import TransactionForm from '../Components/Transaction/TransactionListingPage.jsx'
+import TransactionForm from '../Components/Transaction/index.jsx'
 import Header from '../Layouts/Header.jsx';
 
 const TransactionPage = () => {

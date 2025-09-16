@@ -1,4 +1,4 @@
-import DashboardForm from '../Components/Dashboard/DashboardPage';
+import DashboardForm from '../Components/Dispute';
 import Header from '../Layouts/Header';
 
 const dashboardPage = () => {

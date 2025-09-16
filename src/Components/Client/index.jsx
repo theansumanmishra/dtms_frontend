@@ -1,8 +1,7 @@
-import React, { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback } from "react";
 import axios from "axios";
-import { Button, Table, Form, Modal } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { FaPlus, FaSearch } from "react-icons/fa";
+import { FaSearch } from "react-icons/fa";
 
 const Clients = () => {
   const navigate = useNavigate();

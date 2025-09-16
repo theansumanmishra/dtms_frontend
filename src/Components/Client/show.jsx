@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "./ClientDetailsPage.css";
+import "./show.css";
 import { useNavigate } from "react-router";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";

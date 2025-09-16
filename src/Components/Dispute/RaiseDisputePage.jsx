@@ -45,7 +45,7 @@ const RaisedisputeForm = ({ onCancelClick }) => {
 
   // Initial values
   const initialValues = {
-    date: "",
+    createdDate: "",
     source: "",
     reason: "",
     description: "",
@@ -60,6 +60,7 @@ const RaisedisputeForm = ({ onCancelClick }) => {
 
     const payload = {
       savingsAccountTransaction: { id: transactionId },
+      createdDate: values.date,
       source: values.source,
       reason: values.reason,
       description: values.description,

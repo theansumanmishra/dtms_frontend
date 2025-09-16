@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import "./TransactionDetailsPage.css";
+import "./view.css";
 import { useNavigate, useParams } from "react-router";
 import axios from "axios";
 import { BiSolidInfoSquare } from "react-icons/bi";
@@ -9,6 +9,7 @@ const TransactiondetailForm = () => {
   const navigate = useNavigate();
 
   const { savingsAccountId, transactionId } = useParams();
+  const [selectedTransactionId, setSelectedTransactionId] = useState(transactionId);
   const [txnDetails, setTxnDetails] = useState({});
   const [similarTxns, setSimilarTxns] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -19,7 +20,8 @@ const TransactiondetailForm = () => {
     const fetchData = async () => {
       try {
         //Fetch transaction details
-        const txnRes = await axios.get(`http://localhost:8080/savingsaccounts/${savingsAccountId}/transactions/${transactionId}`);
+        const txId = selectedTransactionId || transactionId;
+        const txnRes = await axios.get(`http://localhost:8080/savingsaccounts/${savingsAccountId}/transactions/${txId}`);
         setTxnDetails(txnRes.data);
 
         //Fetch similar transactions
@@ -33,7 +35,12 @@ const TransactiondetailForm = () => {
     };
 
     fetchData();
-  }, [savingsAccountId, transactionId]);
+  }, [savingsAccountId, transactionId, selectedTransactionId]);
+
+  const handleTxnClick = (txnId) => {
+    setSelectedTransactionId(txnId)
+    navigate(`/savingsaccounts/${savingsAccountId}/transactions/${txnId}`)
+  }
 
   if (loading) {
     return <p>Loading...</p>;
@@ -45,8 +52,8 @@ const TransactiondetailForm = () => {
 
   return (
     <div className="transaction-detail-page">
-      <div className="transaction-detail-form">
-        <div className="detail-container">
+      <div className="transaction-detail-form row">
+        <div className="detail-container col-6">
           <div className="transaction-header">
             <h2>Transaction Details for TXN202500{txnDetails.id}</h2>
           </div>
@@ -118,14 +125,14 @@ const TransactiondetailForm = () => {
 
         {/* TRANSACTION LISTING */}
         {showDisputeForm ? (
-          <div className="txnlist-wrapper">
+          <div className="txnlist-wrapper col-6">
             <RaisedisputeForm onCancelClick={setShowDisputeForm} clientId={'1'} />                {/* DISPUTE FORM HERE */}
           </div>
         ) : (
-          <div className="txnlist-wrapper">
+          <div className="txnlist-wrapper col-6">
             {similarTxns.length > 0 ? (
               similarTxns.map((txn) => (
-                <div className="txnlist-card" key={txn.id}>
+                <div className="txnlist-card" key={txn.id} onClick={() => handleTxnClick(txn.id)}>
                   <div className="txnlist-left">
                     <h3 className="txnlist-title">{txn.merchantName}</h3>
                     <h6>{txn.merchantCategory}</h6>
@@ -152,6 +159,7 @@ const TransactiondetailForm = () => {
         )}
       </div>
 
+      {/* BUTTONS */}
       <div className="details-bottom-actions">
         <button className="back-btn" onClick={() => navigate(`/savingsaccounts/${savingsAccountId}/transactions`)}>
           ← Back to Transactions

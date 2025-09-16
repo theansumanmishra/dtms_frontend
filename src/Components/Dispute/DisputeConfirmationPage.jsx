@@ -129,9 +129,9 @@ const Disputeconfirmation = () => {
             <span className="value">{dispute.reason}</span>
           </div>
           <div>
-            <span className="label">Merchant Name</span>
+            <span className="label">Description</span>
             <span className="value">
-              {dispute.savingsAccountTransaction.merchantName}
+              {dispute.description}
             </span>
           </div>
           <div>
@@ -184,13 +184,13 @@ const Disputeconfirmation = () => {
             </span>
           </div>
           <div>
-            <span className="label">Debit Card ID</span>
+            <span className="label">Debit Card Number</span>
             <span className="value">
               {dispute.savingsAccountTransaction?.debitCard.cardNo}
             </span>
           </div>
           <div>
-            <span className="label">Account ID</span>
+            <span className="label">Account Number</span>
             <span className="value">
               {dispute.savingsAccountTransaction?.savingsAccount.accountNumber}
             </span>

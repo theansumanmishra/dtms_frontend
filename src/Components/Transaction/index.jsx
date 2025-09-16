@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import "./TransactionListingPage.css";
+import "./index.css";
 import { useNavigate } from "react-router";
 import { useParams } from "react-router-dom";
 import axios from "axios";
@@ -17,8 +17,7 @@ const TransactionForm = () => {
     const fetchData = async () => {
       try {
         const clientRes = await axios.get(
-          `http://localhost:8080/savingsaccounts/${id}/transactions`
-        );
+          `http://localhost:8080/savingsaccounts/${id}/transactions`);
         setTransactions(clientRes.data);
         setLoading(false);
       } catch (error) {
@@ -42,7 +41,7 @@ const TransactionForm = () => {
       ) : (
         <div className="transaction-page">
           <h1 className="top">Transaction History</h1>
-          <p className="top1">View recent transactions for Account {}</p>
+          <p className="top1">View all transactions of last 90 days</p>
           <div className="transactions-container">
             <h3 className="transactions-title">Recent Transactions</h3>
             <p className="transactions-subtitle">
