@@ -1,0 +1,248 @@
+.debitcard-page{
+  padding: 0 100px 40px;
+  background: linear-gradient(135deg, #dbeafe 0%, #ffffff 50%, #d1fae5 100%);
+  box-sizing: border-box;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+}
+.db{
+  text-align: left;
+  font-size: 35px;
+  margin: 15px 0 0 130px;
+}
+
+.client-card-header{
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px 20px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  max-width: 1100px;    /* same wide card */
+  height: 100px;         
+  margin: 20px auto;
+
+}
+
+.client-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #e6f0ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  color: #2a6edc;
+  flex-shrink: 0;
+}
+
+.client-info {
+  margin-left: 16px;
+  margin-top: 90px;
+}
+
+.client-name {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+.client-details {
+  font-size: 14px;
+  color: #666;
+  margin: 4px 0 0;
+}
+
+.client-details .dot {
+  margin: 0 5px;
+}
+
+
+
+/*    debit card    */
+
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 30px;
+  cursor: pointer;
+}
+
+.client-card {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px 20px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  max-width: 1100px;
+  height: 80px;
+  margin: 0 auto 30px auto;
+}
+
+.client-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #e6f0ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  color: #2a6edc;
+  flex-shrink: 0;
+}
+
+.client-info {
+  margin-left: 16px;
+}
+
+.client-name {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+.client-details {
+  font-size: 14px;
+  color: #666;
+  margin: 4px 0 0;
+}
+
+
+
+/* ---------- DEBIT CARDS ---------- */
+.cards-container {
+  display: flex;
+  gap: 100px;
+  justify-content: center;
+  flex-wrap: wrap;  /* allows wrapping on small screens */
+  margin-top: 20px;
+}
+.line1{
+  display: flex;
+  gap: 250px;
+  margin: 0;
+  padding: 0;
+}
+.black{
+  color: #000;
+  font-size: 18px;
+  letter-spacing: 2px;
+  font-weight: 530;
+  margin: 0;
+  padding: 0;
+}
+.debitcard-visa{
+  width: 400px;    /* smaller width */
+  height: 250px;   /* smaller height */
+  border-radius: 16px;
+  padding: 16px;
+  color: rgb(250, 249, 249);
+  font-family: Arial, sans-serif;
+  position: relative;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+}
+
+.debitcard-mastercard{
+  width: 400px;    /* smaller width */
+  height: 250px;   /* smaller height */
+  border-radius: 16px;
+  padding: 16px;
+  color: rgb(250, 249, 249);
+  font-family: Arial, sans-serif;
+  position: relative;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+}
+
+.debit-card:hover {
+  transform: translateY(-5px);
+}
+
+/* Background gradient for Visa / Master */
+.debitcard-mastercard {
+  background: linear-gradient(135deg, #1a4dab, #3a86ff);
+}
+
+.debitcard-visa {
+  background: linear-gradient(135deg, #0a347a, #2a72c7);
+}
+
+.chip {
+  width: 45px;   /* slightly smaller */
+  height: 35px;
+  background: gold;
+  border-radius: 6px;
+}
+
+/* Card number */
+.card-number {
+  font-size: 16px;
+  letter-spacing: 3px;
+  margin-top: 10px;
+}
+
+/* Card footer */
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.expires {
+  font-size: 9.8px;
+  padding: 0 0 5px 0;
+}
+
+.bank {
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.date{
+  font-size: larger;
+  color: #fff;
+  font-weight: 600;
+}
+.type {
+  font-size: 11px;
+  padding: 0 0 5px 0;
+}
+
+.visa-logo {
+  font-size: 18px;
+  font-weight: bold;
+  font-style: italic;
+  letter-spacing: 1.5px;
+}
+
+.master-image{
+  margin: 0;
+  padding: 0;
+}
+.status-active{
+  background: rgb(239, 239, 181);
+  color: rgb(208, 139, 12);
+  font-weight: 600;
+  width: 65px;
+  height: 25px;
+  border-radius: 12px;
+  font-size: 13px;
+  padding: 5px 0 0 8px;
+  margin: 0 0 0 290px; 
+}

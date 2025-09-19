@@ -1,0 +1,7 @@
+npm install = node modules
+npm install react-router-dom = for navigation
+npm install axios = axios
+npm install react-toastify = toasify
+npm install react-bootstrap = bootstrap
+npm install formik = formic form
+npm install react-paginate
