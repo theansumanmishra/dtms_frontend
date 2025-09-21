@@ -9,7 +9,7 @@ import Button from "react-bootstrap/Button";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 
-const   ShowClient = () => {
+const ShowClient = () => {
 const navigate = useNavigate();
 
   //States

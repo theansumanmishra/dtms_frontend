@@ -17,6 +17,10 @@ const CustomNavbar = () => {
     navigate("/login");
   };
 
+  const view = () => {
+    navigate("/disputes/dashboard")
+  }
+
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
       <Container fluid>
@@ -50,8 +54,8 @@ const CustomNavbar = () => {
               id="navbarScrollingDropdown"
               align="end"
             >
-              <NavDropdown.Item href="#">
-                <i class="bi bi-person-workspace"></i> User :
+              <NavDropdown.Item onClick={view}>
+                <i class="bi bi-person-workspace"></i> User
               </NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item onClick={logOut}>

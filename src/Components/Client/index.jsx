@@ -6,7 +6,6 @@ import ReactPaginate from "react-paginate";
 
 const Clients = () => {
   const navigate = useNavigate();
-
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
   const [loading, setLoading] = useState(false);
@@ -16,7 +15,7 @@ const Clients = () => {
   // Pagination states
   const [currentPage, setCurrentPage] = useState(0); // 0-based
   const [totalPages, setTotalPages] = useState(0);
-  const rowsPerPage = 5;
+  const rowsPerPage = 10;
 
   // Debounce search input
   useEffect(() => {
@@ -28,7 +27,6 @@ const Clients = () => {
     return () => clearTimeout(handler);
   }, [searchQuery]);
 
-  // Fetch clients from backend
   const fetchClients = useCallback(
     async (page = 0, query = "") => {
       setLoading(true);
@@ -42,12 +40,12 @@ const Clients = () => {
         const res = await axios.get(url);
         if (query) {
           setClients(res.data); // search returns full list
-          setTotalClients(res.data.length); // 👈 total = length of search results
+          setTotalClients(res.data.length); // total = length of search results
           setTotalPages(1);
           setCurrentPage(0);
         } else {
           setClients(res.data.content);
-          setTotalClients(res.data.totalElements); // 👈 backend total count
+          setTotalClients(res.data.totalElements); // backend total count
           setTotalPages(res.data.totalPages);
           setCurrentPage(res.data.number);
         }
@@ -76,19 +74,22 @@ const Clients = () => {
 
   return (
     <div className="container">
+      {/* SEARCH BAR */}
       <div className="search-card bg-light">
         <div className="search-header">
           <span className="icon">
             <FaSearch size={20} color="#2563eb" />
           </span>
           <div>
-            <h3>Search clients by Name or Phone Number</h3>
+            <h3>Search clients by Name or Phone Number or Email</h3>
             <p>Find all clients</p>
           </div>
         </div>
 
         <div className="search-form">
-          <label htmlFor="searchQuery">Client Name / Phone Number</label>
+          <label htmlFor="searchQuery">
+            Client Name / Phone Number / Email
+          </label>
           <div className="search-box">
             <input
               type="text"
@@ -97,12 +98,6 @@ const Clients = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
-            {/* <button
-              className="search-btn"
-              onClick={() => fetchClients(0, debouncedQuery)}>
-              <FaSearch /> Search
-            </button> */}
-
             <button type="button" className="clear-btn" onClick={resetSearch}>
               Clear
             </button>
@@ -116,7 +111,9 @@ const Clients = () => {
         <div className="custom-table">
           <h2 className="heading">
             All Registered Clients <br />
-            <span className="pr">Showing {clients.length} of {totalClients} clients</span>
+            <span className="pr">
+              Showing {clients.length} of {totalClients} clients
+            </span>
           </h2>
           <table>
             <thead>
@@ -156,31 +153,30 @@ const Clients = () => {
               )}
             </tbody>
           </table>
-
-          {/* React Paginate */}
-          {debouncedQuery.trim() === "" && totalPages > 1 && (
-            <ReactPaginate
-              previousLabel={"← Previous"}
-              nextLabel={"Next →"}
-              breakLabel={"..."}
-              pageCount={totalPages}
-              marginPagesDisplayed={2}
-              pageRangeDisplayed={3}
-              onPageChange={handlePageClick}
-              containerClassName={"pagination justify-content-center"}
-              pageClassName={"page-item"}
-              pageLinkClassName={"page-link"}
-              previousClassName={"page-item"}
-              previousLinkClassName={"page-link"}
-              nextClassName={"page-item"}
-              nextLinkClassName={"page-link"}
-              breakClassName={"page-item"}
-              breakLinkClassName={"page-link"}
-              activeClassName={"active"}
-              forcePage={currentPage}
-            />
-          )}
         </div>
+      )}
+      {/* React Paginate */}
+      {debouncedQuery.trim() === "" && totalPages > 1 && (
+        <ReactPaginate
+          previousLabel={"← Previous"}
+          nextLabel={"Next →"}
+          breakLabel={"..."}
+          pageCount={totalPages}
+          marginPagesDisplayed={2}
+          pageRangeDisplayed={3}
+          onPageChange={handlePageClick}
+          containerClassName={"pagination justify-content-center"}
+          pageClassName={"page-item"}
+          pageLinkClassName={"page-link"}
+          previousClassName={"page-item"}
+          previousLinkClassName={"page-link"}
+          nextClassName={"page-item"}
+          nextLinkClassName={"page-link"}
+          breakClassName={"page-item"}
+          breakLinkClassName={"page-link"}
+          activeClassName={"active"}
+          forcePage={currentPage}
+        />
       )}
     </div>
   );

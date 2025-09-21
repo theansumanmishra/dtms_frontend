@@ -4,4 +4,5 @@ npm install axios = axios
 npm install react-toastify = toasify
 npm install react-bootstrap = bootstrap
 npm install formik = formic form
-npm install react-paginate
+npm install react-paginate = pagination
+npm install highcharts = charts

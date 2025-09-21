@@ -180,12 +180,12 @@
   background: #fff;
   border-radius: 12px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
+  /* overflow: none; */
 }
 
 .custom-table {
   flex: 1;
-  overflow-y: auto;
+  /* overflow-y: none; */
 }
 
 .heading{
@@ -216,7 +216,7 @@
 /* .............pagination................. */
 
 .pagination {
-  flex-shrink: 0;
+  /* flex-shrink: 0; */
   background: #fff;
   padding: 10px;
   display: flex;
@@ -225,14 +225,13 @@
   gap: 6px;
   border-top: 1px solid #eee;
   box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.05);
-  position: sticky;
-  bottom: 0;
+  /* position: sticky; */
+  /* bottom: 0; */
+  margin-top: 220px !important;
 }
 
 .pagination a {
   color: black;
-  /* float: left; */
-  /* padding: 8px 16px; */
   text-decoration: none;
 }
 

@@ -87,11 +87,9 @@ const Disputeconfirmation = () => {
 
   return (
     <div className="success-container">
-      {/* Success Icon */}
       {showConfirmation && (
         <div>
           <div className="success-icon">✔</div>
-          {/* Title + Subtitle */}
           <h1 className="dispute-h1">Dispute Successfully Submitted</h1>
           <p className="subtitle mb-0">
             Your dispute has been created and submitted for review
@@ -193,13 +191,13 @@ const Disputeconfirmation = () => {
             </span>
           </div>
 
-          {dispute.subStatus.name !== "UNDER REVIEW" && (
+          {dispute.subStatus.name !== "PENDING REVIEW" && (
             <div>
               <span className="label">Reviewed By</span>
               <span className="badge">{dispute.reviewedBy.name}</span>
             </div>
           )}
-          {dispute.subStatus.name !== "UNDER REVIEW" && (
+          {dispute.subStatus.name !== "PENDING REVIEW" && (
             <div>
               <span className="label">Reviewer's Comments</span>
               <span className="value">{dispute.comments}</span>
@@ -248,7 +246,6 @@ const Disputeconfirmation = () => {
       )}
 
       <div className="action-cards">
-        {/* Raise Another Dispute */}
         <div className="action-card">
           <div className="icon red">
             <span>⚠️</span>
