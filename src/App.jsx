@@ -18,6 +18,7 @@ import RaisedisputePage from "./Pages/RaiseDispute";
 import DisputeConfirmationPage from "./Pages/DisputeConfirmation";
 import ViewDisputePage from "./Pages/DisputeDetails";
 import ViewStats from "./Pages/ViewStats"
+import UserDetailsPage from "./Pages/UserDetails";
 
 // Set up Axios interceptor to include JWT token in headers
 axios.interceptors.request.use(function (config) {
@@ -59,7 +60,7 @@ const App = () => {
           <Route path="/" element={<LandingPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/disputes" element={<DashboardPage />} />
           <Route path="/clients" element={<ClientPage />}/>
           <Route path="/clients/:id" element={<ClientShowPage />} />
           <Route path="/savingsaccounts/:id/transactions" element={<TransactionList />} />
@@ -67,7 +68,8 @@ const App = () => {
           <Route path="/savingsaccounts/:id/transactions/:transactionId/raise-dispute" element={<RaisedisputePage />} />
           <Route path="/disputes/:disputeId/confirmation" element={<DisputeConfirmationPage />}/>
           <Route path="/disputes/:disputeId" element={<ViewDisputePage />}/>
-          <Route path="/disputes/dashboard" element={<ViewStats />}/>
+          <Route path="/dashboard" element={<ViewStats />}/>
+          <Route path="/user" element={<UserDetailsPage />}/>
         </Routes>
 
         <ToastContainer

@@ -18,7 +18,7 @@ const CustomNavbar = () => {
   };
 
   const view = () => {
-    navigate("/disputes/dashboard")
+    navigate("/user")
   }
 
   return (
@@ -36,7 +36,7 @@ const CustomNavbar = () => {
 
         <Navbar.Collapse id="navbarScroll">
           <Nav className="me-auto my-2 my-lg-0" navbarScroll>
-            <Nav.Link onClick={() => navigate("/dashboard")}>Disputes</Nav.Link>
+            <Nav.Link onClick={() => navigate("/disputes")}>Disputes</Nav.Link>
             <Nav.Link onClick={() => navigate("/clients")}>Clients</Nav.Link>
           </Nav>
 

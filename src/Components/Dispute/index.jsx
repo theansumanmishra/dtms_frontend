@@ -34,26 +34,21 @@ const DashboardForm = () => {
           const res = await axios.get(
             `http://localhost:8080/disputes/search?accountNumber=${debouncedQuery}`
           );
-          setDisputes(res.data);
-          const searchResult = res.data;
-          // Check if the result exists
-          if (searchResult) {
-            // If the result is not an array, wrap it in an array.
-            const dataArray = Array.isArray(searchResult)
-              ? searchResult
-              : [searchResult];
-            setDisputes(dataArray);
-            setTotalDisputes(dataArray.length);
+
+          let dataArray = [];
+          if (Array.isArray(res.data)) {
+            dataArray = res.data;
+          } else if (res.data.content) {
+            dataArray = res.data.content; // if backend still wraps it
           } else {
-            // Handle case where no dispute is found
-            setDisputes([]);
-            setTotalDisputes(0);
+            dataArray = [res.data]; // single object → wrap in array
           }
+
+          setDisputes(dataArray);
+          setTotalDisputes(dataArray.length);
           setTotalPages(1);
-          setTotalDisputes(res.data.length);
           setCurrentPage(0);
         } else {
-          // Normal paginated API
           const res = await axios.get(
             `http://localhost:8080/disputes?page=${currentPage}&size=${rowsPerPage}&filter=${selectedTab}`
           );
@@ -228,6 +223,7 @@ const DashboardForm = () => {
           </table>
         </div>
       </div>
+
       {/* Pagination Component */}
       <ReactPaginate
         previousLabel={"← Previous"}

@@ -14,7 +14,7 @@ const Disputeconfirmation = () => {
   const { disputeId } = useParams();
   const [loading, setLoading] = useState(true);
   const [dispute, setDispute] = useState(null);
-  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [showConfirmation, setShowConfirmation] = useState(false);  
   const [showModal, setShowModal] = useState(false);
 
   const steps = [
@@ -101,7 +101,7 @@ const Disputeconfirmation = () => {
       <div className="summary-card mt-4">
         <div className="d-flex justify-content-between">
           <h4>Dispute Summary</h4>
-          {dispute.status.name !== "CLOSED" && (
+          {!showConfirmation && dispute.status.name !== "CLOSED" && (
             <Button
               variant="outline-dark"
               size="sm"
@@ -262,9 +262,9 @@ const Disputeconfirmation = () => {
           <div className="icon blue">
             <span>📊</span>
           </div>
-          <h3>View Dashboard</h3>
+          <h3>View Dispute Dashboard</h3>
           <p>Return to the main dashboard to manage disputes</p>
-          <button className="btn dark" onClick={() => navigate("/dashboard")}>
+          <button className="btn dark" onClick={() => navigate("/disputes")}>
             Go to Dashboard
           </button>
         </div>
@@ -279,8 +279,7 @@ const Disputeconfirmation = () => {
           <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
-            onSubmit={handleSubmit}
-          >
+            onSubmit={handleSubmit}>
             {() => (
               <Form>
                 {/* Status */}
@@ -290,7 +289,6 @@ const Disputeconfirmation = () => {
                   </label>
                   <Field as="select" id="status" name="status">
                     <option value="">Select a Dispute status...</option>
-                    <option value="INITIATED">INITIATED</option>
                     <option value="IN-PROGRESS">IN-PROGRESS</option>
                     <option value="CLOSED">CLOSED</option>
                   </Field>

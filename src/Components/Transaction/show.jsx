@@ -5,7 +5,7 @@ import axios from "axios";
 import { BiSolidInfoSquare } from "react-icons/bi";
 import RaisedisputeForm from "../Dispute/RaiseDisputePage";
 
-const TransactiondetailForm = () => {
+const TransactionDetails = () => {
   const navigate = useNavigate();
 
   const { savingsAccountId, transactionId } = useParams();
@@ -55,7 +55,7 @@ const TransactiondetailForm = () => {
       <div className="transaction-detail-form row">
         <div className="detail-container col-6">
           <div className="transaction-header">
-            <h2>Transaction Details for TXN202500{txnDetails.id}</h2>
+            <h4>Transaction Details for TXN202500{txnDetails.id}</h4>
           </div>
 
           {/* TRANSACTION DETAILS PANE */}
@@ -160,7 +160,7 @@ const TransactiondetailForm = () => {
       </div>
 
       {/* BUTTONS */}
-      <div className="details-bottom-actions">
+      {/* <div className="details-bottom-actions">
         <button className="back-btn" onClick={() => navigate(`/savingsaccounts/${savingsAccountId}/transactions`)}>
           ← Back to Transactions
         </button>
@@ -169,9 +169,9 @@ const TransactiondetailForm = () => {
           onClick={() => navigate("/dashboard")}>
           Return to Dashboard
         </button>
-      </div>
+      </div> */}
     </div>
   );
 };
 
-export default TransactiondetailForm;
+export default TransactionDetails;
