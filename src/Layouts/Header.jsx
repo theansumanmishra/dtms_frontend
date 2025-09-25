@@ -1,12 +1,6 @@
 import { useNavigate } from "react-router";
 import profilePic from "../assets/img.png";
-import {
-  Navbar,
-  Container,
-  Nav,
-  NavDropdown,
-  Image,
-} from "react-bootstrap";
+import { Navbar, Container, Nav, NavDropdown, Image } from "react-bootstrap";
 import { FaSignOutAlt } from "react-icons/fa";
 
 const CustomNavbar = () => {
@@ -18,17 +12,23 @@ const CustomNavbar = () => {
   };
 
   const view = () => {
-    navigate("/user")
-  }
+    navigate("/user");
+  };
 
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
       <Container fluid>
         <Navbar.Brand href="/dashboard">
           <Image
-            style={{ maxHeight: "150px" }}
+            class="img-fluid"
             src="../../../dts-logo.png"
             alt="profilePic"
+            className="img-fluid"
+            style={{
+              height: "61px",
+              width: "auto", 
+              objectFit: "contain",
+            }}
           />
         </Navbar.Brand>
 

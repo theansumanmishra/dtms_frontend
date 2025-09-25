@@ -14,9 +14,9 @@ const DashboardForm = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [totalDisputes, setTotalDisputes] = useState(0);
+  const [noResultsMessage, setNoResultsMessage] = useState("");
   const rowsPerPage = 10;
 
-  // Debounce effect (wait 500ms after user stops typing)
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedQuery(searchQuery);
@@ -25,12 +25,10 @@ const DashboardForm = () => {
     return () => clearTimeout(handler);
   }, [searchQuery]);
 
-  // Fetch disputes (normal or by search)
   useEffect(() => {
     const fetchData = async () => {
       try {
         if (debouncedQuery.trim() !== "") {
-          // Search API
           const res = await axios.get(
             `http://localhost:8080/disputes/search?accountNumber=${debouncedQuery}`
           );
@@ -43,26 +41,48 @@ const DashboardForm = () => {
           } else {
             dataArray = [res.data]; // single object → wrap in array
           }
-
-          setDisputes(dataArray);
-          setTotalDisputes(dataArray.length);
-          setTotalPages(1);
-          setCurrentPage(0);
+          if (dataArray.length > 0) {
+            setDisputes(dataArray);
+            setTotalDisputes(dataArray.length);
+            setTotalPages(1);
+            setCurrentPage(0);
+            setNoResultsMessage("");
+          } else {
+            setDisputes([]);
+            setTotalDisputes(0);
+            setTotalPages(0);
+            setNoResultsMessage(
+              "No dispute found with the given account number"
+            );
+          }
         } else {
           const res = await axios.get(
             `http://localhost:8080/disputes?page=${currentPage}&size=${rowsPerPage}&filter=${selectedTab}`
           );
-          setDisputes(res.data.content);
-          setTotalPages(res.data.totalPages);
-          setTotalDisputes(res.data.totalElements);
+          if (res.data.content && res.data.content.length > 0) {
+            setDisputes(res.data.content);
+            setTotalPages(res.data.totalPages);
+            setTotalDisputes(res.data.totalElements);
+            setNoResultsMessage("");
+          } else {
+            setDisputes([]);
+            setTotalPages(0);
+            setTotalDisputes(0);
+            setNoResultsMessage("No dispute raised");
+          }
         }
       } catch (error) {
         console.error("Error fetching disputes:", error);
+        setNoResultsMessage(
+          debouncedQuery.trim() !== ""
+            ? "No dispute found with the given account number"
+            : "No dispute raised"
+        );
       }
     };
 
     fetchData();
-  }, [debouncedQuery, currentPage, rowsPerPage, selectedTab]);
+  }, [debouncedQuery, currentPage, selectedTab, rowsPerPage]);
 
   // Reset search
   const resetSearch = () => {

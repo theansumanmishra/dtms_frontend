@@ -20,18 +20,24 @@ const LoginForm = () => {
         password: password,
       });
 
-      // Assuming your API response looks like: { token: "jwt_token_here" }
       const token = response.data.accessToken;
-      // Save token in localStorage
+      const role = response.data.role;
+      
       localStorage.setItem("accessToken", token);
+      localStorage.setItem("role", role);
 
-      setTimeout(() => navigate("/dashboard"));
-      setTimeout(() => toast.success("Login successful 🎉"), 300);
+      if (role === "DISPUTE_ADMIN") {
+        navigate("/admin");
+      } else {
+        navigate("/dashboard");
+      }
+      toast.success("Login successful 🎉");
     } catch (error) {
       if (error.response && error.response.status === 401) {
         toast.error("Invalid UserID or Password ❌");
+      } else {
+        toast.error("Something went wrong. Please try again.");
       }
-      toast.error("Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }

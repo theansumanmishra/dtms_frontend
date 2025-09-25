@@ -1,5 +1,5 @@
 import "./DisputeConfirmationPage.css";
-import { useNavigate, useParams } from "react-router";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Button from "react-bootstrap/Button";
@@ -10,11 +10,11 @@ import { toast } from "react-toastify";
 
 const Disputeconfirmation = () => {
   const navigate = useNavigate();
-
   const { disputeId } = useParams();
+  const location = useLocation();
   const [loading, setLoading] = useState(true);
   const [dispute, setDispute] = useState(null);
-  const [showConfirmation, setShowConfirmation] = useState(false);  
+  const [showConfirmation, setShowConfirmation] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
   const steps = [
@@ -39,36 +39,20 @@ const Disputeconfirmation = () => {
       }
     };
     fetchDisputeDetails();
-  }, [disputeId]);
+  }, [disputeId, location.pathname]);
 
-  const handleClose = () => {
-    setShowModal(false);
-  };
+  const handleClose = () => setShowModal(false);
 
   if (loading) return <p>Loading...</p>;
   if (!dispute) return <p>Dispute not found</p>;
 
-  //Validation Schema using Yup
-  const validationSchema = Yup.object({
-    status: Yup.string().required("Status is required"),
-    subStatus: Yup.string().required("SubStatus is required"),
-    comments: Yup.string().required("Comment is required"),
-  });
+  const transactionAmount = dispute?.savingsAccountTransaction?.amount ?? 0;
 
-  //Initial values
-  const initialValues = {
-    status: "",
-    subStatus: "",
-    comments: "",
-  };
-
-  // Submit handler
   const handleSubmit = async (values) => {
-    console.log("Form Submitted:", values);
-
     const payload = {
       statusName: values.status,
       subStatusName: values.subStatus,
+      refund: values.refund,
       comments: values.comments,
     };
     try {
@@ -76,7 +60,6 @@ const Disputeconfirmation = () => {
         `http://localhost:8080/disputes/${disputeId}`,
         payload
       );
-      console.log("Payload Sent:", JSON.stringify(payload));
       toast.success("Dispute reviewed successfully 👍");
       setDispute(response.data);
       setShowModal(false);
@@ -105,7 +88,6 @@ const Disputeconfirmation = () => {
             <Button
               variant="outline-dark"
               size="sm"
-              className="text-decoration-none"
               onClick={() => setShowModal(true)}
             >
               Review Dispute
@@ -169,7 +151,6 @@ const Disputeconfirmation = () => {
               {dispute.savingsAccountTransaction.paymentRailInstanceId}
             </span>
           </div>
-
           <div>
             <span className="label">Status</span>
             <span
@@ -192,20 +173,25 @@ const Disputeconfirmation = () => {
           </div>
 
           {dispute.subStatus.name !== "PENDING REVIEW" && (
-            <div>
-              <span className="label">Reviewed By</span>
-              <span className="badge">{dispute.reviewedBy.name}</span>
-            </div>
-          )}
-          {dispute.subStatus.name !== "PENDING REVIEW" && (
-            <div>
-              <span className="label">Reviewer's Comments</span>
-              <span className="value">{dispute.comments}</span>
-            </div>
+            <>
+              <div>
+                <span className="label">Reviewed By</span>
+                <span className="badge">{dispute.reviewedBy.name}</span>
+              </div>
+              <div>
+                <span className="label">Refund Amount</span>
+                <span className="value">₹ {dispute.refund}</span>
+              </div>
+              <div>
+                <span className="label">Reviewer's Comments</span>
+                <span className="value">{dispute.comments}</span>
+              </div>
+            </>
           )}
         </div>
       </div>
 
+      {/* Transaction Card */}
       <div className="transaction-card">
         <h2>Transaction Details</h2>
         <div className="transaction-grid">
@@ -245,11 +231,10 @@ const Disputeconfirmation = () => {
         </div>
       )}
 
+      {/* Action Cards */}
       <div className="action-cards">
         <div className="action-card">
-          <div className="icon red">
-            <span>⚠️</span>
-          </div>
+          <div className="icon red">⚠️</div>
           <h3>Raise Another Dispute</h3>
           <p>Need to report another transaction issue?</p>
           <button className="btn red" onClick={() => navigate("/clients")}>
@@ -257,11 +242,8 @@ const Disputeconfirmation = () => {
           </button>
         </div>
 
-        {/* View Dashboard */}
         <div className="action-card">
-          <div className="icon blue">
-            <span>📊</span>
-          </div>
+          <div className="icon blue">📊</div>
           <h3>View Dispute Dashboard</h3>
           <p>Return to the main dashboard to manage disputes</p>
           <button className="btn dark" onClick={() => navigate("/disputes")}>
@@ -277,78 +259,143 @@ const Disputeconfirmation = () => {
         </Modal.Header>
         <Modal.Body>
           <Formik
-            initialValues={initialValues}
-            validationSchema={validationSchema}
-            onSubmit={handleSubmit}>
-            {() => (
-              <Form>
-                {/* Status */}
-                <div className="form-group">
-                  <label htmlFor="status">
-                    Dispute Status <span className="required">*</span>
-                  </label>
-                  <Field as="select" id="status" name="status">
-                    <option value="">Select a Dispute status...</option>
-                    <option value="IN-PROGRESS">IN-PROGRESS</option>
-                    <option value="CLOSED">CLOSED</option>
-                  </Field>
-                  <ErrorMessage
-                    name="status"
-                    component="div"
-                    className="text-danger"
-                  />
-                </div>
+            initialValues={{
+              status: dispute.status?.name || "",
+              subStatus: dispute.subStatus?.name || "",
+              refund: dispute.refund || "",
+              comments: dispute.comments || "",
+            }}
+            validationSchema={Yup.object({
+              status: Yup.string().required("Status is required"),
+              subStatus: Yup.string().required("SubStatus is required"),
+              refund: Yup.number()
+                .typeError("Refund must be a number")
+                .required("Refund amount is required")
+                .when("subStatus", {
+                  is: "PARTIALLY ACCEPTED",
+                  then: (schema) =>
+                    schema.max(
+                      transactionAmount,
+                      `Refund cannot exceed transaction amount (${transactionAmount})`
+                    ),
+                }),
+              comments: Yup.string().required("Comment is required"),
+            })}
+            onSubmit={handleSubmit}
+          >
+            {({ values, setFieldValue }) => {
+              if (
+                values.subStatus === "ACCEPTED" &&
+                values.refund !== transactionAmount
+              ) {
+                setFieldValue("refund", transactionAmount);
+              } else if (
+                values.subStatus === "REJECTED" &&
+                values.refund !== 0
+              ) {
+                setFieldValue("refund", 0);
+              } else if (
+                values.subStatus === "PARTIALLY ACCEPTED" &&
+                values.refund === transactionAmount
+              ) {
+                setFieldValue("refund", "");
+              }
 
-                {/* Sub Status */}
-                <div className="form-group">
-                  <label htmlFor="subStatus">
-                    Dispute Sub-Status <span className="required">*</span>
-                  </label>
-                  <Field as="select" id="subStatus" name="subStatus">
-                    <option value="">Select a Dispute sub-status...</option>
-                    <option value="ACCEPTED">ACCEPTED</option>
-                    <option value="PARTIALLY ACCEPTED">
-                      PARTIALLY ACCEPTED
-                    </option>
-                    <option value="REJECTED">REJECTED</option>
-                  </Field>
-                  <ErrorMessage
-                    name="subStatus"
-                    component="div"
-                    className="text-danger"
-                  />
-                </div>
+              return (
+                <Form>
+                  {/* Status */}
+                  <div className="form-group">
+                    <label htmlFor="status">Dispute Status *</label>
+                    <Field
+                      as="select"
+                      id="status"
+                      name="status"
+                      className="form-control"
+                    >
+                      <option value="">Select a Dispute status...</option>
+                      <option value="CLOSED">CLOSED</option>
+                    </Field>
+                    <ErrorMessage
+                      name="status"
+                      component="div"
+                      className="text-danger"
+                    />
+                  </div>
 
-                {/* COMMENTS */}
-                <div className="form-group">
-                  <label htmlFor="comments">
-                    Comment <span className="required">*</span>
-                  </label>
-                  <Field
-                    as="input"
-                    id="comments"
-                    name="comments"
-                    className="form-control"
-                    placeholder="Reviwer's comments"
-                  ></Field>
-                  <ErrorMessage
-                    name="comments"
-                    component="div"
-                    className="text-danger"
-                  />
-                </div>
+                  {/* Sub Status */}
+                  <div className="form-group">
+                    <label htmlFor="subStatus">Dispute Sub-Status *</label>
+                    <Field
+                      as="select"
+                      id="subStatus"
+                      name="subStatus"
+                      className="form-control"
+                    >
+                      <option value="">Select a Dispute sub-status...</option>
+                      <option value="ACCEPTED">ACCEPTED</option>
+                      <option value="PARTIALLY ACCEPTED">
+                        PARTIALLY ACCEPTED
+                      </option>
+                      <option value="REJECTED">REJECTED</option>
+                    </Field>
+                    <ErrorMessage
+                      name="subStatus"
+                      component="div"
+                      className="text-danger"
+                    />
+                  </div>
 
-                {/* BUTTONS */}
-                <div className="d-flex justify-content-between">
-                  <Button variant="secondary" onClick={handleClose}>
-                    Close
-                  </Button>
-                  <Button variant="dark" type="submit">
-                    Submit Review
-                  </Button>
-                </div>
-              </Form>
-            )}
+                  {/* Refund Amount */}
+                  <div className="form-group">
+                    <label htmlFor="refund">Refund Amount *</label>
+                    <Field
+                      as="input"
+                      type="number"
+                      id="refund"
+                      name="refund"
+                      placeholder="Refund Amount"
+                      className="form-control"
+                      disabled={
+                        values.subStatus === "ACCEPTED" ||
+                        values.subStatus === "REJECTED"
+                      }
+                    />
+                    <ErrorMessage
+                      name="refund"
+                      component="div"
+                      className="text-danger"
+                    />
+                  </div>
+
+                  {/* Comments */}
+                  <div className="form-group">
+                    <label htmlFor="comments">Comment *</label>
+                    <Field
+                      as="input"
+                      id="comments"
+                      name="comments"
+                      className="form-control"
+                      placeholder="Reviewer’s comments"
+                    />
+                    <ErrorMessage
+                      name="comments"
+                      component="div"
+                      className="text-danger"
+                    />
+                  </div>
+
+                  {/* Buttons */}
+                  <div className="d-flex justify-content-between">
+                    <Button variant="secondary" onClick={handleClose}>
+                      Close
+                    </Button>
+                    <Button variant="dark" type="submit">
+                      Submit Review
+                    </Button>
+                  </div>
+                </Form>
+              );
+            }}
           </Formik>
         </Modal.Body>
       </Modal>

@@ -1,9 +1,10 @@
-import "./View.css";
-import { useEffect } from "react";
+import "./index.css";
+import { useEffect, useState } from "react";
 import Highcharts from "highcharts";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import Button from "react-bootstrap/Button";
 
-// ✅ Custom animation override
 (function (H) {
   H.seriesTypes.pie.prototype.animate = function (init) {
     const series = this,
@@ -68,12 +69,15 @@ import axios from "axios";
 })(Highcharts);
 
 const View = () => {
+  const navigate = useNavigate();
+
+  const [recentDisputes, setRecentDisputes] = useState([]);
+
   useEffect(() => {
     axios
       .get("http://localhost:8080/disputes/dashboard")
       .then((res) => {
         const data = res.data;
-        console.log("API response:", data);
 
         // ---------------- Custom Fan Pie Chart ----------------
         const pieData = Object.entries(data.subStatusCounts).map(
@@ -85,7 +89,7 @@ const View = () => {
 
         Highcharts.chart("substatus-container", {
           chart: { type: "pie" },
-          title: { text: "Dispute SubStatus Breakdown" },
+          title: { text: "Dispute Status Breakdown" },
           subtitle: { text: "Custom animated pie" },
           tooltip: {
             headerFormat: "",
@@ -109,7 +113,7 @@ const View = () => {
           },
           series: [
             {
-              enableMouseTracking: false, // disabled initially
+              enableMouseTracking: false,
               animation: { duration: 2000 },
               colorByPoint: true,
               data: pieData,
@@ -118,7 +122,13 @@ const View = () => {
         });
 
         // ---------------- Column Chart ----------------
-        const periods = ["Today", "This Week", "This Month", "This Year", "Total"];
+        const periods = [
+          "Today",
+          "This Week",
+          "This Month",
+          "This Year",
+          "Total",
+        ];
         const counts = [
           data.timeCounts["Today"] || 0,
           data.timeCounts["This Week"] || 0,
@@ -126,7 +136,13 @@ const View = () => {
           data.timeCounts["This Year"] || 0,
           data.timeCounts["Total"] || 0,
         ];
-        const barColors = ["#FF5733", "#33FF57", "#3357FF", "#FF33A8", "#FFC300"];
+        const barColors = [
+          "#FF5733",
+          "#33FF57",
+          "#3357FF",
+          "#FF33A8",
+          "#FFC300",
+        ];
 
         Highcharts.chart("timecounts-container", {
           chart: { type: "column" },
@@ -140,6 +156,8 @@ const View = () => {
           tooltip: { pointFormat: "<b>{point.y} disputes</b>" },
           plotOptions: {
             column: {
+              pointWidth: 40,
+              pointPadding: 0.8,
               dataLabels: {
                 enabled: true,
                 style: { fontWeight: "bold" },
@@ -161,98 +179,29 @@ const View = () => {
       .catch((err) => {
         console.error("Error fetching chart data:", err);
       });
+
+    // ---- Recent Disputes Table ----
+    axios
+      .get("http://localhost:8080/disputes/recent")
+      .then((res) => setRecentDisputes(res.data))
+      .catch((err) => console.error("Error fetching recent disputes:", err));
   }, []);
+
+  // Row click
+  const handleRowClick = (id) => {
+    navigate(`/disputes/${id}`);
+  };
 
   return (
     <>
-      {/* DISPUTE TABLES */}
-      <div className="table-wrapper">
-        <div className="custom-table">
-          <h2 className="heading">
-            All Previous Disputes <br />
-            <span className="pr">
-              Showing {disputes.length} of {totalDisputes} disputes
-            </span>
-          </h2>
-
-          {/* Table Data */}
-          <table>
-            <thead className="head">
-              <tr>
-                <th>SERIAL NO.</th>
-                <th>DISPUTE ID</th>
-                <th>TRANSACTION ID</th>
-                <th>DATE CREATED</th>
-                <th>REASON</th>
-                <th>STATUS</th>
-                <th>SUB STATUS</th>
-              </tr>
-            </thead>
-            <tbody>
-              {disputes.map((row, index) => (
-                <tr key={row.id} onClick={() => handleRowClick(row.id)}>
-                  <td>{currentPage * rowsPerPage + index + 1}</td>
-                  <td className="DSP">DSP202500{row.id}</td>
-                  <td>TNX202500{row.savingsAccountTransaction?.id}</td>
-                  <td>{row.createdDate}</td>
-                  <td>{row.reason}</td>
-                  <td>
-                    <div>
-                      <span
-                        className={`my-badge status-${row.status.name
-                          .toLowerCase()
-                          .replace(" ", "-")}`}
-                      >
-                        {row.status.name === "INITIATED" && (
-                          <i className="bi bi-hourglass-split"></i>
-                        )}
-                        {row.status.name === "IN-PROGRESS" && (
-                          <i className="bi bi-arrow-repeat"></i>
-                        )}
-                        {row.status.name === "CLOSED" && (
-                          <i className="bi bi-check-circle"></i>
-                        )}
-                        {row.status.name}
-                      </span>
-                    </div>
-                  </td>
-                  <td>
-                    <div>
-                      <span
-                        className={`my-badge substatus-${row.subStatus.name
-                          .toLowerCase()
-                          .replace(" ", "-")}`}
-                      >
-                        {row.subStatus.name === "PENDING REVIEW" && (
-                          <i className="bi bi-search"></i>
-                        )}
-                        {row.subStatus.name === "ACCEPTED" && (
-                          <i className="bi bi-hand-thumbs-up"></i>
-                        )}
-                        {row.subStatus.name === "PARTIALLY-ACCEPTED" && (
-                          <i className="bi bi-circle-half"></i>
-                        )}
-                        {row.subStatus.name === "REJECTED" && (
-                          <i className="bi bi-x-circle"></i>
-                        )}
-                        {row.subStatus.name}
-                      </span>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-
       {/* CHARTS */}
-      <div className="bg-light">
+      <div className="bg-light row">
         <div className="view-head">
           <h1>Dashboard</h1>
-          <h4>Manage and track banking disputes efficiently</h4>
         </div>
-        <div className="container d-flex py-4" style={{ gap: "20px" }}>
+
+        {/* CHARTS */}
+        <div className="col-6 ms-3">
           <div
             style={{
               flex: 1,
@@ -261,8 +210,55 @@ const View = () => {
               gap: "20px",
             }}
           >
-            <div id="substatus-container" style={{ height: "400px" }}></div>
-            <div id="timecounts-container" style={{ height: "400px" }}></div>
+            <div
+              className="card p-3"
+              id="substatus-container"
+              style={{ height: "315px" }}
+            ></div>
+            <div
+              className="card p-3"
+              id="timecounts-container"
+              style={{ height: "315px" }}
+            ></div>
+          </div>
+        </div>
+
+        {/* Recent Disputes Table */}
+        <div className="col-5 card">
+          <h3>Recent Disputes</h3>
+          <div className="bg-light">
+            <table className="table table-hover p-3 mb-0">
+              <thead>
+                <tr>
+                  <th> Dispute ID</th>
+                  <th>Transaction Id</th>
+                  <th>Created Date</th>
+                  <th>Substatus</th>
+                </tr>
+              </thead>
+              <tbody>
+                {recentDisputes.map((d) => (
+                  <tr
+                    key={`recent-dispute-${d.id}`}
+                    onClick={() => handleRowClick(d.id)}
+                  >
+                    <td>DSP202500{d.id}</td>
+                    <td>TNX202500{d.savingsAccountTransaction?.id}</td>
+                    <td>{d.createdDate}</td>
+                    <td>{d.status.name}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div className="text-end mt-3 me-3">
+            <Button
+              variant="btn btn-outline-primary"
+              className="text-decoration-none"
+              onClick={() => navigate("/disputes")}
+            >
+              Show all disputes
+            </Button>
           </div>
         </div>
       </div>

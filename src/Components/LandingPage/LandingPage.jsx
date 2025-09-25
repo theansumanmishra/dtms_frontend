@@ -13,8 +13,8 @@ const LandingForm = () => {
       <div className="content1">
         <div className="overlay">
           <div className="landing-content">
-            <h1>Secure Banking</h1>
-            <h1>Dispute Management</h1>
+            <h1 style={{color: "#63B7F8"}}>Secure Banking</h1>
+            <h1 style={{color: "#63B7F8"}}>Dispute Management</h1>
             <p>
               Efficiently manage and resolve banking disputes with our
               comprehensive platform designed for financial institutions.
