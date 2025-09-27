@@ -19,13 +19,12 @@ const LandingForm = () => {
               Efficiently manage and resolve banking disputes with our
               comprehensive platform designed for financial institutions.
             </p>
-            <Button className="me-4" onClick={() => navigate("/login")}>
+            <Button className="landing-btn me-4" onClick={() => navigate("/login")}>
               Access the Platform
             </Button>
             <Button className="learnmore" onClick={() => navigate("/about")}>
               Learn More
             </Button>
-            {/* </div> */}
           </div>
         </div>
       </div>

@@ -37,7 +37,7 @@ const DashboardForm = () => {
           if (Array.isArray(res.data)) {
             dataArray = res.data;
           } else if (res.data.content) {
-            dataArray = res.data.content; // if backend still wraps it
+            dataArray = res.data.content;
           } else {
             dataArray = [res.data]; // single object → wrap in array
           }
@@ -68,7 +68,7 @@ const DashboardForm = () => {
             setDisputes([]);
             setTotalPages(0);
             setTotalDisputes(0);
-            setNoResultsMessage("No dispute raised");
+            setNoResultsMessage("No disputes found");
           }
         }
       } catch (error) {
@@ -99,39 +99,12 @@ const DashboardForm = () => {
   return (
     <div className="dashboard-page">
       <div className="d-flex justify-content-between align-items-center">
-        <div>
+        {/* <div>
           <h1 className="dashboard-h1">Dashboard</h1>
           <h4 className="dashboard-h4 text-secondary">
             Manage and track banking disputes efficiently
           </h4>
-        </div>
-        <div>
-          {/* FILTER BUTTONS */}
-          <div className="btn-group">
-            <button
-              type="button"
-              onClick={() => setSelectedTab("pending-review")}
-              className={
-                selectedTab === "pending-review"
-                  ? "active btn btn-outline-secondary"
-                  : "btn btn-outline-secondary"
-              }
-            >
-              Pending Review
-            </button>
-            <button
-              type="button"
-              onClick={() => setSelectedTab("all")}
-              className={
-                selectedTab === "all"
-                  ? "active btn btn-outline-secondary"
-                  : "btn btn-outline-secondary"
-              }
-            >
-              All
-            </button>
-          </div>
-        </div>
+        </div> */}
       </div>
 
       {/* SEARCH BAR */}
@@ -163,6 +136,34 @@ const DashboardForm = () => {
         </div>
       </div>
 
+      <div style={{ textAlign: "end" }}>
+        {/* FILTER BUTTONS */}
+        <div className="btn-group">
+          <button
+            type="button"
+            onClick={() => setSelectedTab("pending-review")}
+            className={
+              selectedTab === "pending-review"
+                ? "active btn btn-outline-secondary"
+                : "btn btn-outline-secondary"
+            }
+          >
+            Pending Review
+          </button>
+          <button
+            type="button"
+            onClick={() => setSelectedTab("all")}
+            className={
+              selectedTab === "all"
+                ? "active btn btn-outline-secondary"
+                : "btn btn-outline-secondary"
+            }
+          >
+            All
+          </button>
+        </div>
+      </div>
+
       {/* Disputes Table */}
       <div className="table-wrapper">
         <div className="custom-table">
@@ -177,7 +178,7 @@ const DashboardForm = () => {
           <table>
             <thead className="head">
               <tr>
-                <th>SERIAL NO.</th>
+                <th>SERIAL NO</th>
                 <th>DISPUTE ID</th>
                 <th>TRANSACTION ID</th>
                 <th>DATE CREATED</th>
@@ -197,43 +198,42 @@ const DashboardForm = () => {
                   <td>
                     <div>
                       <span
-                        className={`my-badge status-${row.status.name
-                          .toLowerCase()
-                          .replace(" ", "-")}`}
+                        className={`my-badge status-${row.status.name.toLowerCase()}`}
                       >
                         {row.status.name === "INITIATED" && (
-                          <i className="bi bi-hourglass-split"></i>
+                          <i className="bi bi-clock"></i>
                         )}
-                        {row.status.name === "IN-PROGRESS" && (
+                        {row.status.name === "IN_PROGRESS" && (
                           <i className="bi bi-arrow-repeat"></i>
                         )}
                         {row.status.name === "CLOSED" && (
                           <i className="bi bi-check-circle"></i>
                         )}
-                        {row.status.name}
+                        {row.status.name.replace("_", " ")}
                       </span>
                     </div>
                   </td>
                   <td>
                     <div>
                       <span
-                        className={`my-badge substatus-${row.subStatus.name
-                          .toLowerCase()
-                          .replace(" ", "-")}`}
+                        className={`my-badge substatus-${row.subStatus.name.toLowerCase()}`}
                       >
-                        {row.subStatus.name === "PENDING REVIEW" && (
+                        {row.subStatus.name === "PENDING_REVIEW" && (
+                          <i className="bi bi-hourglass-split"></i>
+                        )}
+                        {row.subStatus.name === "UNDER_REVIEW" && (
                           <i className="bi bi-search"></i>
                         )}
                         {row.subStatus.name === "ACCEPTED" && (
                           <i className="bi bi-hand-thumbs-up"></i>
                         )}
-                        {row.subStatus.name === "PARTIALLY-ACCEPTED" && (
+                        {row.subStatus.name === "PARTIALLY_ACCEPTED" && (
                           <i className="bi bi-circle-half"></i>
                         )}
                         {row.subStatus.name === "REJECTED" && (
                           <i className="bi bi-x-circle"></i>
                         )}
-                        {row.subStatus.name}
+                        {row.subStatus.name.replace("_", " ")}
                       </span>
                     </div>
                   </td>
@@ -243,6 +243,11 @@ const DashboardForm = () => {
           </table>
         </div>
       </div>
+
+      {/* No Results Message */}
+      {disputes.length === 0 && noResultsMessage && (
+        <div className="text-center text-muted mt-3">{noResultsMessage}</div>
+      )}
 
       {/* Pagination Component */}
       <ReactPaginate

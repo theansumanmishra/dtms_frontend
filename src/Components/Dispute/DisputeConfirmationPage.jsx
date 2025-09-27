@@ -12,6 +12,7 @@ const Disputeconfirmation = () => {
   const navigate = useNavigate();
   const { disputeId } = useParams();
   const location = useLocation();
+
   const [loading, setLoading] = useState(true);
   const [dispute, setDispute] = useState(null);
   const [showConfirmation, setShowConfirmation] = useState(false);
@@ -23,6 +24,8 @@ const Disputeconfirmation = () => {
     "You will receive updates on the dispute status via email and through the platform.",
     "Resolution typically occurs within 5-10 business days depending on complexity.",
   ];
+
+  const transactionAmount = dispute?.savingsAccountTransaction?.amount ?? 0;
 
   useEffect(() => {
     setShowConfirmation(location.pathname.includes("confirmation"));
@@ -43,30 +46,43 @@ const Disputeconfirmation = () => {
 
   const handleClose = () => setShowModal(false);
 
-  if (loading) return <p>Loading...</p>;
-  if (!dispute) return <p>Dispute not found</p>;
-
-  const transactionAmount = dispute?.savingsAccountTransaction?.amount ?? 0;
-
   const handleSubmit = async (values) => {
+    const isInitialReview =
+      dispute.status?.name === "INITIATED" ||
+      dispute.subStatus?.name === "PENDING_REVIEW" ||
+      dispute.subStatus?.name === "UNDER_REVIEW";
+
+    // PUT payload ensuring status & subStatus are never null
     const payload = {
-      statusName: values.status,
-      subStatusName: values.subStatus,
+      statusName: values.status || (isInitialReview ? "IN_PROGRESS" : "CLOSED"),
+      subStatusName:
+        values.subStatus || (isInitialReview ? "UNDER_REVIEW" : "ACCEPTED"),
       refund: values.refund,
       comments: values.comments,
+      verifiedByVendor: values.verifiedByVendor,
     };
+
     try {
       const response = await axios.put(
         `http://localhost:8080/disputes/${disputeId}`,
         payload
       );
-      toast.success("Dispute reviewed successfully 👍");
+      toast.success("Dispute reviewed successfully ✅");
       setDispute(response.data);
       setShowModal(false);
     } catch (error) {
       console.error("Error updating dispute:", error);
+      toast.error("Failed to update dispute ❌");
     }
   };
+
+  if (loading) return <p>Loading...</p>;
+  if (!dispute) return <p>Dispute not found</p>;
+
+  // Determine which modal to show
+  const isInitialReview =
+    dispute.status?.name === "INITIATED" ||
+    dispute.subStatus?.name === "PENDING_REVIEW";
 
   return (
     <div className="success-container">
@@ -154,39 +170,39 @@ const Disputeconfirmation = () => {
           <div>
             <span className="label">Status</span>
             <span
-              className={`my-badge status-${dispute.status.name
-                .toLowerCase()
-                .replace(" ", "-")}`}
+              className={`my-badge status-${dispute.status.name.toLowerCase()}`}
             >
-              {dispute.status.name}
+              {dispute.status.name.replace("_", " ")}
             </span>
           </div>
           <div>
             <span className="label">Sub Status</span>
             <span
-              className={`my-badge substatus-${dispute.subStatus.name
-                .toLowerCase()
-                .replace(" ", "-")}`}
+              className={`my-badge substatus-${dispute.subStatus.name.toLowerCase()}`}
             >
-              {dispute.subStatus.name}
+              {dispute.subStatus.name.replace("_", " ")}
             </span>
           </div>
 
-          {dispute.subStatus.name !== "PENDING REVIEW" && (
+          {dispute.subStatus.name !== "PENDING_REVIEW" && (
             <>
               <div>
                 <span className="label">Reviewed By</span>
                 <span className="badge">{dispute.reviewedBy.name}</span>
               </div>
-              <div>
-                <span className="label">Refund Amount</span>
-                <span className="value">₹ {dispute.refund}</span>
-              </div>
+
               <div>
                 <span className="label">Reviewer's Comments</span>
                 <span className="value">{dispute.comments}</span>
               </div>
             </>
+          )}
+          
+          {dispute.subStatus.name == "CLOSED" && (
+              <div>
+                <span className="label">Refund Amount</span>
+                <span className="value">₹ {dispute.refund}</span>
+              </div>
           )}
         </div>
       </div>
@@ -252,68 +268,85 @@ const Disputeconfirmation = () => {
         </div>
       </div>
 
-      {/* REVIEW DISPUTE MODAL */}
+      {/* SINGLE MODAL HANDLING BOTH STEPS */}
       <Modal show={showModal} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Update Dispute Status</Modal.Title>
+          <Modal.Title>
+            {isInitialReview ? "Initial Review" : "Final Review"}
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Formik
-            initialValues={{
-              status: dispute.status?.name || "",
-              subStatus: dispute.subStatus?.name || "",
-              refund: dispute.refund || "",
-              comments: dispute.comments || "",
-            }}
-            validationSchema={Yup.object({
-              status: Yup.string().required("Status is required"),
-              subStatus: Yup.string().required("SubStatus is required"),
-              refund: Yup.number()
-                .typeError("Refund must be a number")
-                .required("Refund amount is required")
-                .when("subStatus", {
-                  is: "PARTIALLY ACCEPTED",
-                  then: (schema) =>
-                    schema.max(
-                      transactionAmount,
-                      `Refund cannot exceed transaction amount (${transactionAmount})`
-                    ),
-                }),
-              comments: Yup.string().required("Comment is required"),
-            })}
+            enableReinitialize
+            initialValues={
+              isInitialReview
+                ? { status: "IN_PROGRESS", subStatus: "UNDER_REVIEW" }
+                : {
+                    status: "CLOSED",
+                    subStatus: dispute.subStatus?.name || "",
+                    refund: dispute.refund || "",
+                    comments: dispute.comments || "",
+                    verifiedByVendor: false,
+                  }
+            }
+            validationSchema={
+              isInitialReview
+                ? Yup.object({
+                    status: Yup.string().required("Status is required"),
+                    subStatus: Yup.string().required("Sub-Status is required"),
+                  })
+                : Yup.object({
+                    status: Yup.string().required("Status is required"),
+                    subStatus: Yup.string().required("Sub-Status is required"),
+                    refund: Yup.number()
+                      .typeError("Refund must be a number")
+                      .when("subStatus", {
+                        is: "PARTIALLY_ACCEPTED",
+                        then: (schema) =>
+                          schema
+                            .required("Refund is required")
+                            .max(
+                              transactionAmount,
+                              `Refund cannot exceed ${transactionAmount}`
+                            ),
+                      }),
+                    comments: Yup.string().required("Comment is required"),
+                  })
+            }
             onSubmit={handleSubmit}
           >
             {({ values, setFieldValue }) => {
-              if (
-                values.subStatus === "ACCEPTED" &&
-                values.refund !== transactionAmount
-              ) {
-                setFieldValue("refund", transactionAmount);
-              } else if (
-                values.subStatus === "REJECTED" &&
-                values.refund !== 0
-              ) {
-                setFieldValue("refund", 0);
-              } else if (
-                values.subStatus === "PARTIALLY ACCEPTED" &&
-                values.refund === transactionAmount
-              ) {
-                setFieldValue("refund", "");
+              // Auto-set refund for ACCEPTED/REJECTED
+              if (!isInitialReview) {
+                if (
+                  values.subStatus === "ACCEPTED" &&
+                  values.refund !== transactionAmount
+                ) {
+                  setFieldValue("refund", transactionAmount);
+                } else if (
+                  values.subStatus === "REJECTED" &&
+                  values.refund !== 0
+                ) {
+                  setFieldValue("refund", 0);
+                } else if (
+                  values.subStatus === "PARTIALLY_ACCEPTED" &&
+                  values.refund === transactionAmount
+                ) {
+                  setFieldValue("refund", "");
+                }
               }
 
               return (
                 <Form>
-                  {/* Status */}
+                  {/* Status Dropdown */}
                   <div className="form-group">
-                    <label htmlFor="status">Dispute Status *</label>
-                    <Field
-                      as="select"
-                      id="status"
-                      name="status"
-                      className="form-control"
-                    >
-                      <option value="">Select a Dispute status...</option>
-                      <option value="CLOSED">CLOSED</option>
+                    <label>Status *</label>
+                    <Field as="select" name="status" className="form-control">
+                      {isInitialReview ? (
+                        <option value="IN_PROGRESS">IN-PROGRESS</option>
+                      ) : (
+                        <option value="CLOSED">CLOSED</option>
+                      )}
                     </Field>
                     <ErrorMessage
                       name="status"
@@ -322,21 +355,26 @@ const Disputeconfirmation = () => {
                     />
                   </div>
 
-                  {/* Sub Status */}
+                  {/* Sub Status Dropdown */}
                   <div className="form-group">
-                    <label htmlFor="subStatus">Dispute Sub-Status *</label>
+                    <label>Sub-Status *</label>
                     <Field
                       as="select"
-                      id="subStatus"
                       name="subStatus"
                       className="form-control"
                     >
-                      <option value="">Select a Dispute sub-status...</option>
-                      <option value="ACCEPTED">ACCEPTED</option>
-                      <option value="PARTIALLY ACCEPTED">
-                        PARTIALLY ACCEPTED
-                      </option>
-                      <option value="REJECTED">REJECTED</option>
+                      {isInitialReview ? (
+                        <option value="UNDER_REVIEW">UNDER REVIEW</option>
+                      ) : (
+                        <>
+                          <option value="">Select Sub-Status</option>
+                          <option value="ACCEPTED">ACCEPTED</option>
+                          <option value="PARTIALLY_ACCEPTED">
+                            PARTIALLY ACCEPTED
+                          </option>
+                          <option value="REJECTED">REJECTED</option>
+                        </>
+                      )}
                     </Field>
                     <ErrorMessage
                       name="subStatus"
@@ -345,52 +383,65 @@ const Disputeconfirmation = () => {
                     />
                   </div>
 
-                  {/* Refund Amount */}
-                  <div className="form-group">
-                    <label htmlFor="refund">Refund Amount *</label>
-                    <Field
-                      as="input"
-                      type="number"
-                      id="refund"
-                      name="refund"
-                      placeholder="Refund Amount"
-                      className="form-control"
-                      disabled={
-                        values.subStatus === "ACCEPTED" ||
-                        values.subStatus === "REJECTED"
-                      }
-                    />
-                    <ErrorMessage
-                      name="refund"
-                      component="div"
-                      className="text-danger"
-                    />
-                  </div>
+                  {/* Refund & Comments (Final Review Only) */}
+                  {!isInitialReview && (
+                    <>
+                      <div className="form-group">
+                        <label>Refund Amount</label>
+                        <Field
+                          type="number"
+                          name="refund"
+                          className="form-control"
+                          placeholder="Enter eligible refund amount"
+                          disabled={
+                            values.subStatus === "ACCEPTED" ||
+                            values.subStatus === "REJECTED"
+                          }
+                        />
+                        <ErrorMessage
+                          name="refund"
+                          component="div"
+                          className="text-danger"
+                        />
+                      </div>
 
-                  {/* Comments */}
-                  <div className="form-group">
-                    <label htmlFor="comments">Comment *</label>
-                    <Field
-                      as="input"
-                      id="comments"
-                      name="comments"
-                      className="form-control"
-                      placeholder="Reviewer’s comments"
-                    />
-                    <ErrorMessage
-                      name="comments"
-                      component="div"
-                      className="text-danger"
-                    />
-                  </div>
+                      <div className="form-group">
+                        <label>Comments</label>
+                        <Field
+                          type="text"
+                          name="comments"
+                          className="form-control"
+                          placeholder="Reviewer's comments"
+                        />
+                        <ErrorMessage
+                          name="comments"
+                          component="div"
+                          className="text-danger"
+                        />
+                      </div>
+
+                      <div className="form-check">
+                        <Field
+                          type="checkbox"
+                          name="verifiedByVendor"
+                          className="form-check-input"
+                        />
+                        <label className="form-check-label">
+                          Dispute details verified by payment rail vendor
+                        </label>
+                      </div>
+                    </>
+                  )}
 
                   {/* Buttons */}
-                  <div className="d-flex justify-content-between">
+                  <div className="d-flex justify-content-between mt-3">
                     <Button variant="secondary" onClick={handleClose}>
                       Close
                     </Button>
                     <Button variant="dark" type="submit">
-                      Submit Review
+                      {isInitialReview
+                        ? "Send for Vendor Verification"
+                        : "Submit Review"}
                     </Button>
                   </div>
                 </Form>

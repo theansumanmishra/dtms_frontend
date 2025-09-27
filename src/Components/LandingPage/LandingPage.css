@@ -62,9 +62,14 @@ body, html {
   margin-bottom: 30px;
 }
 
+.landing-btn{
+  height: 40px;
+}
+
 .learnmore{
   border: 2px solid white;
   background: none; 
+  height: 40px;
 }
 
 button:hover {

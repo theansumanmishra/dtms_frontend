@@ -1,7 +1,7 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: "Segoe UI", sans-serif;
   /* font-family: "Merriweather", serif; */
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   /* background: linear-gradient(to right, #4FBDBA, #CDEED6); */
@@ -81,39 +81,44 @@ body {
 
 /* ---- STATUS ---- */
 .status-initiated {
-  background: #d0f0fd;  /* soft cyan */
-  color: #064e3b;       /* dark teal */
+  background: #d0f0fd; /* soft cyan */
+  color: #064e3b; /* dark teal */
 }
 
-.status-in-progress {
-  background: #fff3e0;  /* soft cream/orange */
-  color: #7c2d12;       /* dark brown-orange */
+.status-in_progress {
+  background: #fff3e0; /* soft cream/orange */
+  color: #7c2d12; /* dark brown-orange */
 }
 
 .status-closed {
-  background: #e0f7fa;  /* pale aqua */
-  color: #006064;       /* dark teal-blue */
+  background: #e0f7fa; /* pale aqua */
+  color: #006064; /* dark teal-blue */
 }
 
 /* ---- SUBSTATUS ---- */
-.substatus-pending-review {
-  background: #f4ebff;  /* light lavender */
-  color: #5b21b6;       /* deep purple */
+.substatus-pending_review {
+  background: #f4ebff; /* light lavender */
+  color: #5b21b6; /* deep purple */
+}
+
+.substatus-under_review {
+  background: #fff8e1;  /* light yellow (soft, warm review tone) */
+  color: #92400e; 
 }
 
 .substatus-accepted {
-  background: #d9f7be;  /* soft green */
-  color: #166534;       /* dark green */
+  background: #d9f7be; /* soft green */
+  color: #166534; /* dark green */
 }
 
-.substatus-partially-accepted {
-  background: #ffe4b5;  /* light peach */
-  color: #9c4a00;       /* dark orange-brown */
+.substatus-partially_accepted {
+  background: #ffe4b5; /* light peach */
+  color: #9c4a00; /* dark orange-brown */
 }
 
 .substatus-rejected {
-  background: #fee2e2;  /* soft pink/red */
-  color: #991b1b;       /* deep red */
+  background: #fee2e2; /* soft pink/red */
+  color: #991b1b; /* deep red */
 }
 
 .my-badge i {

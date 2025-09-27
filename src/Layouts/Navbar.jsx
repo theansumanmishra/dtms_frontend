@@ -32,13 +32,10 @@ const CustomNavbar = () => {
             <Nav.Link href="#" onClick={() => navigate("/about")}>
               About Us
             </Nav.Link>
-            {/* <Nav.Link href="#" disabled>
-              Link
-            </Nav.Link> */}
           </Nav>
           <Button
             variant="link"
-            className="text-decoration-none"
+            className="navbar-login-btn text-decoration-none"
             onClick={() => navigate("/login")}
           >
             Login

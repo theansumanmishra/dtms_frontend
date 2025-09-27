@@ -69,3 +69,17 @@
   font-weight: 400;
   cursor: pointer;
 }
+
+.navbar-login-btn{
+  background:blue;
+  color: #ffffff;
+  height: 30px;
+  width: 60px;
+  padding: 4px 0 5px 0;
+  border: none;
+  border-radius: 6px; 
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.3s ease;
+  font-size: 15px;
+}

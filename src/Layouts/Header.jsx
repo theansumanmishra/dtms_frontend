@@ -20,7 +20,6 @@ const CustomNavbar = () => {
       <Container fluid>
         <Navbar.Brand href="/dashboard">
           <Image
-            class="img-fluid"
             src="../../../dts-logo.png"
             alt="profilePic"
             className="img-fluid"

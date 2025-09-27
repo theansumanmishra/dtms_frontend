@@ -196,9 +196,14 @@ const View = () => {
     <>
       {/* CHARTS */}
       <div className="bg-light row">
-        <div className="view-head">
-          <h1>Dashboard</h1>
+      <div className="d-flex justify-content-between align-items-center">
+        <div className="ms-3 my-2">
+          <h1 className="dashboard-h1">Dashboard</h1>
+          <h4 className="dashboard-h4 text-secondary">
+            Manage and track banking disputes efficiently
+          </h4>
         </div>
+      </div>
 
         {/* CHARTS */}
         <div className="col-6 ms-3">
