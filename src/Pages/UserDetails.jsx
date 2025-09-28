@@ -1,4 +1,4 @@
-import View from "../Components/User/View"
+import Profile from "../Components/User/Profile"
 import Footer from '../Layouts/Footer'
 import Header from '../Layouts/Header';
 
@@ -6,7 +6,7 @@ const UserDetails = () => {
   return (
     <>
     <Header />
-    <View />
+    <Profile />
     <Footer/>
     </>
   );

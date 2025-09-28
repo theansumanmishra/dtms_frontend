@@ -139,6 +139,7 @@ const DashboardForm = () => {
       <div style={{ textAlign: "end" }}>
         {/* FILTER BUTTONS */}
         <div className="btn-group">
+          
           <button
             type="button"
             onClick={() => setSelectedTab("pending-review")}
@@ -150,6 +151,19 @@ const DashboardForm = () => {
           >
             Pending Review
           </button>
+
+          <button
+            type="button"
+            onClick={() => setSelectedTab("under-review")}
+            className={
+              selectedTab === "under-review"
+                ? "active btn btn-outline-secondary"
+                : "btn btn-outline-secondary"
+            }
+          >
+            Pending verification
+          </button>
+
           <button
             type="button"
             onClick={() => setSelectedTab("all")}
@@ -157,8 +171,7 @@ const DashboardForm = () => {
               selectedTab === "all"
                 ? "active btn btn-outline-secondary"
                 : "btn btn-outline-secondary"
-            }
-          >
+            }>
             All
           </button>
         </div>

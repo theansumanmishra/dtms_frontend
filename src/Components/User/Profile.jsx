@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import "./View.css";
+import "./Profile.css";
 
-const View = () => {
+const Profile = () => {
   const [user, setUser] = useState(null);
   const [disputeStats, setDisputeStats] = useState({
     disputesCreated: 0,
@@ -102,4 +102,4 @@ const View = () => {
   );
 };
 
-export default View;
+export default Profile;

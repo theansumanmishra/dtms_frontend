@@ -250,7 +250,7 @@ const View = () => {
                     <td>DSP202500{d.id}</td>
                     <td>TNX202500{d.savingsAccountTransaction?.id}</td>
                     <td>{d.createdDate}</td>
-                    <td>{d.status.name}</td>
+                    <td>{d.status.name.replace("_", "-")}</td>
                   </tr>
                 ))}
               </tbody>

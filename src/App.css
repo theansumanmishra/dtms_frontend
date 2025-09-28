@@ -81,44 +81,44 @@ body {
 
 /* ---- STATUS ---- */
 .status-initiated {
-  background: #d0f0fd; /* soft cyan */
-  color: #064e3b; /* dark teal */
+  background: #d0f0fd;
+  color: #064e3b;
 }
 
 .status-in_progress {
-  background: #fff3e0; /* soft cream/orange */
-  color: #7c2d12; /* dark brown-orange */
+  background: #fff3e0;
+  color: #7c2d12;
 }
 
 .status-closed {
-  background: #e0f7fa; /* pale aqua */
-  color: #006064; /* dark teal-blue */
+  background: #e0f7fa;
+  color: #006064;
 }
 
 /* ---- SUBSTATUS ---- */
 .substatus-pending_review {
-  background: #f4ebff; /* light lavender */
-  color: #5b21b6; /* deep purple */
+  background: #f4ebff;
+  color: #5b21b6;
 }
 
 .substatus-under_review {
-  background: #fff8e1;  /* light yellow (soft, warm review tone) */
+  background: #f7e1d7;
   color: #92400e; 
 }
 
 .substatus-accepted {
-  background: #d9f7be; /* soft green */
-  color: #166534; /* dark green */
+  background: #d9f7be;
+  color: #166534;
 }
 
 .substatus-partially_accepted {
-  background: #ffe4b5; /* light peach */
-  color: #9c4a00; /* dark orange-brown */
+  background: #ffe4b5;
+  color: #9c4a00;
 }
 
 .substatus-rejected {
-  background: #fee2e2; /* soft pink/red */
-  color: #991b1b; /* deep red */
+  background: #fee2e2;
+  color: #991b1b;
 }
 
 .my-badge i {
