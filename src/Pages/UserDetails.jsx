@@ -7,7 +7,7 @@ const UserDetails = () => {
     <>
     <Header />
     <Profile />
-    <Footer/>
+    {/* <Footer/> */}
     </>
   );
 };

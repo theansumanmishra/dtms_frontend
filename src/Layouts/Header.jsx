@@ -24,7 +24,7 @@ const CustomNavbar = () => {
             alt="profilePic"
             className="img-fluid"
             style={{
-              height: "61px",
+              height: "145px",
               width: "auto", 
               objectFit: "contain",
             }}
@@ -54,7 +54,7 @@ const CustomNavbar = () => {
               align="end"
             >
               <NavDropdown.Item onClick={view}>
-                <i class="bi bi-person-workspace"></i> User
+                <i class="bi bi-person-workspace"></i> About User
               </NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item onClick={logOut}>

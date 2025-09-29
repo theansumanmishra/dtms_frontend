@@ -161,7 +161,7 @@ const DashboardForm = () => {
                 : "btn btn-outline-secondary"
             }
           >
-            Pending verification
+            Pending Verification
           </button>
 
           <button
