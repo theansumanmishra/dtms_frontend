@@ -1,13 +1,11 @@
-import Profile from "../Components/User/Profile"
-import Footer from '../Layouts/Footer'
-import Header from '../Layouts/Header';
+import Profile from "../Components/Profile/Profile";
+import Header from "../Layouts/Header";
 
 const UserDetails = () => {
   return (
     <>
-    <Header />
-    <Profile />
-    {/* <Footer/> */}
+      <Header />
+      <Profile />
     </>
   );
 };

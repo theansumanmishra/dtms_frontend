@@ -1,15 +1,13 @@
+import TransactionDetails from "../Components/Transaction/show";
 import Header from '../Layouts/Header';
-import TransactionDetails from '../Components/Transaction/show';
-import Footer from '../Layouts/Footer'
 
-const TransactiondetailPage = () => {
+const TransactionDetailsPage = () => {
   return (
     <>
-    <Header />
-    <TransactionDetails />
-    <Footer/>
+      <Header />
+      <TransactionDetails />
     </>
   );
 };
 
-export default TransactiondetailPage;
+export default TransactionDetailsPage;

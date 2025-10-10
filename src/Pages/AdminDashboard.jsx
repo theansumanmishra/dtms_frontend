@@ -1,4 +1,4 @@
-import Admin from "../Components/AdminDashboard";
+import Admin from "../Components/Admin/AdminDashboard";
 import Header from "../Layouts/Header";
 
 const AdminDashboard = () => {

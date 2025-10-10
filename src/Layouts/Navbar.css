@@ -70,16 +70,20 @@
   cursor: pointer;
 }
 
-.navbar-login-btn{
-  background:blue;
-  color: #ffffff;
-  height: 30px;
-  width: 60px;
-  padding: 4px 0 5px 0;
+.navbar-login-btn {
+  background: linear-gradient(90deg, #007bff, #00b4d8);
+  color: #ffffff !important;
   border: none;
-  border-radius: 6px; 
+  padding: 0.5rem 1.5rem;
+  border-radius: 25px;
   font-weight: 500;
-  cursor: pointer;
-  transition: 0.3s ease;
-  font-size: 15px;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.2);
+}
+
+.navbar-login-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0, 123, 255, 0.3);
+  background: linear-gradient(90deg, #0056b3, #0077b6);
 }

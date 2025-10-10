@@ -5,8 +5,9 @@ import { FaSearch } from "react-icons/fa";
 import axios from "axios";
 import ReactPaginate from "react-paginate";
 
-const DashboardForm = () => {
+const Dispute = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const [disputes, setDisputes] = useState([]);
   const [selectedTab, setSelectedTab] = useState("pending-review");
   const [searchQuery, setSearchQuery] = useState("");
@@ -17,18 +18,26 @@ const DashboardForm = () => {
   const [noResultsMessage, setNoResultsMessage] = useState("");
   const rowsPerPage = 10;
 
+  // Debounce search query
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedQuery(searchQuery);
     }, 500);
-
     return () => clearTimeout(handler);
   }, [searchQuery]);
 
+  // ✅ Reset page when search or filter changes
+  useEffect(() => {
+    setCurrentPage(0);
+  }, [debouncedQuery, selectedTab]);
+
+  // Fetch data
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setLoading(true);
         if (debouncedQuery.trim() !== "") {
+          
           const res = await axios.get(
             `http://localhost:8080/disputes/search?accountNumber=${debouncedQuery}`
           );
@@ -38,22 +47,20 @@ const DashboardForm = () => {
             dataArray = res.data;
           } else if (res.data.content) {
             dataArray = res.data.content;
-          } else {
-            dataArray = [res.data]; // single object → wrap in array
+          } else if (res.data) {
+            dataArray = [res.data];
           }
+
           if (dataArray.length > 0) {
             setDisputes(dataArray);
             setTotalDisputes(dataArray.length);
             setTotalPages(1);
-            setCurrentPage(0);
             setNoResultsMessage("");
           } else {
             setDisputes([]);
             setTotalDisputes(0);
             setTotalPages(0);
-            setNoResultsMessage(
-              "No dispute found with the given account number"
-            );
+            setNoResultsMessage("No dispute found with the given account number");
           }
         } else {
           const res = await axios.get(
@@ -78,36 +85,27 @@ const DashboardForm = () => {
             ? "No dispute found with the given account number"
             : "No dispute raised"
         );
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchData();
-  }, [debouncedQuery, currentPage, selectedTab, rowsPerPage]);
+  }, [debouncedQuery, currentPage, selectedTab]);
 
-  // Reset search
   const resetSearch = () => {
     setSearchQuery("");
     setDebouncedQuery("");
     setCurrentPage(0);
   };
 
-  // Row click
   const handleRowClick = (id) => {
     navigate(`/disputes/${id}`);
   };
 
   return (
     <div className="dashboard-page">
-      <div className="d-flex justify-content-between align-items-center">
-        {/* <div>
-          <h1 className="dashboard-h1">Dashboard</h1>
-          <h4 className="dashboard-h4 text-secondary">
-            Manage and track banking disputes efficiently
-          </h4>
-        </div> */}
-      </div>
-
-      {/* SEARCH BAR */}
+      {/* Search Section */}
       <div className="search-card bg-light">
         <div className="search-header">
           <span className="icon">
@@ -136,154 +134,121 @@ const DashboardForm = () => {
         </div>
       </div>
 
-      <div style={{ textAlign: "end" }}>
-        {/* FILTER BUTTONS */}
-        <div className="btn-group">
-          
-          <button
-            type="button"
-            onClick={() => setSelectedTab("pending-review")}
-            className={
-              selectedTab === "pending-review"
-                ? "active btn btn-outline-secondary"
-                : "btn btn-outline-secondary"
-            }
-          >
-            Pending Review
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setSelectedTab("under-review")}
-            className={
-              selectedTab === "under-review"
-                ? "active btn btn-outline-secondary"
-                : "btn btn-outline-secondary"
-            }
-          >
-            Pending Verification
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setSelectedTab("all")}
-            className={
-              selectedTab === "all"
-                ? "active btn btn-outline-secondary"
-                : "btn btn-outline-secondary"
-            }>
-            All
-          </button>
-        </div>
-      </div>
-
       {/* Disputes Table */}
       <div className="table-wrapper">
         <div className="custom-table">
-          <h2 className="heading">
-            All Previous Disputes <br />
-            <span className="pr">
-              Showing {disputes.length} of {totalDisputes} disputes
-            </span>
-          </h2>
-
-          {/* Table Data */}
-          <table>
-            <thead className="head">
-              <tr>
-                <th>SERIAL NO</th>
-                <th>DISPUTE ID</th>
-                <th>TRANSACTION ID</th>
-                <th>DATE CREATED</th>
-                <th>REASON</th>
-                <th>STATUS</th>
-                <th>SUB STATUS</th>
-              </tr>
-            </thead>
-            <tbody>
-              {disputes.map((row, index) => (
-                <tr key={row.id} onClick={() => handleRowClick(row.id)}>
-                  <td>{currentPage * rowsPerPage + index + 1}</td>
-                  <td className="DSP">DSP202500{row.id}</td>
-                  <td>TNX202500{row.savingsAccountTransaction?.id}</td>
-                  <td>{row.createdDate}</td>
-                  <td>{row.reason}</td>
-                  <td>
-                    <div>
-                      <span
-                        className={`my-badge status-${row.status.name.toLowerCase()}`}
-                      >
-                        {row.status.name === "INITIATED" && (
-                          <i className="bi bi-clock"></i>
-                        )}
-                        {row.status.name === "IN_PROGRESS" && (
-                          <i className="bi bi-arrow-repeat"></i>
-                        )}
-                        {row.status.name === "CLOSED" && (
-                          <i className="bi bi-check-circle"></i>
-                        )}
-                        {row.status.name.replace("_", " ")}
-                      </span>
-                    </div>
-                  </td>
-                  <td>
-                    <div>
-                      <span
-                        className={`my-badge substatus-${row.subStatus.name.toLowerCase()}`}
-                      >
-                        {row.subStatus.name === "PENDING_REVIEW" && (
-                          <i className="bi bi-hourglass-split"></i>
-                        )}
-                        {row.subStatus.name === "UNDER_REVIEW" && (
-                          <i className="bi bi-search"></i>
-                        )}
-                        {row.subStatus.name === "ACCEPTED" && (
-                          <i className="bi bi-hand-thumbs-up"></i>
-                        )}
-                        {row.subStatus.name === "PARTIALLY_ACCEPTED" && (
-                          <i className="bi bi-circle-half"></i>
-                        )}
-                        {row.subStatus.name === "REJECTED" && (
-                          <i className="bi bi-x-circle"></i>
-                        )}
-                        {row.subStatus.name.replace("_", " ")}
-                      </span>
-                    </div>
-                  </td>
-                </tr>
+          <div className="heading-container">
+            <h2 className="heading">
+              All Previous Disputes <br />
+              <span className="pr">
+                Showing {disputes.length} of {totalDisputes} disputes
+              </span>
+            </h2>
+            <div className="btn-group me-3">
+              {["pending-review", "under-review", "all"].map((tab) => (
+                <button
+                  key={tab}
+                  type="button"
+                  onClick={() => setSelectedTab(tab)}
+                  className={
+                    selectedTab === tab
+                      ? "active btn btn-outline-primary"
+                      : "btn btn-outline-primary"
+                  }
+                >
+                  {tab === "pending-review"
+                    ? "Pending Review"
+                    : tab === "under-review"
+                    ? "Pending Verification"
+                    : "All"}
+                </button>
               ))}
-            </tbody>
-          </table>
+            </div>
+          </div>
+
+          <div className="table-scroll">
+            {loading ? (
+              <div className="loading-container">
+                <div className="spinner"></div>
+                <p>Loading disputes...</p>
+              </div>
+            ) : disputes.length > 0 ? (
+              <table>
+                <thead className="head">
+                  <tr>
+                    <th>SERIAL NO</th>
+                    <th>DISPUTE ID</th>
+                    <th>TRANSACTION ID</th>
+                    <th>DATE CREATED</th>
+                    <th>REASON</th>
+                    <th>STATUS</th>
+                    <th>SUB STATUS</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {disputes.map((row, index) => (
+                    <tr key={row.id} onClick={() => handleRowClick(row.id)}>
+                      <td>{currentPage * rowsPerPage + index + 1}</td>
+                      <td className="DSP">DSP202500{row.id}</td>
+                      <td>TNX202500{row.savingsAccountTransaction?.id}</td>
+                      <td>{row.createdDate.split("-").reverse().join("-")}</td>
+                      <td>{row.reason}</td>
+                      <td>
+                        <span
+                          className={`my-badge status-${row.status.name.toLowerCase()}`}
+                        >
+                          {row.status.name.replace("_", " ")}
+                        </span>
+                      </td>
+                      <td>
+                        <span
+                          className={`my-badge substatus-${row.subStatus.name.toLowerCase()}`}
+                        >
+                          {row.subStatus.name.replace("_", " ")}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            ) : (
+              noResultsMessage && (
+                <div className="text-center text-muted mt-3">
+                  {noResultsMessage}
+                </div>
+              )
+            )}
+          </div>
+
+          {/* ✅ Conditional Pagination */}
+          {debouncedQuery.trim() === "" && totalPages > 1 && (
+            <div className="pagination-section">
+              <ReactPaginate
+                previousLabel={"← Prev"}
+                nextLabel={"Next →"}
+                breakLabel={"..."}
+                pageCount={totalPages}
+                marginPagesDisplayed={2}
+                pageRangeDisplayed={3}
+                onPageChange={(event) => setCurrentPage(event.selected)}
+                forcePage={currentPage}
+                containerClassName={"pagination-container"}
+                pageClassName={"pagination-page"}
+                pageLinkClassName={"pagination-link"}
+                previousClassName={"pagination-prev"}
+                previousLinkClassName={"pagination-link"}
+                nextClassName={"pagination-next"}
+                nextLinkClassName={"pagination-link"}
+                breakClassName={"pagination-break"}
+                breakLinkClassName={"pagination-link"}
+                activeClassName={"pagination-active"}
+              />
+            </div>
+          )}
         </div>
       </div>
-
-      {/* No Results Message */}
-      {disputes.length === 0 && noResultsMessage && (
-        <div className="text-center text-muted mt-3">{noResultsMessage}</div>
-      )}
-
-      {/* Pagination Component */}
-      <ReactPaginate
-        previousLabel={"← Previous"}
-        nextLabel={"Next →"}
-        breakLabel={"..."}
-        pageCount={totalPages}
-        marginPagesDisplayed={2}
-        pageRangeDisplayed={3}
-        onPageChange={(event) => setCurrentPage(event.selected)}
-        containerClassName={"pagination justify-content-center mt-3"}
-        pageClassName={"page-item"}
-        pageLinkClassName={"page-link"}
-        previousClassName={"page-item"}
-        previousLinkClassName={"page-link"}
-        nextClassName={"page-item"}
-        nextLinkClassName={"page-link"}
-        breakClassName={"page-item"}
-        breakLinkClassName={"page-link"}
-        activeClassName={"active"}
-      />
     </div>
   );
 };
 
-export default DashboardForm;
+export default Dispute;

@@ -2,7 +2,6 @@
   max-width: 1000px;
   margin: 20px auto 110px auto;
   text-align: center;
-  font-family: "Segoe UI", Arial, sans-serif;
   color: #1c2d48;
 }
 
@@ -31,7 +30,7 @@
 }
 
 .summary-card {
-  width: 1000px ;
+  /* width: 1000px ; */
   background: #fff;
   border: 1px solid #e2e8f0;
   border-radius: 15px;
@@ -43,7 +42,17 @@
 .summary-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 18px 40px;
+  gap:  1rem;
+  /* place-items: center; */
+}
+
+/* .summary-grid > div {
+  display: flex;
+  flex-direction: column;
+} */
+
+.summary-grid .full-width {
+  grid-column: 1 / -1;  
 }
 
 .label {
@@ -67,7 +76,6 @@
   color: #dc2626;
 }
 
-/*     2nd card     */
 .transaction-card {
   background: #fff;
   border: 2px solid #e2e8f0;
@@ -122,14 +130,12 @@
   text-decoration: underline;
 }
 
-/* Responsive - stack for mobile */
 @media (max-width: 768px) {
   .transaction-grid {
     grid-template-columns: 1fr;
   }
 }
 
-/*     3rd card   */
 .next-steps-card {
   background: #fff;
   border: 1px solid #e2e8f0;
@@ -183,7 +189,6 @@
   color: #334155;
 }
 
-/* Responsive */
 @media (max-width: 600px) {
   .next-steps-card {
     padding: 16px;
@@ -205,15 +210,10 @@
   }
 }
 
-/*    4th card   */
 .action-cards {
   display: flex;
   width: 1000px;
-  /* justify-content: center; */
   gap: 50px;
-  /* margin: 30px auto; */
-  /* width: 1000px; */
-  /* flex-wrap: wrap; */
 }
 
 .action-card {
@@ -224,8 +224,6 @@
   padding: 24px 20px;
   text-align: center;
   flex: 1;
-  /* min-width: 300px;
-  max-width: 450px; */
   transition: transform 0.2s ease;
 }
 
@@ -283,7 +281,6 @@
   width: 200px;
 }
 
-/* Responsive */
 @media (max-width: 700px) {
   .action-cards {
     flex-direction: column;

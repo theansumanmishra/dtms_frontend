@@ -8,20 +8,19 @@ import DebitCardForm from "../DebitCard/DebitCardPage";
 import Button from "react-bootstrap/Button";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
+import Breadcrum from "../../Layouts/Breadcurm";
 
 const ShowClient = () => {
-const navigate = useNavigate();
+  const navigate = useNavigate();
 
-  //States
-  const { id } = useParams();  //get dispute ID from route params
+  const { id } = useParams();
   const [client, setClient] = useState({});
   const [loading, setLoading] = useState(false);
   const [savingsAccount, setSavingAccount] = useState({});
   const [debitCards, setDebitCards] = useState([]);
 
-  //Fetch dispute details when component mounts
   useEffect(() => {
-    setLoading(true); // reset to page 1 on data fetch
+    setLoading(true);
     const fetchData = async () => {
       try {
         const clientRes = await axios.get(
@@ -43,119 +42,121 @@ const navigate = useNavigate();
   }
 
   return (
-    <div className="container emp-profile">
-      <div className="row">
-        <div className="col-md-4">
-          <div className="profile-img">
-            <img
-              // src="https://www.pngitem.com/pimgs/m/78-786420_icono-usuario-joven-transparent-user-png-png-download.png"
-              src="https://cdn3.iconfinder.com/data/icons/avatars-collection/256/47-512.png"
-              alt="client img"
-            />
-          </div>
-          <div className="profile-work mt-4">
-            <h2>Savings Account Details</h2>
-            <div className="client-grid">
-              <div className="client-item">
-                <span className="label">Account number</span>
-                <span className="value">
-                  {savingsAccount.accountNumber}
-                </span>
+    <div>
+      <Breadcrum
+        breadCrumItems={[
+          { name: "Disputes", path: "/disputes" },
+          { name: "Clients", path: "/clients" },
+          { name: "Client Details", path: "" },
+        ]}
+      />
+      <div className="container emp-profile">
+        <div className="row g-4">
+          <div className="col-md-4 card-floating">
+            <div className="">
+              <div className="profile-img">
+                <img
+                  src="https://cdn3.iconfinder.com/data/icons/avatars-collection/256/47-512.png"
+                  alt="client img"
+                />
               </div>
-              <div className="client-item">
-                <span className="label">Available Balance</span>
-                <span className="value">₹{savingsAccount.balance?.toLocaleString('en-IN')}</span>
-              </div>
-
-              <div className="client-item">
-                <span className="label">Account creation date</span>
-                <span className="value">
-                  {savingsAccount.accountCreationDate?.substring(0, 10)}
-                </span>
-              </div>
-
-              <div className="client-item">
-                <span className="label">Is blocked for credit</span>
-                <span className="value">
-                  {savingsAccount.blockedForCredit ? "Yes" : "No"}
-                </span>
-              </div>
-
-              <div className="client-item">
-                <span className="label">Is blocked for debit</span>
-                <span className="value">
-                  {savingsAccount.blockedForDebit ? "Yes" : "No"}
-                </span>
+              <div className="profile-work mt-4">
+                <h4>Savings Account Details</h4>
+                <div className="client-grid">
+                  {[
+                    {
+                      label: "Account Number",
+                      value: savingsAccount.accountNumber || "N/A",
+                    },
+                    {
+                      label: "Available Balance",
+                      value: `₹${Number(
+                        savingsAccount.balance || 0
+                      ).toLocaleString("en-IN", {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })}`,
+                    },
+                    {
+                      label: "Account Creation Date",
+                      value: savingsAccount.accountCreationDate
+                        ? savingsAccount.accountCreationDate
+                            .substring(0, 10)
+                            .split("-")
+                            .reverse()
+                            .join("-")
+                        : "N/A",
+                    },
+                    {
+                      label: "Blocked for Credit",
+                      value: savingsAccount.blockedForCredit ? "Yes" : "No",
+                    },
+                    {
+                      label: "Blocked for Debit",
+                      value: savingsAccount.blockedForDebit ? "Yes" : "No",
+                    },
+                  ].map((item, idx) => (
+                    <div className="client-item" key={idx}>
+                      <span className="label">{item.label}</span>
+                      <span className="value">{item.value}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div className="col-md-6">
-          <div className="profile-head">
-            <h5>{client.name}</h5>
-            <h6>Verified Client</h6>
-            <Tabs defaultActiveKey="profile" id="account-tab" className="mb-3">
-              <Tab eventKey="profile" title="Profile">
-                <div className="tab-pane fade show active"
-                  id="home"
-                  role="tabpanel"
-                  aria-labelledby="home-tab">
-                  <div className="row">
-                    <div className="col-md-6">
-                      <label>Client Id</label>
-                    </div>
-                    <div className="col-md-6">
-                      <p>CLI202500{client.id}</p>
-                    </div>
+
+          {/* Right Column: Profile Info + Tabs */}
+          <div className="col-md-8 profile-right-container">
+            <div className="card-floating profile-head">
+              <h5>{client.name}</h5>
+              <h6 className="verified-label">Verified Client</h6>
+              <Tabs
+                defaultActiveKey="profile"
+                id="account-tab"
+                className="mb-3"
+              >
+                <Tab eventKey="profile" title="Profile">
+                  <div className="profile-tab">
+                    {[
+                      { label: "Client Id", value: `CLI202500${client.id}` },
+                      { label: "Name", value: client.name },
+                      { label: "Email", value: client.email },
+                      { label: "Phone", value: `+91-${client.phone}` },
+                    ].map((item, idx) => (
+                      <div className="row mb-2" key={idx}>
+                        <div className="col-md-6">
+                          <label>{item.label}</label>
+                        </div>
+                        <div className="col-md-6">
+                          <p>{item.value}</p>
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                  <div className="row">
-                    <div className="col-md-6">
-                      <label>Name</label>
-                    </div>
-                    <div className="col-md-6">
-                      <p>{client.name}</p>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-md-6">
-                      <label>Email</label>
-                    </div>
-                    <div className="col-md-6">
-                      <p>{client.email}</p>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-md-6">
-                      <label>Phone</label>
-                    </div>
-                    <div className="col-md-6">
-                      <p>+91-{client.phone}</p>
-                    </div>
-                  </div>
-                </div>
-              </Tab>
-              <Tab eventKey="debit-cards" title="Linked Debit Cards">
-                <DebitCardForm debitCards={debitCards} />
-              </Tab>
-            </Tabs>
+                </Tab>
+                <Tab eventKey="debit-cards" title="Linked Debit Cards">
+                  <DebitCardForm
+                    debitCards={debitCards}
+                    clientName={client.name}
+                  />
+                </Tab>
+              </Tabs>
+            </div>
           </div>
         </div>
-        {/* <div className="col-md-2">
-            <input
-              type="submit"
-              className="profile-edit-btn"
-              name="btnAddMore"
-              value="Edit Profile"
-            />
-          </div> */}
-      </div>
-      <div className="text-center">
-        <Button
-          variant="outline-secondary"
-          className="text-decoration-none"
-          onClick={() => navigate(`/savingsaccounts/${savingsAccount.id}/transactions`)}>
-          Show all transactions
-        </Button>
+
+        <div className="text-center mt-4">
+          <Button
+            variant="outline-secondary"
+            className="show-transactions-btn"
+            onClick={() =>
+              navigate(`/clients/${client.id}/savingsaccounts/${savingsAccount.id}/transactions`)
+            }
+          >
+            Show all transactions
+          </Button>
+        </div>
       </div>
     </div>
   );

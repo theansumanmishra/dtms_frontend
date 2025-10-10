@@ -1,15 +1,13 @@
 import Header from "../Layouts/Header";
 import RaisedisputeForm from "../Components/Dispute/RaiseDisputePage";
-import Footer from '../Layouts/Footer'
 
-const RaisedisputePage = () => {
+const RaiseDisputePage = () => {
   return (
     <>
       <Header />
       <RaisedisputeForm />
-      <Footer/>
     </>
   );
 };
 
-export default RaisedisputePage;
+export default RaiseDisputePage;

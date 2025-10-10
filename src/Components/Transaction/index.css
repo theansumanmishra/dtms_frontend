@@ -1,112 +1,32 @@
-.transaction-page{
-  /* align-items: center; */
-  /* justify-content: center; */
-  /* width: 100%; */
-  /* height: 100vh; */
-  padding: 0px 100px 0px 100px;
+.transaction-page {
+  padding: 0 80px;
   background: linear-gradient(135deg, #dbeafe 0%, #ffffff 50%, #d1fae5 100%);
-  /* box-sizing: border-box; */
-  /* overflow-y: auto;  */
-  scroll-behavior: smooth; 
-  max-height: 660px;
-  overflow: auto;
+  /* max-height: 660px; */
+  overflow-y: auto;
 }
 
-.top{
-  padding: 15px 0 0 0;
-  margin: 0;
-  font-size: 30px;
+.top {
+  font-size: 32px;
+  margin: 20px 0 5px 0;
 }
 
-.top1{
-  padding: 5px 0 0 0;
-  margin: 0;
-  color: gray;
-}
-
-.debitcard {
-  margin-top: 20px;
-  height: 120px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #f0f5ff;
-  border-radius: 10px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  width: 100%;
-}
-
-.cardleft {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-.iconcontainer {
-  margin-left: 10px;
-  background: #dbeafe;
-  padding: 15px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.cardicon {
-  font-size: 28px;
-  color: #2563eb;
-}
-
-.carddetails {
-  display: flex;
-  flex-direction: column;
-}
-
-.cardtitle {
-  margin: 0;
-  font-weight: bold;
-  color: #111827;
-}
-
-.cardnumber {
-  margin: 3px 0;
-  color: #111827;
-  font-size: 1rem;
-}
-
-.cardexpiry {
+.top1 {
   color: #6b7280;
-  font-size: 0.9rem;
+  margin-bottom: 20px;
 }
-
-.cardstatus {
-  background: #d1fae5;
-  color: #065f46;
-  padding: 5px 15px;
-  border-radius: 20px;
-  font-weight: bold;
-  font-size: 0.9rem;
-  margin-right:10px;
-}
-
-
-/*       transaction table      */
 
 .transactions-container {
-  background: white;
-  border-radius: 10px;
-  padding: 20px;
-  width: 100%;
-  margin-top: 10px;
-  max-height: 545px;
-  overflow: auto;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  overflow-y: auto;
 }
 
 .transactions-title {
-  font-size: 1.2rem;
-  font-weight: bold;
-  margin-bottom: 4px;
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 5px;
 }
 
 .transactions-subtitle {
@@ -118,44 +38,53 @@
 .transactions-list {
   display: flex;
   flex-direction: column;
+  gap: 12px;
 }
 
 .transaction-row {
   display: flex;
   justify-content: space-between;
-  padding: 15px 0;
-  border-top: 1px solid #e5e7eb;
+  align-items: center;
+  padding: 15px 20px;
+  border-radius: 10px;
+  background: #f9fafb;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.transaction-row:first-child {
-  border-top: none;
+.transaction-row:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
 .transaction-left {
   display: flex;
+  align-items: center;
   gap: 15px;
 }
 
 .transaction-icon {
-  font-size: 20px;
-  color: #374151;
-  background: #f3f4f6;
-  padding: 12px;
-  height: 50px;
-  width: 45px;
+  background: #e5e7eb;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #374151;
+  font-size: 20px;
 }
 
-.transaction-title {
+
+.transaction-details h5 {
   margin: 0;
-  font-weight: bold;
   font-size: 1rem;
 }
 
 .transaction-desc {
+  margin: 2px 0;
   color: #4b5563;
   font-size: 0.9rem;
-  margin: 2px 0;
 }
 
 .transaction-id {
@@ -164,69 +93,30 @@
 }
 
 .transaction-right {
-  text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 5px;
 }
 
 .transaction-amount {
-  font-weight: bold;
+  font-weight: 600;
   font-size: 1rem;
 }
 
 .transaction-date {
   color: #6b7280;
   font-size: 0.85rem;
-  margin: 3px 0;
 }
 
-.dispute-link {
-  background: #f3f4f6;
-  color: #2563eb;
+button.btn-outline-dark {
+  border-radius: 25px;
+  padding: 4px 12px;
   font-size: 0.85rem;
-  text-decoration: none;
+  transition: all 0.2s ease;
 }
 
-.dispute-link:hover {
-  cursor: pointer;
-  background: #f3f4f6;
-  color: #2563eb;
-  transition: none;
-
-}
-
-
-/*       buttons        */
-
-.last-button{
-  display: flex;
-  margin-top: 40px;
-  margin-bottom: 100px;
-  margin-left: 450px;
-  gap: 15px;
-}
-.returnback{
-  height: 45px;
-  width: 200px;
-  color: blue;
-  background: #fff;
-  border: 2px solid blue;
-  border-radius: 8px;
-  padding: 2px 0 0 3px;
-}
-.returnback:hover{
- transform: 0.5s ease;
-  color: blue;
-  background: #fff;
-}
-.return{
-  height: 45px;
-  width: 200px;
+button.btn-outline-dark:hover {
+  background: #2563eb;
   color: #fff;
-  background: #4a4949;
-  border-radius: 8px;
-  padding: 2px 0 0 3px;
-}
-.return:hover{
- transform: 0.5s ease;
-  color: #fff;
-  background: #4a4949;
 }

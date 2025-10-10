@@ -1,13 +1,11 @@
-import Disputeconfirmation from '../Components/Dispute/DisputeConfirmationPage';
+import DisputeShow from '../Components/Dispute/Show';
 import Header from '../Layouts/Header';
-import Footer from '../Layouts/Footer'
 
 const DisputeConfirmationPage = () => {
   return (
     <>
       <Header />
-      <Disputeconfirmation />
-      <Footer/>
+      <DisputeShow />
     </>
   );
 };

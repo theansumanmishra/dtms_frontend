@@ -4,11 +4,11 @@ import { useNavigate, useParams } from "react-router";
 import axios from "axios";
 import { BiSolidInfoSquare } from "react-icons/bi";
 import RaisedisputeForm from "../Dispute/RaiseDisputePage";
+import Breadcrum from "../../Layouts/Breadcurm";
 
 const TransactionDetails = () => {
   const navigate = useNavigate();
-
-  const { savingsAccountId, transactionId } = useParams();
+  const { clientId, savingsAccountId, transactionId } = useParams();
   const [selectedTransactionId, setSelectedTransactionId] = useState(transactionId);
   const [txnDetails, setTxnDetails] = useState({});
   const [similarTxns, setSimilarTxns] = useState([]);
@@ -21,11 +21,15 @@ const TransactionDetails = () => {
       try {
         //Fetch transaction details
         const txId = selectedTransactionId || transactionId;
-        const txnRes = await axios.get(`http://localhost:8080/savingsaccounts/${savingsAccountId}/transactions/${txId}`);
+        const txnRes = await axios.get(
+          `http://localhost:8080/savingsaccounts/${savingsAccountId}/transactions/${txId}`
+        );
         setTxnDetails(txnRes.data);
 
         //Fetch similar transactions
-        const similarRes = await axios.get(`http://localhost:8080/transactions/${transactionId}/similar`);
+        const similarRes = await axios.get(
+          `http://localhost:8080/transactions/${transactionId}/similar`
+        );
         setSimilarTxns(similarRes.data);
       } catch (err) {
         console.error("Error fetching transaction data:", err);
@@ -38,9 +42,11 @@ const TransactionDetails = () => {
   }, [savingsAccountId, transactionId, selectedTransactionId]);
 
   const handleTxnClick = (txnId) => {
-    setSelectedTransactionId(txnId)
-    navigate(`/savingsaccounts/${savingsAccountId}/transactions/${txnId}`)
-  }
+    setSelectedTransactionId(txnId);
+    navigate(
+      `/clients/${clientId}/savingsaccounts/${savingsAccountId}/transactions/${txnId}`
+    );
+  };
 
   if (loading) {
     return <p>Loading...</p>;
@@ -51,125 +57,144 @@ const TransactionDetails = () => {
   }
 
   return (
-    <div className="transaction-detail-page">
-      <div className="transaction-detail-form row">
-        <div className="detail-container col-6">
-          <div className="transaction-header">
-            <h4>Transaction Details for TXN202500{txnDetails.id}</h4>
-          </div>
-
-          {/* TRANSACTION DETAILS PANE */}
-          <div className="transaction-history">
-            <div className="transaction-top">
-              <div>
-                <h3 className="txn-title">{txnDetails.merchantName}</h3>
-                <h6>{txnDetails.merchantCategory}</h6>
-                <p className="txn-desc">{txnDetails.transactionType}</p>
-              </div>
-              <div>
-                <p className="txn-amount">
-                  ₹ {txnDetails.amount.toLocaleString("en-IN")}
-                </p>
-                <p className="txn-date">
-                  {txnDetails.transactionDate.substring(0, 10)}
-                </p>
-              </div>
+    <div>
+      <Breadcrum
+        breadCrumItems={[
+                { name: "Disputes", path: "/disputes" },
+                { name: "Clients", path: "/clients" },
+                { name: "Client Details", path: `/clients/${clientId}` },
+                {
+                  name: "Transaction History",
+                  path: `/clients/${clientId}/savingsaccounts/${savingsAccountId}/transactions`,
+                },
+                { name: "Transaction Details", path: "" },
+              ]
+        }
+      />
+      <div className="transaction-detail-page">
+        <div className="transaction-detail-form row">
+          <div className="detail-container col-6">
+            <div className="transaction-header">
+              <h4>Transaction Details for TXN202500{txnDetails.id}</h4>
             </div>
 
-            <div className="detail-transaction-info">
-              <div>
-                <p className="label">SAVINGS ACCOUNT NUMBER</p>
-                <p className="value">{txnDetails.savingsAccount.accountNumber}</p>
-              </div>
-              <div>
-                <p className="label">DEBIT CARD NUMBER</p>
-                <p className="value">{txnDetails.debitCard.cardNo}</p>
-              </div>
-              <div>
-                <p className="label">TRANSACTION DATE</p>
-                <p className="value">{txnDetails.transactionDate.substring(0, 10)}</p>
-              </div>
-              <div>
-                <p className="label">TRANSACTION TYPE</p>
-                <p className="value">{txnDetails.transactionType}</p>
-              </div>
-              <div>
-                <p className="label">TRANSACTION MODE</p>
-                <p className="value">{txnDetails.transactionMode}</p>
-              </div>
-              <div>
-                <p className="label">REFERENCE ID</p>
-                <p className="value">{txnDetails.paymentRailInstanceId}</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Submit Dispute Card */}
-          <div className="dispute-card mt-3">
-            <div className="dispute-content">
-              <div className="icon-box">
-                <BiSolidInfoSquare size={20} />
-              </div>
-              <div>
-                <h3>Do you want to raise a dispute for this transaction?</h3>
-                <p>Review all information before submitting your dispute claim</p>
-              </div>
-            </div>
-            <button
-              className="btn-dispute"
-              onClick={() => setShowDisputeForm(true)}>
-              Raise Dispute
-            </button>
-          </div>
-        </div>
-
-        {/* TRANSACTION LISTING */}
-        {showDisputeForm ? (
-          <div className="txnlist-wrapper col-6">
-            <RaisedisputeForm onCancelClick={setShowDisputeForm}/>                {/* DISPUTE FORM HERE */}
-          </div>
-        ) : (
-          <div className="txnlist-wrapper col-6">
-            {similarTxns.length > 0 ? (
-              similarTxns.map((txn) => (
-                <div className="txnlist-card" key={txn.id} onClick={() => handleTxnClick(txn.id)}>
-                  <div className="txnlist-left">
-                    <h3 className="txnlist-title">{txn.merchantName}</h3>
-                    <h6>{txn.merchantCategory}</h6>
-                    <p className="txnlist-desc">{txn.description}</p>
-                    <p className="txnlist-id">Transaction ID: TXN202500{txn.id}</p>
-                  </div>
-                  <div className="txnlist-right">
-                    <p className="txnlist-amount">
-                      ₹ {txn.amount.toLocaleString("en-IN")}
-                    </p>
-                    <p className="txnlist-date">
-                      {txn.transactionDate.substring(0, 10)}
-                    </p>
-                    <p className="txnlist-date">
-                      {txnDetails.transactionMode}
-                    </p>
-                  </div>
+            {/* TRANSACTION DETAILS PANE */}
+            <div className="transaction-history">
+              <div className="transaction-top">
+                <div>
+                  <h3 className="txn-title">{txnDetails.merchantName}</h3>
+                  <h6>{txnDetails.merchantCategory}</h6>
+                  <p className="txn-desc">{txnDetails.transactionType}</p>
                 </div>
-              ))
-            ) : (
-              <p>No similar transactions found.</p>
-            )}{" "}
-          </div>
-        )}
-      </div>
+                <div>
+                  <p className="txn-amount">
+                    ₹ {txnDetails.amount.toLocaleString("en-IN")}
+                  </p>
+                  <p className="txn-date">
+                    {txnDetails.transactionDate.substring(0, 10)}
+                  </p>
+                </div>
+              </div>
 
-      {/* BUTTONS */}
-      {/* <div className="details-bottom-actions">
-        <button className="back-btn" onClick={() => navigate(`/savingsaccounts/${savingsAccountId}/transactions`)}>
-          ← Back to Transactions
-        </button>
-        <button
-          className="dashboard-btn"
-          onClick={() => navigate("/dashboard")}>
-          Return to Dashboard
-        </button>
-      </div> */}
+              <div className="detail-transaction-info">
+                <div>
+                  <p className="label">SAVINGS ACCOUNT NUMBER</p>
+                  <p className="value">
+                    {txnDetails.savingsAccount.accountNumber}
+                  </p>
+                </div>
+                <div>
+                  <p className="label">DEBIT CARD NUMBER</p>
+                  <p className="value">{txnDetails.debitCard.cardNo}</p>
+                </div>
+                <div>
+                  <p className="label">TRANSACTION DATE</p>
+                  <p className="value">
+                    {txnDetails.transactionDate.substring(0, 10)}
+                  </p>
+                </div>
+                <div>
+                  <p className="label">TRANSACTION TYPE</p>
+                  <p className="value">{txnDetails.transactionType}</p>
+                </div>
+                <div>
+                  <p className="label">TRANSACTION MODE</p>
+                  <p className="value">{txnDetails.transactionMode}</p>
+                </div>
+                <div>
+                  <p className="label">REFERENCE ID</p>
+                  <p className="value">{txnDetails.paymentRailInstanceId}</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Submit Dispute Card */}
+            <div className="dispute-card mt-3">
+              <div className="dispute-content">
+                <div className="icon-box">
+                  <BiSolidInfoSquare size={20} />
+                </div>
+                <div>
+                  <h3>Do you want to raise a dispute for this transaction?</h3>
+                  <p>
+                    Review all information before submitting your dispute claim
+                  </p>
+                </div>
+              </div>
+              <button
+                className="btn-dispute"
+                onClick={() => setShowDisputeForm(true)}
+              >
+                Raise Dispute
+              </button>
+            </div>
+          </div>
+
+          {/* TRANSACTION LISTING */}
+          {showDisputeForm ? (
+            <div className="txnlist-wrapper col-6">
+              <RaisedisputeForm onCancelClick={setShowDisputeForm} />{" "}
+              
+              {/* DISPUTE FORM HERE */}
+            </div>
+          ) : (
+            // Similar Transactions List
+            <div className="txnlist-wrapper col-6">
+              {similarTxns.length > 0 ? (
+                similarTxns.map((txn) => (
+                  <div
+                    className="txnlist-card"
+                    key={txn.id}
+                    onClick={() => handleTxnClick(txn.id)}
+                  >
+                    <div className="txnlist-left">
+                      <h3 className="txnlist-title">{txn.merchantName}</h3>
+                      <h6>{txn.merchantCategory}</h6>
+                      <p className="txnlist-desc">{txn.description}</p>
+                      <p className="txnlist-id">
+                        Transaction ID: TXN202500{txn.id}
+                      </p>
+                    </div>
+                    <div className="txnlist-right">
+                      <p className="txnlist-amount">
+                        ₹ {txn.amount.toLocaleString("en-IN")}
+                      </p>
+                      <p className="txnlist-date">
+                        {txn.transactionDate.substring(0, 10)}
+                      </p>
+                      <p className="txnlist-date">
+                        {txnDetails.transactionMode}
+                      </p>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <p>No similar transactions found.</p>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 };

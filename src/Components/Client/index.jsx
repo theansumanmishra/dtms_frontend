@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
 import ReactPaginate from "react-paginate";
+import Breadcrum from "../../Layouts/Breadcurm";
 
 const Clients = () => {
   const navigate = useNavigate();
@@ -13,7 +14,7 @@ const Clients = () => {
   const [totalClients, setTotalClients] = useState(0);
 
   // Pagination states
-  const [currentPage, setCurrentPage] = useState(0); // 0-based
+  const [currentPage, setCurrentPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const rowsPerPage = 10;
 
@@ -21,7 +22,7 @@ const Clients = () => {
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedQuery(searchQuery);
-      setCurrentPage(0); // reset page on new search
+      setCurrentPage(0);
     }, 500);
 
     return () => clearTimeout(handler);
@@ -39,13 +40,13 @@ const Clients = () => {
         }
         const res = await axios.get(url);
         if (query) {
-          setClients(res.data); // search returns full list
-          setTotalClients(res.data.length); // total = length of search results
+          setClients(res.data);
+          setTotalClients(res.data.length);
           setTotalPages(1);
           setCurrentPage(0);
         } else {
           setClients(res.data.content);
-          setTotalClients(res.data.totalElements); // backend total count
+          setTotalClients(res.data.totalElements);
           setTotalPages(res.data.totalPages);
           setCurrentPage(res.data.number);
         }
@@ -66,118 +67,137 @@ const Clients = () => {
     navigate(`/clients/${id}`);
   };
 
-  const handlePageClick = (selectedItem) => {
-    setCurrentPage(selectedItem.selected);
-  };
-
   const resetSearch = () => setSearchQuery("");
 
   return (
-    <div className="container">
-      {/* SEARCH BAR */}
-      <div className="search-card bg-light">
-        <div className="search-header">
-          <span className="icon">
-            <FaSearch size={20} color="#2563eb" />
-          </span>
-          <div>
-            <h3>Search clients by Name or Phone Number or Email</h3>
-            <p>Find all clients</p>
-          </div>
-        </div>
-
-        <div className="search-form">
-          <label htmlFor="searchQuery">
-            Client Name / Phone Number / Email
-          </label>
-          <div className="search-box">
-            <input
-              type="text"
-              id="searchQuery"
-              placeholder="Search..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-            <button type="button" className="clear-btn" onClick={resetSearch}>
-              Clear
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {loading ? (
-        <p>Loading...</p>
-      ) : (
-        <div className="custom-table">
-          <h2 className="heading">
-            All Registered Clients <br />
-            <span className="pr">
-              Showing {clients.length} of {totalClients} clients
+    <div>
+            <Breadcrum
+        breadCrumItems={[
+          { name: "Disputes", path: "/disputes" },
+          { name: "Clients", path: "" },
+        ]}
+      />
+      <div className="dashboard-page">
+        <div className="search-card bg-light">
+          <div className="search-header">
+            <span className="icon">
+              <FaSearch size={20} color="#2563eb" />
             </span>
-          </h2>
-          <table>
-            <thead>
-              <tr>
-                <th>Serial No.</th>
-                <th>Client ID</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Phone</th>
-              </tr>
-            </thead>
-            <tbody>
-              {clients.length ? (
-                clients.map((client, i) => (
-                  <tr
-                    key={`${client.id}-${i}`}
-                    onClick={() => handleRowClick(client.id)}
-                  >
-                    {/* Serial Number */}
-                    <td>
-                      {totalPages > 1
-                        ? currentPage * rowsPerPage + i + 1
-                        : i + 1}
-                    </td>
-                    <td>CLI202500{client.id}</td>
-                    <td className="DSP">{client.name}</td>
-                    <td>{client.email}</td>
-                    <td>+91-{client.phone}</td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan={4}>
-                    <div className="text-center p-4">No clients found</div>
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+            <div>
+              <h3>Search clients by Name or Phone Number or Email</h3>
+              <p>Find all clients</p>
+            </div>
+          </div>
+
+          <div className="search-form">
+            <label htmlFor="searchQuery">
+              Client Name / Phone Number / Email
+            </label>
+            <div className="search-box">
+              <input
+                type="text"
+                id="searchQuery"
+                placeholder="Search..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+              <button type="button" className="clear-btn" onClick={resetSearch}>
+                Clear
+              </button>
+            </div>
+          </div>
         </div>
-      )}
-      {/* React Paginate */}
-      {debouncedQuery.trim() === "" && totalPages > 1 && (
-        <ReactPaginate
-          previousLabel={"← Previous"}
-          nextLabel={"Next →"}
-          breakLabel={"..."}
-          pageCount={totalPages}
-          marginPagesDisplayed={2}
-          pageRangeDisplayed={3}
-          onPageChange={handlePageClick}
-          containerClassName={"pagination justify-content-center"}
-          pageClassName={"page-item"}
-          pageLinkClassName={"page-link"}
-          previousClassName={"page-item"}
-          previousLinkClassName={"page-link"}
-          nextClassName={"page-item"}
-          nextLinkClassName={"page-link"}
-          breakClassName={"page-item"}
-          breakLinkClassName={"page-link"}
-          activeClassName={"active"}
-          forcePage={currentPage}
-        />
-      )}
+
+        {loading ? (
+          <p>Loading...</p>
+        ) : (
+          <div className="table-wrapper">
+            <div className="custom-table">
+              <div className="heading-container">
+                <h2 className="heading">
+                  All Registered Clients <br />
+                  <span className="pr">
+                    Showing {clients.length} of {totalClients} clients
+                  </span>
+                </h2>
+              </div>
+
+              {/* Table Scrollable Container */}
+              <div className="table-scroll">
+                <table>
+                  <thead className="head">
+                    <tr>
+                      <th>Serial No.</th>
+                      <th>Client ID</th>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Phone</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {clients.length ? (
+                      clients.map((client, i) => (
+                        <tr
+                          key={`${client.id}-${i}`}
+                          onClick={() => handleRowClick(client.id)}
+                        >
+                          {/* Serial Number */}
+                          <td>
+                            {totalPages > 1
+                              ? currentPage * rowsPerPage + i + 1
+                              : i + 1}
+                          </td>
+                          <td>CLI202500{client.id}</td>
+                          <td className="DSP">{client.name}</td>
+                          <td>{client.email}</td>
+                          <td>+91-{client.phone}</td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan={4}>
+                          <div className="text-center p-4">
+                            No clients found
+                          </div>
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* React Paginate */}
+{/* Pagination */}
+{debouncedQuery.trim() === "" && totalPages > 1 && (
+  <div className="pagination-section">
+    <ReactPaginate
+      previousLabel={"← Prev"}
+      nextLabel={"Next →"}
+      breakLabel={"..."}
+      pageCount={totalPages}
+      marginPagesDisplayed={2}
+      pageRangeDisplayed={3}
+      onPageChange={(event) => setCurrentPage(event.selected)}
+      forcePage={currentPage}
+      containerClassName={"pagination-container"}
+      pageClassName={"pagination-page"}
+      pageLinkClassName={"pagination-link"}
+      previousClassName={"pagination-prev"}
+      previousLinkClassName={"pagination-link"}
+      nextClassName={"pagination-next"}
+      nextLinkClassName={"pagination-link"}
+      breakClassName={"pagination-break"}
+      breakLinkClassName={"pagination-link"}
+      activeClassName={"pagination-active"}
+    />
+  </div>
+)}
+
+
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

@@ -1,0 +1,21 @@
+.breadcrum-container {
+    padding: 20px;
+    background: #fff;
+ }
+.breadcrum-container .breadcrumb {
+    margin-bottom: 0;
+}
+
+.breadcrum-container .breadcrumb .breadcrumb-item {
+    cursor: pointer;
+    color: #0d6efd;
+}
+
+.breadcrum-container .breadcrumb .breadcrumb-item.active {
+    cursor: default;
+    color: initial;
+}
+
+.breadcrumb-item+.breadcrumb-item::before {
+    content: ">"
+}

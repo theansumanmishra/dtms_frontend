@@ -4,8 +4,8 @@ import Header from '../Layouts/Header';
 const DebitCardPage = () => {
   return (
     <>
-   <Header />
-   <DebitCardForm />
+      <Header />
+      <DebitCardForm />
     </>
   );
 };

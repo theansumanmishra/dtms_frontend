@@ -1,183 +1,82 @@
-.header {
+.cool-navbar {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  height: 80px;
-  padding: 1rem 8%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: rgba(255, 255, 255, 0.2); 
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+  padding: 0.5rem 2rem;
   z-index: 1000;
+  transition: all 0.3s ease;
 }
-.header-buttons {
-  width: 100%;
-  height: 80px;
-  position: sticky;
-  top: 0;
+
+.cool-navbar:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.brand-logo img {
+  transition: transform 0.3s ease;
+}
+
+.brand-logo:hover img {
+  transform: scale(1.05);
+}
+
+.nav-link-custom {
+  color: #333 !important;
+  font-weight: 500;
+  font-size: 1rem;
+  position: relative;
+  margin: 0 1rem;
+  transition: color 0.3s ease;
+}
+
+.nav-link-custom::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
   left: 0;
-  padding: 12px 24px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  z-index: 1000;
-  font-family: "Segoe UI", sans-serif;
+  width: 0%;
+  height: 2px;
+  background-color: #007bff;
+  transition: width 0.3s ease;
 }
 
-.btn {
-  height: 40px;
-  width: 100px;
-  background: #fff;
-  color: #2980b9;
-  border: none;
-  padding: 8px 18px;
-  border-radius: 6px;
-  font-size: 15px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background 0.3s ease;
+.nav-link-custom:hover {
+  color: #007bff !important;
 }
 
-.btn:hover {
-  background-color: #f0f0f0;
-}
-
-.header-right .dashboard {
-  background: #fff;
-  color: blue;
-  height: 30px;
-  width: 100px;
-  padding: 1px 0 0px 0;
-  margin-top: 17px;
-  margin-bottom: 15px;
-  border: 2px solid blue;
-  border-radius: 6px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: 0.3s ease;
-  font-size: 15px;
-}
-
-.header-right .back {
-  background: #fff;
-  color: blue;
-  height: 30px;
-  width: 60px;
-  padding: 1px 0 0 0;
-  margin-top: 17px;
-  border: 2px solid blue;
-  border-radius: 6px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: 0.3s ease;
-  font-size: 15px;
-}
-
-.header-right .back:hover {
-  color: #fff;
-  background: blue;
-}
-
-.header-right .dashboard:hover {
-  color: #fff;
-  background: blue;
-}
-
-.navbar-left-1 h3 {
-  font-family: "Borel", cursive;
-  padding: 5px 0 0 0;
-  color: blue;
-  font-size: 1.2rem;
-  font-weight: 600;
-  margin: 0;
-}
-
-.navbar-right {
-  display: flex;
-  gap: 45px;
-  padding: 0 0 35px 0;
-  margin: 16px 0 0 0;
-}
-
-.navbar-right h4 {
-  font-weight: 600;
-}
-
-.aboutus:hover {
-  color: blue;
-}
-
-.aboutus {
-  color: #000;
-  padding: 0 0 35px 0;
-  font-size: 15px;
-  font-weight: 400;
-  cursor: pointer;
-}
-
-.team {
-  color: #000;
-  font-size: 15px;
-  font-weight: 400;
-  cursor: pointer;
-}
-
-.team:hover {
-  color: #000;
-}
-
-.header-right {
-  display: flex;
-  gap: 45px;
-}
-
-.header-right h4 {
-  font-weight: 600;
-  line-height: 2;
-}
-
-.header-right .logout {
-  background: #fff;
-  color: red;
-  height: 30px;
-  width: 60px;
-  padding: 0 0 1.5px 0;
-  border: 2px solid red;
-  border-radius: 6px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: 0.3s ease;
-  font-size: 15px;
-}
-
-.header-right button:hover {
-  background-color: red;
-  color: #ffffff;
+.nav-link-custom:hover::after {
+  width: 100%;
 }
 
 .profile-pic {
-  display: inline-block;
-  vertical-align: middle;
-  width: 50px;
-  height: 50px;
-  overflow: hidden;
   border-radius: 50%;
+  object-fit: cover;
+  overflow: hidden;
+  border: 2px solid #1c1c1d;
+  transition: transform 0.3s ease, border 0.3s ease;
 }
 
-.profile-menu .dropdown-menu {
-  right: 0;
-  left: unset;
+.profile-pic:hover {
+  transform: scale(1.05);
+  border-color: #0056b3;
 }
 
-.profile-menu .fa-fw {
-  margin-right: 10px;
+.profile-dropdown .dropdown-menu {
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  border: none;
+  padding: 0.5rem 0;
 }
 
-.toggle-change::after {
-  border-top: 0;
-  border-bottom: 0.3em solid;
+.profile-dropdown .dropdown-item {
+  font-size: 0.95rem;
+  transition: background 0.2s ease;
+}
+
+.profile-dropdown .dropdown-item:hover {
+  background-color: rgba(0, 123, 255, 0.1);
 }
