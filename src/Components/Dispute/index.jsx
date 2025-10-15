@@ -26,7 +26,7 @@ const Dispute = () => {
     return () => clearTimeout(handler);
   }, [searchQuery]);
 
-  // ✅ Reset page when search or filter changes
+  // Reset page when search or filter changes
   useEffect(() => {
     setCurrentPage(0);
   }, [debouncedQuery, selectedTab]);

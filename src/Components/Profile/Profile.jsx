@@ -104,8 +104,8 @@ const Profile = () => {
                         ? preview
                         : user.profilePhoto
                         ? `http://localhost:8080${user.profilePhoto}`
-                        // : "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp"
-                        : "/profile.jpg"
+                        : // : "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp"
+                          "/profile.jpg"
                     }
                     alt="Profile"
                     className="img-fluid img-thumbnail mt-4 mb-3 profile-avatar"
@@ -153,7 +153,7 @@ const Profile = () => {
 
               {/* Stats */}
               <div className="p-4 stats-section">
-                {!preview && user && !user.roles.includes("MASTER_ADMIN") ? (
+                {!preview && user ? (
                   <div className="d-flex justify-content-between align-items-end">
                     <div className="d-flex flex-column flex-sm-row gap-2 justify-content-center">
                       {/* Add / Change Photo */}
@@ -190,6 +190,7 @@ const Profile = () => {
                         </button>
                       )}
                     </div>
+
                     <div className="d-flex justify-content-end text-center gap-4 pe-3">
                       <div className="stat-box">
                         <h4>{disputeStats.disputesCreated}</h4>

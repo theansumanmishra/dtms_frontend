@@ -169,3 +169,75 @@ p span.blu:hover {
 .toggle-password:hover {
   color: #1d4ed8;
 }
+
+/* === Modal Custom Styling === */
+#resetPasswordModal .modal-dialog {
+  margin-top: 8%;
+  transition: all 0.3s ease-in-out;
+}
+
+#resetPasswordModal .modal-content {
+  border-radius: 20px;
+  border: none;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  animation: fadeInModal 0.3s ease-in-out;
+}
+
+#resetPasswordModal .modal-header {
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  color: white;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  padding: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+#resetPasswordModal .modal-body {
+  padding: 1.5rem 2rem;
+  color: #333;
+  font-size: 0.95rem;
+}
+
+#resetPasswordModal p {
+  font-size: 0.9rem;
+  color: #555;
+  line-height: 1.4;
+}
+
+#resetPasswordModal input.form-control {
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  transition: all 0.2s ease;
+  padding: 10px 12px;
+}
+
+#resetPasswordModal input.form-control:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.15rem rgba(0, 123, 255, 0.25);
+}
+
+#resetPasswordModal .btn-primary {
+  border-radius: 10px;
+  padding: 10px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  transition: all 0.2s ease-in-out;
+}
+
+#resetPasswordModal .btn-primary:hover {
+  background: #0056b3;
+  transform: translateY(-1px);
+}
+
+@keyframes fadeInModal {
+  from {
+    opacity: 0;
+    transform: translateY(-15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

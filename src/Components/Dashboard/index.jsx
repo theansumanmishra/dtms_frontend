@@ -71,7 +71,7 @@ import Button from "react-bootstrap/Button";
 const View = () => {
   const navigate = useNavigate();
   const [recentDisputes, setRecentDisputes] = useState([]);
-  
+
   useEffect(() => {
     axios
       .get("http://localhost:8080/disputes/dashboard")
@@ -193,9 +193,7 @@ const View = () => {
 
   return (
     <>
-      <div
-        className="container-fluid py-4 px-5 d-flex flex-column"
-      >
+      <div className="container-fluid py-4 px-5 d-flex flex-column">
         {/* Header */}
         <div className="mb-3">
           <h1 className="fw-bold text-primary mb-1">Dashboard</h1>
@@ -227,25 +225,25 @@ const View = () => {
         {/* Recent Disputes Table */}
         <div className="row g-3 mt-3">
           <div className="col-12 d-flex flex-column">
-            <div className="card shadow-lg border-0 rounded-4 d-flex flex-column mb-4">
+            <div className="card shadow-lg border-0 rounded-4 d-flex flex-column">
               {/* Card Header */}
-              <div className="card-header bg-white border-0 d-flex justify-content-between align-items-center px-3 py-2 rounded-3 mb-2">
+              <div className="card-header bg-white border-0 d-flex align-items-center px-3 py-2 rounded-3">
+                <i className="bi bi-clock-history text-muted fs-4 me-2"></i>
                 <h4 className="fw-bold text-primary mb-0">Recent Disputes</h4>
-                <i className="bi bi-clock-history text-muted fs-4"></i>
               </div>
 
               {/* Table */}
-              <div
-                className="table-responsive flex-grow-1">
-                <table className="table align-middle mb-0 rounded-3 p-4">
+              <div className="table flex-grow-1">
+                <table className="table align-middle text-center mb-0 rounded-3">
                   <thead className="table-light text-secondary rounded-3">
                     <tr>
-                    <th>SERIAL NO</th>
+                      <th className="text-uppercase px-3 py-2">SERIAL NO</th>
                       <th className="text-uppercase px-3 py-2">Dispute ID</th>
                       <th className="text-uppercase px-3 py-2">
                         Transaction ID
                       </th>
                       <th className="text-uppercase px-3 py-2">Created Date</th>
+                      <th className="text-uppercase px-3 py-2">Status</th>
                       <th className="text-uppercase px-3 py-2">Sub status</th>
                     </tr>
                   </thead>
@@ -266,17 +264,10 @@ const View = () => {
                         </td>
                         <td className="px-3 py-2 ">{d.createdDate}</td>
                         <td className="px-3 py-2">
-                          <span
-                            className={`badge rounded-pill px-3 py-2 ${
-                              d.status.name === "APPROVED"
-                                ? "bg-success-subtle text-success"
-                                : d.status.name === "REJECTED"
-                                ? "bg-danger-subtle text-danger"
-                                : "bg-warning-subtle text-warning"
-                            }`}
-                          >
-                            {d.status.name.replace("_", "-")}
-                          </span>
+                          <span>{d.status.name.replace("_", "-")}</span>
+                        </td>
+                        <td className="px-3 py-2">
+                          <span>{d.subStatus.name.replace("_", "-")}</span>
                         </td>
                       </tr>
                     ))}
@@ -293,13 +284,10 @@ const View = () => {
                 >
                   Show All Disputes <i className="bi bi-arrow-right"></i>
                 </Button>
-              </div>  
+              </div>
             </div>
           </div>
         </div>
-
-
-        
       </div>
     </>
   );
