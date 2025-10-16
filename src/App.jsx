@@ -18,6 +18,8 @@ import ViewDisputePage from "./Pages/DisputeDetails";
 import ViewStats from "./Pages/ViewStats"
 import UserDetailsPage from "./Pages/UserDetails";
 import AdminDashboard from "./pages/AdminDashboard";
+import PasswordResetPage from "./Pages/PasswordReset"
+import PasswordChangePage from "./Pages/PasswordChange"
 import Error404Page from "./Pages/Error404Page";
 
 // Set up Axios interceptor to include JWT token in headers
@@ -70,15 +72,17 @@ const App = () => {
           <Route path="/dashboard" element={<ViewStats />}/>
           <Route path="/user" element={<UserDetailsPage />}/>
           <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/reset-password" element={<PasswordResetPage />} />
+          <Route path="/forget-password" element={<PasswordChangePage />} />
           <Route path="/*" element={<Error404Page />} />
         </Routes>
 
         <ToastContainer
           position="top-right"
-          autoClose={1000}
+          autoClose={2000}
           closeButton={false}
           hideProgressBar={false}
-          newestOnTop
+          newestOnTop={false}
           closeOnClick={true}
           pauseOnHover={false}
           draggable={false}

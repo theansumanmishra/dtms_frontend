@@ -1,11 +1,11 @@
-import AboutForm from '../Components/About Us/AboutPage';
-import Navbar from '../Layouts/Navbar';
+import AboutForm from "../Components/About Us/AboutPage";
+import Navbar from "../Layouts/Navbar";
 
 const AboutPage = () => {
   return (
     <>
-    <Navbar />
-    <AboutForm />
+      <Navbar />
+      <AboutForm />
     </>
   );
 };

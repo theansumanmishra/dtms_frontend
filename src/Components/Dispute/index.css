@@ -217,7 +217,8 @@
 .btn-group {
   gap: 2px;
   margin-bottom: 2px;
-  width: 400px;
+  width:444px;
+  border-radius: 50%;
 }
 
 .btn-group .btn {

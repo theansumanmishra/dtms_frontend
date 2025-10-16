@@ -76,7 +76,7 @@ const LoginForm = () => {
     }
     setResetLoading(true);
     try {
-      await axios.post("http://localhost:8080/forgot-password", { email });
+      await axios.post("http://localhost:8080/reset-link", { email });
       toast.success("Password reset link sent to your email");
       setEmail("");
     } catch (error) {
@@ -162,6 +162,7 @@ const LoginForm = () => {
                 data-bs-target="#resetPasswordModal"
                 style={{ cursor: "pointer" }}
               >
+                {" "}
                 Reset Password
               </span>
             </p>
