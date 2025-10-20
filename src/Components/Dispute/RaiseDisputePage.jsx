@@ -32,11 +32,20 @@ const RaisedisputeForm = ({ onCancelClick }) => {
     return <p>Loading...</p>;
   }
 
+  // Get today's date in YYYY-MM-DD format
+  const today = new Date();
+  const todayFormatted = today.toISOString().split("T")[0];
+
+  // Calculate the date 90 days ago
+  const ninetyDaysAgo = new Date();
+  ninetyDaysAgo.setDate(today.getDate() - 90);
+
   //Validation Schema
   const validationSchema = Yup.object({
     date: Yup.date()
-      .max(new Date(), "Dispute date cannot be in the future")
-      .required("Dispute date is required"),
+      .required("Dispute Raised Date is required")
+      .max(today, "Future dates are not allowed")
+      .min(ninetyDaysAgo, "Date cannot be earlier than 90 days from today"),
     source: Yup.string().required("Dispute source is required"),
     reason: Yup.string().required("Dispute reason is required"),
     description: Yup.string()
@@ -44,9 +53,6 @@ const RaisedisputeForm = ({ onCancelClick }) => {
       .min(10, "Description must be at least 10 characters long")
       .max(500, "Description cannot exceed 500 characters"),
   });
-
-  // Get today's date in YYYY-MM-DD format
-  const today = new Date().toISOString().split("T")[0];
 
   const initialValues = {
     createdDate: today,
@@ -74,9 +80,7 @@ const RaisedisputeForm = ({ onCancelClick }) => {
       console.log("Payload Sent:", JSON.stringify(payload));
       const disputeId = response.data.id;
 
-      navigate(
-        `/disputes/${disputeId}?showConfirmation=true`
-      );
+      navigate(`/disputes/${disputeId}?showConfirmation=true`);
 
       toast.success("Dispute submitted successfully");
     } catch (error) {
@@ -116,7 +120,12 @@ const RaisedisputeForm = ({ onCancelClick }) => {
                     <label htmlFor="date">
                       Dispute Raised Date<span className="required">*</span>
                     </label>
-                    <Field type="date" id="date" name="date" max={today} />
+                    <Field
+                      type="date"
+                      id="date"
+                      name="date"
+                      max={todayFormatted}
+                    />
                     <ErrorMessage
                       name="date"
                       component="div"

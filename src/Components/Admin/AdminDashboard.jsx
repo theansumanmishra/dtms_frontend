@@ -60,6 +60,8 @@ const Admin = () => {
       phone: "",
       roleId: "",
       username: "",
+      roles: [],
+      enabled: true,
     });
     setShowModal(true);
   };
@@ -72,6 +74,8 @@ const Admin = () => {
       phone: user.phone,
       roleId: user.roles[0]?.id?.toString() || "",
       username: user.username || "",
+      roles: user.roles || [],
+      enabled: user.enabled,
     });
     setShowModal(true);
   };
@@ -117,7 +121,7 @@ const Admin = () => {
     } catch (err) {
       console.error("Error saving user:", err);
     } finally {
-      setLoading(false); // stop loading
+      setLoading(false);
     }
   };
 
@@ -171,9 +175,6 @@ const Admin = () => {
                         size="sm"
                         className="me-2 btn-glow-sm"
                         onClick={() => editUser(u)}
-                        disabled={u.roles?.some(
-                          (r) => r.name === "MASTER_ADMIN"
-                        )} // disable for Master Admin
                       >
                         Edit
                       </Button>
@@ -184,7 +185,7 @@ const Admin = () => {
                         onClick={() => deleteUser(u.id)}
                         disabled={u.roles?.some(
                           (r) => r.name === "MASTER_ADMIN"
-                        )} // disable for Master Admin
+                        )}
                       >
                         Delete
                       </Button>
@@ -208,62 +209,104 @@ const Admin = () => {
         </Modal.Header>
         <Form onSubmit={handleSubmit}>
           <Modal.Body>
-            {/* Form fields */}
-            {["name", "email", "phone", "username"].map((field) => (
-              <Form.Group className="mb-3" key={field}>
-                <Form.Label className="fw-semibold">
-                  {field.charAt(0).toUpperCase() + field.slice(1)}
-                </Form.Label>
+            {/* Name dropdown */}
+            <Form.Group className="mb-3">
+              <Form.Label className="fw-semibold">Name</Form.Label>
+              <Form.Control
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                placeholder="Enter name"
+                pattern="^[A-Za-z ]+$"
+                title="Name should contain only alphabets and spaces"
+                required
+              />
+            </Form.Group>
+
+            {/* Email dropdown */}
+            <Form.Group className="mb-3">
+              <Form.Label className="fw-semibold">Email</Form.Label>
+              <Form.Control
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="Enter email"
+                pattern="^[\w.-]+@[\w.-]+\.\w{2,}$"
+                title="Enter a valid email address (e.g. user@example.com)"
+                required
+              />
+            </Form.Group>
+
+            {/* Phone dropdown */}
+            <Form.Group className="mb-3">
+              <Form.Label className="fw-semibold">Phone</Form.Label>
+              <Form.Control
+                type="tel"
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+                placeholder="Enter phone"
+                pattern="^[6-9]\d{9}$"
+                title="Enter a valid 10-digit mobile number starting from 6-9"
+                required
+              />
+            </Form.Group>
+
+            {/* Username dropdown */}
+            {!formData.roles?.some((r) => r.name === "MASTER_ADMIN") && (
+              <Form.Group className="mb-3">
+                <Form.Label className="fw-semibold">Username</Form.Label>
                 <Form.Control
-                  type={field === "phone" ? "tel" : "text"}
-                  name={field}
-                  value={formData[field]}
+                  type="text"
+                  name="username"
+                  value={formData.username}
                   onChange={handleChange}
-                  placeholder={`Enter ${field}`}
-                  pattern={field === "phone" ? "\\d{10}" : undefined}
-                  title={
-                    field === "phone"
-                      ? "Phone number must be 10 digits"
-                      : undefined
-                  }
+                  placeholder="Enter username"
+                  pattern="^[A-Za-z0-9_]{4,15}$"
+                  title="Username should be 4-15 characters, letters/numbers/underscores only"
                   required
                 />
               </Form.Group>
-            ))}
+            )}
 
             {/* Role dropdown */}
-            <Form.Group className="mb-3">
-              <Form.Label className="fw-semibold">Role</Form.Label>
-              <Form.Select
-                name="roleId"
-                value={formData.roleId}
-                onChange={handleChange}
-                required
-              >
-                <option value="">Select role</option>
-                {roles.map((role) => (
-                  <option key={role.id} value={role.id}>
-                    {role.name.replace("DISPUTE_", "")}
-                  </option>
-                ))}
-              </Form.Select>
-            </Form.Group>
-
-            {/* Status dropdown */}
-            {formData.id && (
+            {!formData.roles?.some((r) => r.name === "MASTER_ADMIN") && (
               <Form.Group className="mb-3">
-                <Form.Label className="fw-semibold">Status</Form.Label>
+                <Form.Label className="fw-semibold">Role</Form.Label>
                 <Form.Select
-                  name="enabled"
-                  value={formData.enabled}
+                  name="roleId"
+                  value={formData.roleId}
                   onChange={handleChange}
                   required
                 >
-                  <option value={true}>Enable</option>
-                  <option value={false}>Disable</option>
+                  <option value="">Select role</option>
+                  {roles.map((role) => (
+                    <option key={role.id} value={role.id}>
+                      {role.name.replace("DISPUTE_", "")}
+                    </option>
+                  ))}
                 </Form.Select>
               </Form.Group>
             )}
+
+            {/* Status dropdown */}
+            {formData.id &&
+              !formData.roles?.some((r) => r.name === "MASTER_ADMIN") && (
+                <Form.Group className="mb-3">
+                  <Form.Label className="fw-semibold">Status</Form.Label>
+                  <Form.Select
+                    name="enabled"
+                    value={formData.enabled}
+                    onChange={handleChange}
+                    required
+                  >
+                    <option value={true}>Enable</option>
+                    <option value={false}>Disable</option>
+                  </Form.Select>
+                </Form.Group>
+              )}
           </Modal.Body>
 
           <Modal.Footer>

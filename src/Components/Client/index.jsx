@@ -71,7 +71,7 @@ const Clients = () => {
 
   return (
     <div>
-            <Breadcrum
+      <Breadcrum
         breadCrumItems={[
           { name: "Disputes", path: "/disputes" },
           { name: "Clients", path: "" },
@@ -155,7 +155,7 @@ const Clients = () => {
                       ))
                     ) : (
                       <tr>
-                        <td colSpan={4}>
+                        <td colSpan={5}>
                           <div className="text-center p-4">
                             No clients found
                           </div>
@@ -167,33 +167,31 @@ const Clients = () => {
               </div>
 
               {/* React Paginate */}
-{/* Pagination */}
-{debouncedQuery.trim() === "" && totalPages > 1 && (
-  <div className="pagination-section">
-    <ReactPaginate
-      previousLabel={"← Prev"}
-      nextLabel={"Next →"}
-      breakLabel={"..."}
-      pageCount={totalPages}
-      marginPagesDisplayed={2}
-      pageRangeDisplayed={3}
-      onPageChange={(event) => setCurrentPage(event.selected)}
-      forcePage={currentPage}
-      containerClassName={"pagination-container"}
-      pageClassName={"pagination-page"}
-      pageLinkClassName={"pagination-link"}
-      previousClassName={"pagination-prev"}
-      previousLinkClassName={"pagination-link"}
-      nextClassName={"pagination-next"}
-      nextLinkClassName={"pagination-link"}
-      breakClassName={"pagination-break"}
-      breakLinkClassName={"pagination-link"}
-      activeClassName={"pagination-active"}
-    />
-  </div>
-)}
-
-
+              {/* Pagination */}
+              {debouncedQuery.trim() === "" && totalPages > 1 && (
+                <div className="pagination-section">
+                  <ReactPaginate
+                    previousLabel={"← Prev"}
+                    nextLabel={"Next →"}
+                    breakLabel={"..."}
+                    pageCount={totalPages}
+                    marginPagesDisplayed={2}
+                    pageRangeDisplayed={3}
+                    onPageChange={(event) => setCurrentPage(event.selected)}
+                    forcePage={currentPage}
+                    containerClassName={"pagination-container"}
+                    pageClassName={"pagination-page"}
+                    pageLinkClassName={"pagination-link"}
+                    previousClassName={"pagination-prev"}
+                    previousLinkClassName={"pagination-link"}
+                    nextClassName={"pagination-next"}
+                    nextLinkClassName={"pagination-link"}
+                    breakClassName={"pagination-break"}
+                    breakLinkClassName={"pagination-link"}
+                    activeClassName={"pagination-active"}
+                  />
+                </div>
+              )}
             </div>
           </div>
         )}

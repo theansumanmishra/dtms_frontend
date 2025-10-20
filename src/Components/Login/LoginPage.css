@@ -241,3 +241,26 @@ p span.blu:hover {
     transform: translateY(0);
   }
 }
+
+/* === Invalid input styling === */
+.invalid-input {
+  border-color: #dc2626 !important; /* red border */
+  animation: shake 0.3s ease;
+}
+
+/* Error message below input */
+.input-group .error {
+  color: #dc2626;
+  font-size: 0.85rem;
+  margin-top: 4px;
+}
+
+/* Shake animation for invalid input */
+@keyframes shake {
+  0% { transform: translateX(0); }
+  20% { transform: translateX(-5px); }
+  40% { transform: translateX(5px); }
+  60% { transform: translateX(-5px); }
+  80% { transform: translateX(5px); }
+  100% { transform: translateX(0); }
+}

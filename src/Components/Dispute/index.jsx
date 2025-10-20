@@ -16,6 +16,7 @@ const Dispute = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [totalDisputes, setTotalDisputes] = useState(0);
   const [noResultsMessage, setNoResultsMessage] = useState("");
+  const [_inputError, setInputError] = useState("");
   const rowsPerPage = 10;
 
   // Debounce search query
@@ -37,7 +38,6 @@ const Dispute = () => {
       try {
         setLoading(true);
         if (debouncedQuery.trim() !== "") {
-          
           const res = await axios.get(
             `http://localhost:8080/disputes/search?accountNumber=${debouncedQuery}`
           );
@@ -60,7 +60,9 @@ const Dispute = () => {
             setDisputes([]);
             setTotalDisputes(0);
             setTotalPages(0);
-            setNoResultsMessage("No dispute found with the given account number");
+            setNoResultsMessage(
+              "No dispute found with the given account number"
+            );
           }
         } else {
           const res = await axios.get(
@@ -97,6 +99,7 @@ const Dispute = () => {
     setSearchQuery("");
     setDebouncedQuery("");
     setCurrentPage(0);
+    setSelectedTab("all");
   };
 
   const handleRowClick = (id) => {
@@ -125,7 +128,21 @@ const Dispute = () => {
               id="searchQuery"
               placeholder="Search..."
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={(e) => {
+                const value = e.target.value;
+                if (/^\d*$/.test(value)) {
+                  setSearchQuery(value);
+                  setInputError("");
+                  // 👇 When user types something (starts searching)
+                  if (value.trim() !== "") {
+                    setSelectedTab(""); // deactivate all filters visually
+                  } else {
+                    setSelectedTab("pending-review"); // revert back when search cleared
+                  }
+                } else {
+                  setInputError("Only numbers are allowed");
+                }
+              }}
             />
             <button type="button" className="clear-btn" onClick={resetSearch}>
               Clear
@@ -149,7 +166,11 @@ const Dispute = () => {
                 <button
                   key={tab}
                   type="button"
-                  onClick={() => setSelectedTab(tab)}
+                  onClick={() => {
+                    setSelectedTab(tab);
+                    setSearchQuery(""); // clear search if user clicks a tab again
+                    setDebouncedQuery("");
+                  }}
                   className={
                     selectedTab === tab
                       ? "active btn btn-outline-primary"
@@ -197,6 +218,15 @@ const Dispute = () => {
                         <span
                           className={`my-badge status-${row.status.name.toLowerCase()}`}
                         >
+                          {row.status.name === "INITIATED" && (
+                            <i className="bi bi-clock"></i>
+                          )}{" "}
+                          {row.status.name === "IN_PROGRESS" && (
+                            <i className="bi bi-arrow-repeat"></i>
+                          )}{" "}
+                          {row.status.name === "CLOSED" && (
+                            <i className="bi bi-check-circle"></i>
+                          )}
                           {row.status.name.replace("_", " ")}
                         </span>
                       </td>
@@ -204,6 +234,21 @@ const Dispute = () => {
                         <span
                           className={`my-badge substatus-${row.subStatus.name.toLowerCase()}`}
                         >
+                          {row.subStatus.name === "PENDING_REVIEW" && (
+                            <i className="bi bi-hourglass-split"></i>
+                          )}{" "}
+                          {row.subStatus.name === "UNDER_REVIEW" && (
+                            <i className="bi bi-search"></i>
+                          )}{" "}
+                          {row.subStatus.name === "ACCEPTED" && (
+                            <i className="bi bi-hand-thumbs-up"></i>
+                          )}{" "}
+                          {row.subStatus.name === "PARTIALLY_ACCEPTED" && (
+                            <i className="bi bi-circle-half"></i>
+                          )}{" "}
+                          {row.subStatus.name === "REJECTED" && (
+                            <i className="bi bi-x-circle"></i>
+                          )}
                           {row.subStatus.name.replace("_", " ")}
                         </span>
                       </td>
@@ -220,7 +265,7 @@ const Dispute = () => {
             )}
           </div>
 
-          {/* ✅ Conditional Pagination */}
+          {/* Conditional Pagination */}
           {debouncedQuery.trim() === "" && totalPages > 1 && (
             <div className="pagination-section">
               <ReactPaginate

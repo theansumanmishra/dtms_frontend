@@ -1,7 +1,6 @@
 .transaction-page {
   padding: 0 80px;
   background: linear-gradient(135deg, #dbeafe 0%, #ffffff 50%, #d1fae5 100%);
-  /* max-height: 660px; */
   overflow-y: auto;
 }
 
@@ -119,4 +118,57 @@ button.btn-outline-dark {
 button.btn-outline-dark:hover {
   background: #2563eb;
   color: #fff;
+}
+
+.custom-input-wrapper {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.input-container {
+  position: relative;
+  display: inline-block;
+}
+
+.input-container input {
+  position: relative;
+  z-index: 2;
+  background: transparent;
+}
+
+.input-placeholder {
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+  color: #9ca3af;
+  font-size: 0.8rem;
+  z-index: 1;
+  pointer-events: none;
+  transition: 0.2s ease;
+}
+
+.input-container input:focus + .input-placeholder,
+.input-container input:not(:placeholder-shown) + .input-placeholder {
+  opacity: 0;
+}
+
+.input-container input[value]:not([value=""]) + .input-placeholder {
+  opacity: 0;
+}
+
+.date-clear{
+  margin-top: 20px;
+  width: 100px;
+}
+
+.pill-button {
+  border-radius: 50px !important;
+  padding: 4px 14px !important;
+  font-weight: 500;
+  border-radius: 50px !important;
+  background-color: #fef2f2 !important;
+  color: #b91c1c !important;
+  border-color: #fca5a5 !important;
 }

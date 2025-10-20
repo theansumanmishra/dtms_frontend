@@ -78,17 +78,29 @@ const View = () => {
       .then((res) => {
         const data = res.data;
 
+    const colorMapping = {
+      "Under Review": "#2196F3",
+      "Pending Review": "#FF9800",
+      "Accepted": "#4CAF50",
+      "Partially Accepted": "#FFC107",
+      "Rejected": "#F44336",
+    };
+
         // ---------------- Custom Fan Pie Chart ----------------
         const pieData = Object.entries(data.subStatusCounts).map(
-          ([name, count]) => ({
-            name,
-            y: count,
-          })
+          ([name, count]) => {
+            const color = colorMapping[name] || "#808080";
+            return {
+              name,
+              y: count,
+              color,
+            };
+          }
         );
 
         Highcharts.chart("substatus-container", {
           chart: { type: "pie" },
-          title: { text: "Dispute Status Breakdown" },
+          title: { text: "Dispute Sub Status Breakdown" },
           subtitle: { text: "Custom animated pie" },
           tooltip: {
             headerFormat: "",

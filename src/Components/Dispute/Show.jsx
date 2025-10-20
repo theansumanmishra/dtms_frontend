@@ -18,6 +18,7 @@ const DisputeConfirmation = () => {
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [user, setUser] = useState(null);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   const steps = [
     "Your dispute will be reviewed by our specialist team within 1-2 business days.",
@@ -102,6 +103,19 @@ const DisputeConfirmation = () => {
     dispute.status?.name === "INITIATED" ||
     dispute.subStatus?.name === "PENDING_REVIEW";
 
+  const handleDelete = async () => {
+    try {
+      await axios.delete(`http://localhost:8080/disputes/${disputeId}`);
+      toast.success(`Dispute DSP202500${disputeId} deleted successfully`);
+      navigate("/disputes"); 
+    } catch (error) {
+      console.error("Error deleting dispute:", error);
+      toast.error("Failed to delete dispute ❌");
+    } finally {
+      setShowDeleteConfirm(false);
+    }
+  };
+
   return (
     <div>
       {!showConfirmation && (
@@ -131,21 +145,30 @@ const DisputeConfirmation = () => {
 
         {/* Summary Card */}
         <div className="summary-card mt-4">
-          <div className="d-flex justify-content-between">
+          <div className="d-flex justify-content-between align-items-center">
             <h4>Dispute Summary</h4>
-            {!showConfirmation &&
-              dispute.status.name !== "CLOSED" &&
-              user?.roles?.includes("DISPUTE_MANAGER") && (
-                <Button
-                  variant="outline-dark"
-                  size="sm"
-                  onClick={() => setShowModal(true)}
-                >
-                  Review Dispute
-                </Button>
-              )}
-          </div>
+            <div className="d-flex gap-2 summary-buttons">
+              {!showConfirmation &&
+                dispute.status.name !== "CLOSED" &&
+                user?.roles?.includes("DISPUTE_MANAGER") && (
+                  <button
+                    className="summary-btn review-btn"
+                    onClick={() => setShowModal(true)}
+                  >
+                    Review Dispute
+                  </button>
+                )}
 
+              {!showConfirmation && (
+                <button
+                  className="summary-btn delete-btn"
+                  onClick={() => setShowDeleteConfirm(true)}
+                >
+                  Delete Dispute
+                </button>
+              )}
+            </div>
+          </div>
           <div className="summary-grid pt-2">
             <div>
               <span className="label">Dispute ID</span>
@@ -311,7 +334,7 @@ const DisputeConfirmation = () => {
         )}
 
         {/* SINGLE MODAL HANDLING BOTH STEPS */}
-        <Modal show={showModal} onHide={handleClose}>
+        <Modal show={showModal} onHide={handleClose} className="modal-glass">
           <Modal.Header closeButton>
             <Modal.Title>
               {isInitialReview ? "Initial Review" : "Final Review"}
@@ -504,6 +527,30 @@ const DisputeConfirmation = () => {
               }}
             </Formik>
           </Modal.Body>
+        </Modal>
+
+        <Modal
+          show={showDeleteConfirm}
+          onHide={() => setShowDeleteConfirm(false)}
+          className="modal-glass"
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>Confirm Delete</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            Are you sure you want to delete dispute ID DSP202500{disputeId}?
+          </Modal.Body>
+          <Modal.Footer>
+            <Button
+              variant="secondary"
+              onClick={() => setShowDeleteConfirm(false)}
+            >
+              Cancel
+            </Button>
+            <Button variant="danger" onClick={handleDelete}>
+              Delete
+            </Button>
+          </Modal.Footer>
         </Modal>
       </div>
     </div>

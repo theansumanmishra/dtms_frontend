@@ -13,15 +13,40 @@ const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [loginLoading, setLoginLoading] = useState(false);
   const [resetLoading, setResetLoading] = useState(false);
-
   const [showPassword, setShowPassword] = useState(false);
   const [passwordToggled, setPasswordToggled] = useState(false);
+
+  const [errors, setErrors] = useState({ userId: "", password: "" });
+
   const navigate = useNavigate();
+
+  // Validation functions
+  const validateUserId = (value) => {
+    const regex = /^[A-Za-z0-9_]{4,20}$/;
+    if (!value) return "Login ID is required";
+    if (!regex.test(value))
+      return "Login ID must be 4–20 characters and can contain letters, numbers, and underscores only";
+    return "";
+  };
+
+  const validatePassword = (value) => {
+    if (!value) return "Password is required";
+    if (value.length < 4 || value.length > 10)
+      return "Password must be 4–10 characters long";
+    return "";
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoginLoading(true);
 
+    // Validate inputs before sending API request
+    const userIdError = validateUserId(userId);
+    const passwordError = validatePassword(password);
+    setErrors({ userId: userIdError, password: passwordError });
+
+    if (userIdError || passwordError) return; // stop if validation fails
+
+    setLoginLoading(true);
     try {
       const response = await axios.post("http://localhost:8080/login", {
         username: userId,
@@ -34,23 +59,15 @@ const LoginForm = () => {
       localStorage.setItem("accessToken", token);
       localStorage.setItem("role", role);
 
-      if (role === "MASTER_ADMIN") {
-        navigate("/admin");
-      } else if (role === "DISPUTE_MANAGER") {
-        navigate("/dashboard");
-      } else if (role === "DISPUTE_USER") {
-        navigate("/disputes");
-      }
+      if (role === "MASTER_ADMIN") navigate("/admin");
+      else if (role === "DISPUTE_MANAGER") navigate("/dashboard");
+      else if (role === "DISPUTE_USER") navigate("/disputes");
 
       toast.success("Login successful");
     } catch (error) {
       console.error("Login error:", error);
-
       if (error.response) {
-        const message =
-          typeof error.response.data === "string"
-            ? error.response.data
-            : error.response.data?.message || "Something went wrong";
+        const message = "Something went wrong";
 
         if (error.response.status === 401) {
           if (message.toLowerCase().includes("inactive")) {
@@ -58,8 +75,6 @@ const LoginForm = () => {
           } else {
             toast.error("Invalid UserID or Password");
           }
-        } else {
-          toast.error(message);
         }
       } else {
         toast.error("Network error. Please check your connection.");
@@ -68,7 +83,6 @@ const LoginForm = () => {
     setLoginLoading(false);
   };
 
-  // handle reset password click
   const handleResetPassword = async () => {
     if (!email.trim()) {
       toast.error("Please enter your email");
@@ -111,9 +125,13 @@ const LoginForm = () => {
                 id="userid"
                 placeholder="Enter Login ID"
                 value={userId}
-                onChange={(e) => setUserId(e.target.value)}
-                required
+                onChange={(e) => {
+                  setUserId(e.target.value);
+                  setErrors({ ...errors, userId: validateUserId(e.target.value) });
+                }}
+                className={errors.userId ? "invalid-input" : ""}
               />
+              {errors.userId && <p className="error">{errors.userId}</p>}
             </div>
 
             <div className="input-group password-group">
@@ -126,8 +144,11 @@ const LoginForm = () => {
                   id="password"
                   placeholder="Enter password"
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                    setErrors({ ...errors, password: validatePassword(e.target.value) });
+                  }}
+                  className={errors.password ? "invalid-input" : ""}
                 />
                 <span
                   className="toggle-password"
@@ -144,6 +165,7 @@ const LoginForm = () => {
                   )}
                 </span>
               </div>
+              {errors.password && <p className="error">{errors.password}</p>}
             </div>
 
             <button
@@ -206,7 +228,7 @@ const LoginForm = () => {
               <button
                 className="btn btn-primary w-100"
                 onClick={handleResetPassword}
-                disabled={resetLoading} // disables button while request is in progress
+                disabled={resetLoading}
               >
                 {resetLoading ? (
                   <>
