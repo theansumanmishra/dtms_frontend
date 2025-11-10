@@ -37,7 +37,7 @@ axios.interceptors.response.use(
     if (!error.response) {
       toast.error("Cannot connect to the server. Please log in again.");
       localStorage.removeItem("accessToken");
-      window.location.href = "/login";
+      window.location.href = "/loginPage";
       return Promise.reject(error);
     }
 
@@ -45,16 +45,20 @@ axios.interceptors.response.use(
     switch (error.response.status) {
       case 401:
         toast.warn("Request can't be processed!");
+        localStorage.removeItem("accessToken");
+        window.location.href = "/loginPage";
         break;
 
       case 422:
         toast.error("Unauthorized access - please log in.");
         localStorage.removeItem("accessToken");
-        window.location.href = "/login";
+        window.location.href = "/loginPage";
         break;
 
       case 500:
         toast.error("Something went wrong on the server.");
+        localStorage.removeItem("accessToken");
+        window.location.href = "/loginPage";
         break;
 
       default:
@@ -72,7 +76,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/about" element={<AboutPage />} />
-          <Route path="/login" element={<LoginPage />} />
+          <Route path="/loginPage" element={<LoginPage />} />
           <Route path="/disputes" element={<DisputePage />} />
           <Route path="/clients" element={<ClientPage />} />
           <Route path="/clients/:id" element={<ClientShowPage />} />

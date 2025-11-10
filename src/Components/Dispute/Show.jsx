@@ -1,4 +1,4 @@
-import "./DisputeConfirmationPage.css";
+import "./Show.css";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -69,7 +69,7 @@ const DisputeConfirmation = () => {
       dispute.subStatus?.name === "UNDER_REVIEW";
 
     const payload = {
-      statusName: values.status || (isInitialReview ? "IN_PROGRESS" : "CLOSED"),
+      statusName: values.status || (isInitialReview ? "IN_PROGRESS" : "RESOLVED"),
       subStatusName:
         values.subStatus || (isInitialReview ? "UNDER_REVIEW" : "ACCEPTED"),
       refund: values.refund,
@@ -149,7 +149,7 @@ const DisputeConfirmation = () => {
             <h4>Dispute Summary</h4>
             <div className="d-flex gap-2 summary-buttons">
               {!showConfirmation &&
-                dispute.status.name !== "CLOSED" &&
+                dispute.status.name !== "RESOLVED" &&
                 user?.roles?.includes("DISPUTE_MANAGER") && (
                   <button
                     className="summary-btn review-btn"
@@ -242,7 +242,7 @@ const DisputeConfirmation = () => {
                 {dispute.subStatus.name.replace("_", " ")}
               </span>
             </div>
-            {dispute.status.name == "CLOSED" && (
+            {dispute.status.name == "RESOLVED" && (
               <div>
                 <span className="label">Refund Amount</span>
                 <span className="value">₹ {dispute.refund}</span>
@@ -351,7 +351,7 @@ const DisputeConfirmation = () => {
                       comments: "",
                     }
                   : {
-                      status: "CLOSED",
+                      status: "RESOLVED",
                       subStatus: "",
                       refund: "",
                       comments: "",
@@ -422,7 +422,7 @@ const DisputeConfirmation = () => {
                         {isInitialReview ? (
                           <option value="IN_PROGRESS">IN-PROGRESS</option>
                         ) : (
-                          <option value="CLOSED">CLOSED</option>
+                          <option value="RESOLVED">RESOLVED</option>
                         )}
                       </Field>
                       <ErrorMessage

@@ -142,7 +142,6 @@ const RaisedisputeForm = ({ onCancelClick }) => {
                       <option value="">Select a dispute source...</option>
                       <option value="Branch Visit">Branch Visit</option>
                       <option value="Email">Email</option>
-                      <option value="Website">Website</option>
                       <option value="Phone Call">Phone Call</option>
                     </Field>
                     <ErrorMessage

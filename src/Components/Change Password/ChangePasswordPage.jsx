@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useSearchParams, useNavigate } from "react-router-dom"; // <-- added
+import { useSearchParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "./ChangePasswordPage.css";
@@ -15,21 +15,33 @@ const ForgetPasswordPage = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState([]);
+
+  // Password validation function
+  const validatePassword = (password) => {
+    const validationErrors = [];
+    if (password.length < 8) validationErrors.push("At least 8 characters");
+    if (!/[A-Z]/.test(password))
+      validationErrors.push("At least one uppercase letter");
+    if (!/[a-z]/.test(password))
+      validationErrors.push("At least one lowercase letter");
+    if (!/[0-9]/.test(password)) validationErrors.push("At least one number");
+    if (!/[!@#$%^&*(),.?":{}|<>]/.test(password))
+      validationErrors.push("At least one special character (!@#$...)");
+    if (/\s/.test(password)) validationErrors.push("No spaces allowed");
+    return validationErrors;
+  };
 
   const handleChangePassword = async (e) => {
     e.preventDefault();
 
-    // Validate fields
-    if (!newPassword || !confirmPassword) {
-      toast.error("Please fill in all fields");
-      return;
-    }
+    // Validate password fields
+    let validationErrors = validatePassword(newPassword);
+    if (newPassword !== confirmPassword)
+      validationErrors.push("Passwords do not match");
+    setErrors(validationErrors);
 
-    if (newPassword !== confirmPassword) {
-      toast.error("Passwords do not match");
-      return;
-    }
-
+    if (validationErrors.length > 0) return;
     if (!token) {
       toast.error("Invalid or missing reset token");
       return;
@@ -37,8 +49,6 @@ const ForgetPasswordPage = () => {
 
     try {
       setLoading(true);
-
-      // Call backend with token & new password
       const response = await axios.post(
         "http://localhost:8080/forget-password",
         {
@@ -48,15 +58,12 @@ const ForgetPasswordPage = () => {
       );
 
       toast.success(response.data.message || "Password changed successfully!");
-
-      // Clear inputs
       setNewPassword("");
       setConfirmPassword("");
 
-      // Redirect to login page after success
-      setTimeout(() => {
-        navigate("/login");
-      }, 1500);
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("role");
+      setTimeout(() => navigate("/loginPage"), 1500);
     } catch (error) {
       console.error(error);
       toast.error(error.response?.data?.message || "Failed to change password");
@@ -77,6 +84,7 @@ const ForgetPasswordPage = () => {
           <h2 className="change-welcome">Change Your Password</h2>
           <p className="change-info">Securely update your account password</p>
         </div>
+
         <div className="change-right">
           <form onSubmit={handleChangePassword}>
             {/* New Password */}
@@ -120,6 +128,15 @@ const ForgetPasswordPage = () => {
                 ></i>
               </div>
             </div>
+
+            {/* Validation Errors */}
+            {errors.length > 0 && (
+              <ul className="text-danger mb-3">
+                {errors.map((err, idx) => (
+                  <li key={idx}>{err}</li>
+                ))}
+              </ul>
+            )}
 
             <button
               type="submit"

@@ -46,7 +46,7 @@ const Admin = () => {
     try {
       await axios.delete(`http://localhost:8080/users/${userId}`);
       fetchUsers();
-      toast.success("User deleted successfully 👍");
+      toast.success("User deleted successfully");
     } catch (err) {
       console.error("Error deleting user:", err);
     }
@@ -264,8 +264,8 @@ const Admin = () => {
                   value={formData.username}
                   onChange={handleChange}
                   placeholder="Enter username"
-                  pattern="^[A-Za-z0-9_]{4,15}$"
-                  title="Username should be 4-15 characters, letters/numbers/underscores only"
+                  pattern="^[A-Za-z0-9_]{4,20}$"
+                  title="Username should be 4-20 characters, letters/numbers/underscores only"
                   required
                 />
               </Form.Group>
@@ -332,7 +332,7 @@ const Admin = () => {
               ) : formData.id ? (
                 "Update User"
               ) : (
-                "Create User"
+                "Create"
               )}
             </Button>
           </Modal.Footer>

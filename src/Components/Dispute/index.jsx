@@ -224,7 +224,7 @@ const Dispute = () => {
                           {row.status.name === "IN_PROGRESS" && (
                             <i className="bi bi-arrow-repeat"></i>
                           )}{" "}
-                          {row.status.name === "CLOSED" && (
+                          {row.status.name === "RESOLVED" && (
                             <i className="bi bi-check-circle"></i>
                           )}
                           {row.status.name.replace("_", " ")}

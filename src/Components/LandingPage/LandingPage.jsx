@@ -21,7 +21,7 @@ const LandingForm = () => {
             </p>
             <Button
               className="landing-btn me-4"
-              onClick={() => navigate("/login")}
+              onClick={() => navigate("/loginPage")}
             >
               Access the Platform
             </Button>

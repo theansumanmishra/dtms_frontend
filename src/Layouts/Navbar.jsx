@@ -34,7 +34,7 @@ const CustomNavbar = () => {
       <Button
         variant="link"
         className="navbar-login-btn text-decoration-none"
-        onClick={() => navigate("/login")}
+        onClick={() => navigate("/loginPage")}
       >
         Login
       </Button>

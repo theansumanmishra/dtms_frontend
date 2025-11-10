@@ -13,7 +13,7 @@ const LandingFooter = () => {
 
         <div>
           <h6>Platform</h6>
-          <a className="landing-a" href="/login">
+          <a className="landing-a" href="/loginPage">
             Login
           </a>
           <br />

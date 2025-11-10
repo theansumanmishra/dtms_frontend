@@ -24,7 +24,7 @@ const Header = () => {
 
   const logOut = () => {
     localStorage.removeItem("accessToken");
-    navigate("/login");
+    navigate("/loginPage");
   };
 
   const view = () => {

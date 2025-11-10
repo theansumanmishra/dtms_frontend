@@ -56,12 +56,15 @@ const LoginForm = () => {
       const token = response.data.accessToken;
       const role = response.data.role;
 
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("role");
+
       localStorage.setItem("accessToken", token);
       localStorage.setItem("role", role);
 
       if (role === "MASTER_ADMIN") navigate("/admin");
       else if (role === "DISPUTE_MANAGER") navigate("/dashboard");
-      else if (role === "DISPUTE_USER") navigate("/disputes");
+      else if (role === "DISPUTE_AGENT") navigate("/disputes");
 
       toast.success("Login successful");
     } catch (error) {
@@ -93,6 +96,7 @@ const LoginForm = () => {
       await axios.post("http://localhost:8080/reset-link", { email });
       toast.success("Password reset link sent to your email");
       setEmail("");
+      
     } catch (error) {
       if (
         error.response &&
@@ -127,7 +131,10 @@ const LoginForm = () => {
                 value={userId}
                 onChange={(e) => {
                   setUserId(e.target.value);
-                  setErrors({ ...errors, userId: validateUserId(e.target.value) });
+                  setErrors({
+                    ...errors,
+                    userId: validateUserId(e.target.value),
+                  });
                 }}
                 className={errors.userId ? "invalid-input" : ""}
               />
@@ -146,7 +153,10 @@ const LoginForm = () => {
                   value={password}
                   onChange={(e) => {
                     setPassword(e.target.value);
-                    setErrors({ ...errors, password: validatePassword(e.target.value) });
+                    setErrors({
+                      ...errors,
+                      password: validatePassword(e.target.value),
+                    });
                   }}
                   className={errors.password ? "invalid-input" : ""}
                 />
@@ -245,7 +255,7 @@ const LoginForm = () => {
               </button>
 
               <div className="mt-4">
-                <a href="/login" className="text-decoration-none text-dark">
+                <a href="/loginPage" className="text-decoration-none text-dark">
                   Back to Login
                 </a>
               </div>

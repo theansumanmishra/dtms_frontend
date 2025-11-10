@@ -40,7 +40,7 @@ const AboutForm = () => {
           </p>
           <button
             className="get-started-btn"
-            onClick={() => navigate("/login")}
+            onClick={() => navigate("/loginPage")}
           >
             Get Started Today
           </button>
