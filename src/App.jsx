@@ -17,7 +17,7 @@ import RaiseDisputePage from "./Pages/RaiseDispute";
 import ViewDisputePage from "./Pages/DisputeDetails";
 import ViewStats from "./Pages/ViewStats";
 import UserDetailsPage from "./Pages/UserDetails";
-import AdminDashboard from "./pages/AdminDashboard";
+import AdminDashboard from "./Pages/AdminDashboard";
 import PasswordResetPage from "./Pages/PasswordReset";
 import PasswordChangePage from "./Pages/PasswordChange";
 import Error404Page from "./Pages/Error404Page";
