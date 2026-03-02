@@ -14,7 +14,7 @@ const View = () => {
   useEffect(() => {
     let isMounted = true;
     axios
-      .get("http://localhost:8080/disputes/dashboard")
+      .get(`${import.meta.env.VITE_API_URL}/disputes/dashboard`)
       .then((res) => {
         if (!isMounted) return;
         const data = res.data;
@@ -138,7 +138,7 @@ const View = () => {
 
     // ---- Recent Disputes Table ----
     axios
-      .get("http://localhost:8080/disputes/recent")
+      .get(`${import.meta.env.VITE_API_URL}/disputes/recent`)
       .then((res) => setRecentDisputes(res.data))
       .catch((err) => console.error("Error fetching recent disputes:", err));
 

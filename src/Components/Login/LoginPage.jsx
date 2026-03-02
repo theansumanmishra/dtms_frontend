@@ -48,7 +48,7 @@ const LoginForm = () => {
 
     setLoginLoading(true);
     try {
-      const response = await axios.post("http://localhost:8080/login", {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/login`, {
         username: userId,
         password: password,
       });
@@ -93,7 +93,7 @@ const LoginForm = () => {
     }
     setResetLoading(true);
     try {
-      await axios.post("http://localhost:8080/reset-link", { email });
+      await axios.post(`${import.meta.env.VITE_API_URL}/reset-link`, { email });
       toast.success("Password reset link sent to your email");
       setEmail("");
       

@@ -25,7 +25,7 @@ const Admin = () => {
 
   const fetchUsers = async () => {
     try {
-      const res = await axios.get("http://localhost:8080/users");
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/users`);
       setUsers(res.data);
     } catch (err) {
       console.error("Error fetching users:", err);
@@ -34,7 +34,7 @@ const Admin = () => {
 
   const fetchRoles = async () => {
     try {
-      const res = await axios.get("http://localhost:8080/roles");
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/roles`);
       const filtered = res.data.filter((r) => r.name !== "MASTER_ADMIN");
       setRoles(filtered);
     } catch (err) {
@@ -44,7 +44,7 @@ const Admin = () => {
 
   const deleteUser = async (userId) => {
     try {
-      await axios.delete(`http://localhost:8080/users/${userId}`);
+      await axios.delete(`${import.meta.env.VITE_API_URL}/users/${userId}`);
       fetchUsers();
       toast.success("User deleted successfully");
     } catch (err) {
@@ -109,10 +109,10 @@ const Admin = () => {
     setLoading(true);
     try {
       if (formData.id) {
-        await axios.put(`http://localhost:8080/users/${formData.id}`, payload);
+        await axios.put(`${import.meta.env.VITE_API_URL}/users/${formData.id}`, payload);
         toast.success("User updated successfully");
       } else {
-        await axios.post(`http://localhost:8080/register`, payload);
+        await axios.post(`${import.meta.env.VITE_API_URL}/register`, payload);
         toast.success("User created successfully");
         toast.success("Password sent to user's email");
       }

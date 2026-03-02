@@ -35,7 +35,7 @@ const DisputeConfirmation = () => {
     const fetchDisputeDetails = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:8080/disputes/${disputeId}`
+          `${import.meta.env.VITE_API_URL}/disputes/${disputeId}`
         );
         setDispute(res.data);
       } catch (err) {
@@ -51,7 +51,7 @@ const DisputeConfirmation = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const userData = await axios.get("http://localhost:8080/users/me");
+        const userData = await axios.get(`${import.meta.env.VITE_API_URL}/users/me`);
         setUser(userData.data);
       } catch (err) {
         console.error("Error fetching user:", err);
@@ -79,7 +79,7 @@ const DisputeConfirmation = () => {
 
     try {
       const response = await axios.put(
-        `http://localhost:8080/disputes/${disputeId}`,
+        `${import.meta.env.VITE_API_URL}/disputes/${disputeId}`,
         payload
       );
 
@@ -105,7 +105,7 @@ const DisputeConfirmation = () => {
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`http://localhost:8080/disputes/${disputeId}`);
+      await axios.delete(`${import.meta.env.VITE_API_URL}/disputes/${disputeId}`);
       toast.success(`Dispute DSP202500${disputeId} deleted successfully`);
       navigate("/disputes"); 
     } catch (error) {
@@ -131,7 +131,7 @@ const DisputeConfirmation = () => {
           <div>
             <div className="success-icon">
               <img
-                src="/public/success-vmake-unscreen.gif"
+                src="/success-vmake-unscreen.gif"
                 style={{ width: "150px", height: "150px" }}
                 alt="✔"
               />

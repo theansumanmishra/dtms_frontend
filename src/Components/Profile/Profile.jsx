@@ -19,10 +19,10 @@ const Profile = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const userRes = await axios.get("http://localhost:8080/users/me");
+        const userRes = await axios.get(`${import.meta.env.VITE_API_URL}/users/me`);
         setUser(userRes.data);
 
-        const statsRes = await axios.get("http://localhost:8080/my-stats");
+        const statsRes = await axios.get(`${import.meta.env.VITE_API_URL}/my-stats`);
         setDisputeStats(statsRes.data);
       } catch (err) {
         console.error("Failed to load user:", err);
@@ -48,7 +48,7 @@ const Profile = () => {
 
     try {
       const res = await axios.post(
-        `http://localhost:8080/users/${user.id}/upload-photo`,
+        `${import.meta.env.VITE_API_URL}/users/${user.id}/upload-photo`,
         formData,
         {
           headers: {
@@ -73,7 +73,7 @@ const Profile = () => {
   const handleRemovePhoto = async () => {
     if (!user) return;
     try {
-      await axios.delete(`http://localhost:8080/users/${user.id}/delete-photo`);
+      await axios.delete(`${import.meta.env.VITE_API_URL}/users/${user.id}/delete-photo`);
       setPreview(null);
       setSelectedFile(null);
       setUser((prev) => ({ ...prev, profilePhoto: null }));
@@ -103,7 +103,7 @@ const Profile = () => {
                       preview
                         ? preview
                         : user.profilePhoto
-                        ? `http://localhost:8080${user.profilePhoto}`
+                        ? `${import.meta.env.VITE_API_URL}${user.profilePhoto}`
                         : // : "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp"
                           "/profile.jpg"
                     }

@@ -24,7 +24,7 @@ const ShowClient = () => {
     const fetchData = async () => {
       try {
         const clientRes = await axios.get(
-          `http://localhost:8080/clients/${id}`
+          `${import.meta.env.VITE_API_URL}/clients/${id}`
         );
         setClient(clientRes.data);
         setSavingAccount(clientRes.data.savingsAccount);

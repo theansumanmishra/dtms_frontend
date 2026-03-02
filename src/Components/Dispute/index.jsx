@@ -39,7 +39,7 @@ const Dispute = () => {
         setLoading(true);
         if (debouncedQuery.trim() !== "") {
           const res = await axios.get(
-            `http://localhost:8080/disputes/search?accountNumber=${debouncedQuery}`
+            `${import.meta.env.VITE_API_URL}/disputes/search?accountNumber=${debouncedQuery}`
           );
 
           let dataArray = [];
@@ -66,7 +66,7 @@ const Dispute = () => {
           }
         } else {
           const res = await axios.get(
-            `http://localhost:8080/disputes?page=${currentPage}&size=${rowsPerPage}&filter=${selectedTab}`
+            `${import.meta.env.VITE_API_URL}/disputes?page=${currentPage}&size=${rowsPerPage}&filter=${selectedTab}`
           );
           if (res.data.content && res.data.content.length > 0) {
             setDisputes(res.data.content);

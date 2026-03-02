@@ -32,9 +32,9 @@ const Clients = () => {
     async (page = 0, query = "") => {
       setLoading(true);
       try {
-        let url = `http://localhost:8080/clients?page=${page}&size=${rowsPerPage}`;
+        let url = `${import.meta.env.VITE_API_URL}/clients?page=${page}&size=${rowsPerPage}`;
         if (query) {
-          url = `http://localhost:8080/clients/search?keyword=${encodeURIComponent(
+          url = `${import.meta.env.VITE_API_URL}/clients/search?keyword=${encodeURIComponent(
             query
           )}`;
         }

@@ -17,7 +17,7 @@ const RaisedisputeForm = ({ onCancelClick }) => {
     setLoading(true);
     const fetchData = async () => {
       try {
-        const res = await axios.get("http://localhost:8080/disputes/reasons");
+        const res = await axios.get(`${import.meta.env.VITE_API_URL}/disputes/reasons`);
         setReasons(res.data);
       } catch (err) {
         console.error("Error fetching data:", err);
@@ -74,7 +74,7 @@ const RaisedisputeForm = ({ onCancelClick }) => {
 
     try {
       const response = await axios.post(
-        `http://localhost:8080/disputes`,
+        `${import.meta.env.VITE_API_URL}/disputes`,
         payload
       );
       console.log("Payload Sent:", JSON.stringify(payload));

@@ -22,13 +22,13 @@ const TransactionDetails = () => {
         //Fetch transaction details
         const txId = selectedTransactionId || transactionId;
         const txnRes = await axios.get(
-          `http://localhost:8080/savingsaccounts/${savingsAccountId}/transactions/${txId}`
+          `${import.meta.env.VITE_API_URL}/savingsaccounts/${savingsAccountId}/transactions/${txId}`
         );
         setTxnDetails(txnRes.data);
 
         //Fetch similar transactions
         const similarRes = await axios.get(
-          `http://localhost:8080/transactions/${transactionId}/similar`
+          `${import.meta.env.VITE_API_URL}/transactions/${transactionId}/similar`
         );
         setSimilarTxns(similarRes.data);
       } catch (err) {

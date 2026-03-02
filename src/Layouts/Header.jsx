@@ -13,7 +13,7 @@ const Header = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const userData = await axios.get("http://localhost:8080/users/me");
+        const userData = await axios.get(`${import.meta.env.VITE_API_URL}/users/me`);
         setUser(userData.data);
       } catch (err) {
         console.error("Error fetching user:", err);
@@ -84,7 +84,7 @@ const Header = () => {
                     style={{ maxHeight: "40px" }}
                     src={
                       user?.profilePhoto
-                        ? `http://localhost:8080${user.profilePhoto}`
+                        ? `${import.meta.env.VITE_API_URL}${user.profilePhoto}`
                         : profilePic
                     }
                     alt="Profile"

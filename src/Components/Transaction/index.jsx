@@ -18,7 +18,7 @@ const TransactionListPage = () => {
     const fetchData = async () => {
       try {
         const clientRes = await axios.get(
-          `http://localhost:8080/savingsaccounts/${id}/transactions`
+          `${import.meta.env.VITE_API_URL}/savingsaccounts/${id}/transactions`
         );
         setTransactions(clientRes.data);
       } catch (error) {
